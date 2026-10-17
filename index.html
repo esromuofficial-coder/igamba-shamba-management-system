@@ -1,1170 +1,1398 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Igamba Shamba | Farm Management</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGAMBA SHAMBA | Farm Management</title>
 
-<style>
-:root {
-  --green: #176b45;
-  --dark: #104d32;
-  --light: #e8f5ed;
-  --gold: #e7b64b;
-  --bg: #f4f7f5;
-  --white: #ffffff;
-  --text: #25352c;
-  --border: #e3eae5;
-}
+  <style>
+    :root {
+      --green: #176b3a;
+      --green-dark: #104c2a;
+      --light: #f2f7f2;
+      --white: #ffffff;
+      --text: #26332a;
+      --danger: #c62828;
+      --border: #dce5dd;
+      --shadow: 0 3px 12px rgba(0,0,0,.07);
+    }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+    }
 
-button, input, select {
-  font: inherit;
-}
+    button, input, select, textarea {
+      font: inherit;
+    }
 
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 15px;
-}
+    button {
+      cursor: pointer;
+    }
 
-.primary {
-  background: var(--green);
-  color: white;
-}
+    .hidden {
+      display: none !important;
+    }
 
-.light {
-  background: var(--light);
-  color: var(--green);
-}
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #104c2a, #279653);
+    }
 
-.hidden {
-  display: none !important;
-}
+    .login-card {
+      background: white;
+      width: 100%;
+      max-width: 430px;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.2);
+    }
 
-/* LOGIN */
+    .logo {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
 
-.auth-wrap {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-}
+    .subtitle {
+      text-align: center;
+      color: #647268;
+      margin-bottom: 25px;
+    }
 
-.auth-card {
-  background: white;
-  padding: 28px;
-  border-radius: 16px;
-  width: min(420px, 100%);
-  box-shadow: 0 5px 25px #0000000c;
-}
+    .field {
+      margin-bottom: 15px;
+    }
 
-.logo {
-  margin-bottom: 25px;
-}
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
 
-.logo h1 {
-  color: var(--green);
-  font-size: 23px;
-}
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd8ce;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+      color: #243128;
+    }
 
-.logo p {
-  color: #777;
-  font-size: 11px;
-  margin-top: 5px;
-}
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(23,107,58,.1);
+    }
 
-.auth-card h2 {
-  margin-bottom: 10px;
-}
+    .btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      background: var(--green);
+      color: white;
+      font-weight: bold;
+    }
 
-.auth-card > p {
-  font-size: 13px;
-  line-height: 1.6;
-  color: #777;
-  margin-bottom: 20px;
-}
+    .btn:hover {
+      background: var(--green-dark);
+    }
 
-.form-group {
-  margin-bottom: 15px;
-}
+    .btn-block {
+      width: 100%;
+    }
 
-.form-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 7px;
-}
+    .btn-secondary {
+      background: #e8efe9;
+      color: var(--green-dark);
+    }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: white;
-}
+    .btn-danger {
+      background: var(--danger);
+    }
 
-.auth-card button {
-  width: 100%;
-  margin-top: 5px;
-}
+    .message {
+      margin-top: 14px;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
 
-/* APPLICATION */
+    .error {
+      color: #8b1717;
+      background: #ffebee;
+    }
 
-.app {
-  display: flex;
-  min-height: 100vh;
-}
+    .success {
+      color: #155c2d;
+      background: #e4f5e8;
+    }
 
-.sidebar {
-  width: 240px;
-  background: var(--dark);
-  color: white;
-  padding: 20px 14px;
-  position: fixed;
-  inset: 0 auto 0 0;
-  overflow-y: auto;
-}
+    .app-header {
+      background: var(--green);
+      color: white;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-.brand {
-  padding: 10px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #ffffff30;
-}
+    .app-title {
+      font-size: 22px;
+      font-weight: 800;
+    }
 
-.brand h2 {
-  font-size: 18px;
-}
+    .user-info {
+      font-size: 13px;
+      margin-top: 5px;
+      overflow-wrap: anywhere;
+    }
 
-.brand p {
-  font-size: 10px;
-  margin-top: 5px;
-  color: #c6dfd0;
-}
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-.menu-label {
-  font-size: 10px;
-  color: #a8cbb6;
-  margin: 20px 10px 10px;
-}
+    .header-actions button {
+      border: 1px solid rgba(255,255,255,.45);
+      background: transparent;
+      color: white;
+      padding: 9px 12px;
+      border-radius: 7px;
+    }
 
-.nav-link {
-  display: block;
-  width: 100%;
-  text-align: left;
-  color: #e2eee6;
-  background: transparent;
-  margin-bottom: 5px;
-}
+    .layout {
+      display: grid;
+      grid-template-columns: 225px minmax(0, 1fr);
+      min-height: calc(100vh - 80px);
+    }
 
-.nav-link:hover,
-.nav-link.active {
-  background: #ffffff22;
-  color: white;
-}
+    .sidebar {
+      background: white;
+      border-right: 1px solid var(--border);
+      padding: 18px 12px;
+    }
 
-.main {
-  margin-left: 240px;
-  width: calc(100% - 240px);
-  min-width: 0;
-}
+    .nav-btn {
+      width: 100%;
+      display: block;
+      text-align: left;
+      padding: 13px;
+      border: none;
+      background: transparent;
+      color: #35473a;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
 
-.topbar {
-  background: white;
-  padding: 18px 25px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #e6f3e9;
+      color: var(--green);
+    }
 
-.topbar h2 {
-  font-size: 18px;
-}
+    main {
+      padding: 24px;
+      min-width: 0;
+    }
 
-.content {
-  padding: 25px;
-}
+    h1 {
+      font-size: 26px;
+      margin-top: 0;
+    }
 
-.page {
-  display: none;
-}
+    h2 {
+      font-size: 19px;
+    }
 
-.page.active {
-  display: block;
-}
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 24px;
+    }
 
-.welcome {
-  background: linear-gradient(120deg, var(--green), #238b59);
-  color: white;
-  padding: 25px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-}
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--green);
+    }
 
-.welcome h1 {
-  margin-bottom: 10px;
-  font-size: 23px;
-}
+    .stat-label {
+      color: #66736a;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
 
-.welcome p {
-  line-height: 1.7;
-  font-size: 13px;
-}
+    .stat-value {
+      font-size: 25px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 22px;
-}
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      min-width: 0;
+    }
 
-.card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 18px;
-  margin-bottom: 18px;
-  min-width: 0;
-}
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
 
-.stat-label {
-  color: #78877d;
-  font-size: 12px;
-}
+    .full-width {
+      grid-column: 1 / -1;
+    }
 
-.stat-value {
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 15px;
-  overflow-wrap: anywhere;
-}
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
 
-.section-title {
-  margin: 15px 0;
-  font-size: 18px;
-}
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 600px;
+    }
 
-.two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 18px;
-  align-items: start;
-}
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e4ebe5;
+      font-size: 14px;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+    th {
+      background: #edf5ee;
+      color: var(--green-dark);
+    }
 
-.table-wrap {
-  overflow-x: auto;
-}
+    .empty {
+      color: #738076;
+      padding: 20px 0;
+    }
 
-th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-  font-size: 12px;
-}
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #e4f5e8;
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: bold;
+    }
 
-th {
-  background: #f8faf8;
-  color: #78877d;
-}
+    .loading {
+      padding: 15px;
+      background: #fff8df;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
 
-.empty {
-  color: #78877d;
-  padding: 20px;
-  text-align: center;
-}
+    @media (max-width: 900px) {
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
 
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px;
-  background: var(--dark);
-  color: white;
-  border-radius: 9px;
-  display: none;
-  z-index: 20;
-}
+      .layout {
+        grid-template-columns: 1fr;
+      }
 
-.toast.show {
-  display: block;
-}
+      .sidebar {
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+      }
 
-@media(max-width:1000px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+      .nav-btn {
+        white-space: nowrap;
+        width: auto;
+        margin: 0;
+      }
 
-  .two-columns {
-    grid-template-columns: 1fr;
-  }
-}
+      main {
+        padding: 15px;
+      }
+    }
 
-@media(max-width:700px) {
-  .sidebar {
-    width: 210px;
-    transform: translateX(-100%);
-    z-index: 10;
-    transition: .25s;
-  }
+    @media (max-width: 520px) {
+      .cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
 
-  .sidebar.open {
-    transform: translateX(0);
-  }
+      .stat-card {
+        padding: 13px;
+      }
 
-  .main {
-    margin-left: 0;
-    width: 100%;
-  }
+      .stat-value {
+        font-size: 20px;
+      }
 
-  .content {
-    padding: 14px;
-  }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
 
-  .topbar {
-    padding: 14px;
-  }
+      .full-width {
+        grid-column: auto;
+      }
 
-  .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .stat-value {
-    font-size: 17px;
-  }
-}
-</style>
+      .login-card {
+        padding: 22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginView" class="auth-wrap">
-  <div class="auth-card">
-    <div class="logo">
-      <h1>🌿 IGAMBA SHAMBA</h1>
-      <p>FARM MANAGEMENT SYSTEM</p>
-    </div>
+  <!-- LOGIN -->
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="logo">🌱 IGAMBA SHAMBA</div>
+      <div class="subtitle">Farm Management System</div>
 
-    <div style="text-align:right;margin-bottom:15px">
-      <button class="light" id="languageLogin">🇹🇿 SW / 🇬🇧 EN</button>
-    </div>
-
-    <h2 data-i18n="loginTitle">Ingia kwenye akaunti</h2>
-    <p data-i18n="loginDescription">
-      Tumia barua pepe na nenosiri ulilopewa na msimamizi.
-    </p>
-
-    <form id="loginForm">
-      <div class="form-group">
-        <label data-i18n="email">Barua pepe</label>
-        <input name="email" type="email" required autocomplete="username">
-      </div>
-
-      <div class="form-group">
-        <label data-i18n="password">Nenosiri</label>
-        <input name="password" type="password" required autocomplete="current-password">
-      </div>
-
-      <button class="primary" type="submit" data-i18n="login">Ingia</button>
-    </form>
-
-    <button class="light" id="resetPassword" style="margin-top:12px"
-      data-i18n="forgotPassword">Umesahau nenosiri?</button>
-
-    <p id="loginMessage" style="margin-top:15px"></p>
-
-    <p style="margin-top:15px;font-size:11px"
-      data-i18n="noRegistration">
-      Usajili wa wazi umezimwa. Omba Super Admin akutengenezee akaunti.
-    </p>
-  </div>
-</div>
-
-<!-- APP -->
-<div id="appView" class="app hidden">
-
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <h2>🌿 IGAMBA SHAMBA</h2>
-      <p>FARM MANAGEMENT SYSTEM</p>
-    </div>
-
-    <p class="menu-label" data-i18n="mainMenu">MENYU KUU</p>
-
-    <button class="nav-link active" data-page="dashboard" data-i18n="dashboard">▦ Dashboard</button>
-    <button class="nav-link" data-page="crops" data-i18n="crops">🌱 Mazao</button>
-    <button class="nav-link" data-page="chickens" data-i18n="chickens">🐔 Kuku</button>
-    <button class="nav-link" data-page="livestock" data-i18n="livestock">🐐 Mbuzi na Kondoo</button>
-    <button class="nav-link" data-page="finances" data-i18n="finances">💰 Fedha</button>
-    <button class="nav-link" data-page="activities" data-i18n="activities">📋 Shughuli</button>
-
-    <button class="nav-link admin-only hidden" data-page="admin"
-      data-i18n="adminDashboard">🛡️ Admin Dashboard</button>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div style="display:flex;gap:10px;align-items:center">
-        <button class="light" id="menuToggle">☰</button>
-        <div>
-          <h2 id="pageTitle">Dashboard</h2>
-          <small id="currentUser"></small>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Barua pepe / Email</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="username"
+            placeholder="Ingiza barua pepe"
+            required
+          >
         </div>
+
+        <div class="field">
+          <label for="password">Nenosiri / Password</label>
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Ingiza nenosiri"
+            required
+          >
+        </div>
+
+        <button id="loginButton" class="btn btn-block" type="submit">
+          Ingia kwenye mfumo
+        </button>
+      </form>
+
+      <div id="loginMessage" aria-live="polite"></div>
+
+      <p style="font-size:12px;color:#68756b;text-align:center;margin-top:20px">
+        Mfumo wa kusimamia shughuli za shamba la IGAMBA.
+      </p>
+    </div>
+  </section>
+
+  <!-- APPLICATION -->
+  <section id="appScreen" class="hidden">
+
+    <header class="app-header">
+      <div>
+        <div class="app-title">🌱 IGAMBA SHAMBA</div>
+        <div id="currentUser" class="user-info"></div>
       </div>
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="light" id="languageApp">🇹🇿 SW / 🇬🇧 EN</button>
-        <button class="primary" id="logout" data-i18n="logout">Toka</button>
+      <div class="header-actions">
+        <button id="refreshButton" type="button">↻ Refresh</button>
+        <button id="logoutButton" type="button">Toka / Logout</button>
       </div>
     </header>
 
-    <div class="content">
+    <div class="layout">
 
-      <section class="page active" id="page-dashboard">
-        <div class="welcome">
-          <h1 data-i18n="welcome">Karibu Igamba Shamba! 🌱</h1>
-          <p data-i18n="welcomeText">
-            Simamia mazao, mifugo, shughuli na fedha za shamba lako.
-          </p>
-        </div>
+      <aside class="sidebar">
+        <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-page="crops">🌾 Mazao</button>
+        <button class="nav-btn" data-page="chickens">🐔 Kuku</button>
+        <button class="nav-btn" data-page="livestock">🐐 Mifugo</button>
+        <button class="nav-btn" data-page="finances">💰 Fedha</button>
+        <button class="nav-btn" data-page="activities">📋 Shughuli</button>
+      </aside>
 
-        <div class="stats-grid">
-          <div class="card">
-            <div class="stat-label" data-i18n="income">Mapato</div>
-            <div class="stat-value" id="totalIncome">TZS 0</div>
+      <main>
+        <div id="appMessage" aria-live="polite"></div>
+
+        <section id="dashboardPage" class="page">
+          <h1>Dashboard</h1>
+          <p>Muhtasari wa taarifa za shamba la IGAMBA.</p>
+
+          <div class="cards">
+            <div class="stat-card">
+              <div class="stat-label">Aina za mazao</div>
+              <div id="cropCount" class="stat-value">0</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-label">Rekodi za kuku</div>
+              <div id="chickenCount" class="stat-value">0</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-label">Rekodi za mifugo</div>
+              <div id="livestockCount" class="stat-value">0</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-label">Rekodi za fedha</div>
+              <div id="financeCount" class="stat-value">0</div>
+            </div>
           </div>
 
-          <div class="card">
-            <div class="stat-label" data-i18n="expenses">Matumizi</div>
-            <div class="stat-value" id="totalExpenses">TZS 0</div>
+          <div class="panel">
+            <h2>Mapato na matumizi</h2>
+            <div class="cards">
+              <div>
+                <div class="stat-label">Jumla ya mapato</div>
+                <div id="totalIncome" class="stat-value">TZS 0</div>
+              </div>
+
+              <div>
+                <div class="stat-label">Jumla ya matumizi</div>
+                <div id="totalExpense" class="stat-value">TZS 0</div>
+              </div>
+
+              <div>
+                <div class="stat-label">Salio</div>
+                <div id="balance" class="stat-value">TZS 0</div>
+              </div>
+            </div>
           </div>
 
-          <div class="card">
-            <div class="stat-label" data-i18n="balance">Salio</div>
-            <div class="stat-value" id="balance">TZS 0</div>
+          <div class="panel">
+            <h2>Taarifa za mfumo</h2>
+            <p>Watumiaji walioidhinishwa wanaona rekodi kutoka kwenye hifadhidata ileile.</p>
+            <p><span class="badge">Shared Farm Records</span></p>
           </div>
+        </section>
 
-          <div class="card">
-            <div class="stat-label" data-i18n="records">Rekodi zote</div>
-            <div class="stat-value" id="recordCount">0</div>
-          </div>
-        </div>
+        <section id="cropsPage" class="page hidden">
+          <h1>🌾 Usimamizi wa Mazao</h1>
 
-        <h3 class="section-title" data-i18n="recentFinance">Rekodi za fedha za hivi karibuni</h3>
+          <div class="panel">
+            <h2>Ongeza zao</h2>
 
-        <div class="card table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th data-i18n="date">Tarehe</th>
-                <th data-i18n="type">Aina</th>
-                <th data-i18n="description">Maelezo</th>
-                <th data-i18n="amount">Kiasi</th>
-              </tr>
-            </thead>
-            <tbody id="recentFinanceTable"></tbody>
-          </table>
-        </div>
-      </section>
+            <form id="cropsForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="cropName">Jina la zao</label>
+                  <input id="cropName" required placeholder="Mfano: Mahindi">
+                </div>
 
-      <section class="page" id="page-crops">
-        <h2 class="section-title" data-i18n="crops">Mazao</h2>
-        <div class="two-columns">
-          <div class="card">
-            <h3 data-i18n="addCrop">Ongeza zao</h3><br>
-            <form id="cropForm">
-              <div class="form-group">
-                <label data-i18n="cropName">Jina la zao</label>
-                <input name="name" required>
+                <div class="field">
+                  <label for="cropArea">Eneo / ukubwa wa shamba</label>
+                  <input id="cropArea" placeholder="Mfano: Ekari 3">
+                </div>
+
+                <div class="field">
+                  <label for="cropQuantity">Kiasi kilichovunwa</label>
+                  <input id="cropQuantity" placeholder="Mfano: Magunia 20">
+                </div>
+
+                <div class="field">
+                  <label for="cropDate">Tarehe</label>
+                  <input id="cropDate" type="date">
+                </div>
+
+                <div class="field full-width">
+                  <label for="cropNotes">Maelezo</label>
+                  <textarea id="cropNotes" rows="3"></textarea>
+                </div>
+
+                <div class="full-width">
+                  <button class="btn" type="submit">Hifadhi zao</button>
+                </div>
               </div>
-              <div class="form-group">
-                <label data-i18n="area">Eneo (ekari)</label>
-                <input name="area" type="number" min="0" step="any">
-              </div>
-              <div class="form-group">
-                <label data-i18n="plantingDate">Tarehe ya kupanda</label>
-                <input name="date" type="date">
-              </div>
-              <div class="form-group">
-                <label data-i18n="status">Hali</label>
-                <select name="status">
-                  <option value="Imepandwa">Imepandwa</option>
-                  <option value="Linakua">Linakua</option>
-                  <option value="Limevunwa">Limevunwa</option>
-                </select>
-              </div>
-              <button class="primary" type="submit" data-i18n="save">Hifadhi</button>
             </form>
           </div>
 
-          <div class="card table-wrap">
-            <h3 data-i18n="cropList">Orodha ya mazao</h3><br>
-            <table>
-              <thead><tr>
-                <th data-i18n="cropName">Zao</th>
-                <th data-i18n="area">Eneo</th>
-                <th data-i18n="status">Hali</th>
-                <th data-i18n="action">Kitendo</th>
-              </tr></thead>
-              <tbody id="cropTable"></tbody>
-            </table>
+          <div class="panel">
+            <h2>Rekodi za mazao</h2>
+            <div id="cropsTable"></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="page" id="page-chickens">
-        <h2 class="section-title" data-i18n="chickens">Kuku</h2>
-        <div class="two-columns">
-          <div class="card">
-            <h3 data-i18n="addChicken">Ongeza kuku</h3><br>
-            <form id="chickenForm">
-              <div class="form-group">
-                <label data-i18n="chickenType">Aina ya kuku</label>
-                <select name="name">
-                  <option>Kuku wa nyama</option>
-                  <option>Kuku wa mayai</option>
-                  <option>Kuku wa kienyeji</option>
-                </select>
+        <section id="chickensPage" class="page hidden">
+          <h1>🐔 Usimamizi wa Kuku</h1>
+
+          <div class="panel">
+            <h2>Ongeza rekodi za kuku</h2>
+
+            <form id="chickensForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="chickenType">Aina ya kuku</label>
+                  <input id="chickenType" required placeholder="Mfano: Kienyeji">
+                </div>
+
+                <div class="field">
+                  <label for="chickenCountInput">Idadi ya kuku</label>
+                  <input id="chickenCountInput" type="number" min="0" required>
+                </div>
+
+                <div class="field">
+                  <label for="chickenEggs">Idadi ya mayai</label>
+                  <input id="chickenEggs" type="number" min="0">
+                </div>
+
+                <div class="field">
+                  <label for="chickenDate">Tarehe</label>
+                  <input id="chickenDate" type="date">
+                </div>
+
+                <div class="field full-width">
+                  <label for="chickenNotes">Maelezo</label>
+                  <textarea id="chickenNotes" rows="3"></textarea>
+                </div>
+
+                <div class="full-width">
+                  <button class="btn" type="submit">Hifadhi rekodi</button>
+                </div>
               </div>
-              <div class="form-group">
-                <label data-i18n="quantity">Idadi</label>
-                <input name="quantity" type="number" min="1" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="date">Tarehe</label>
-                <input name="date" type="date">
-              </div>
-              <button class="primary" type="submit" data-i18n="save">Hifadhi</button>
             </form>
           </div>
 
-          <div class="card table-wrap">
-            <h3 data-i18n="chickenList">Orodha ya kuku</h3><br>
-            <table><thead><tr>
-              <th data-i18n="chickenType">Aina</th>
-              <th data-i18n="quantity">Idadi</th>
-              <th data-i18n="date">Tarehe</th>
-              <th data-i18n="action">Kitendo</th>
-            </tr></thead><tbody id="chickenTable"></tbody></table>
+          <div class="panel">
+            <h2>Rekodi za kuku</h2>
+            <div id="chickensTable"></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="page" id="page-livestock">
-        <h2 class="section-title" data-i18n="livestock">Mbuzi na Kondoo</h2>
-        <div class="two-columns">
-          <div class="card">
-            <h3 data-i18n="addLivestock">Ongeza mifugo</h3><br>
+        <section id="livestockPage" class="page hidden">
+          <h1>🐐 Usimamizi wa Mifugo</h1>
+
+          <div class="panel">
+            <h2>Ongeza mifugo</h2>
+
             <form id="livestockForm">
-              <div class="form-group">
-                <label data-i18n="animalType">Aina ya mnyama</label>
-                <select name="name"><option>Mbuzi</option><option>Kondoo</option></select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="quantity">Idadi</label>
-                <input name="quantity" type="number" min="1" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="date">Tarehe</label>
-                <input name="date" type="date">
-              </div>
-              <button class="primary" type="submit" data-i18n="save">Hifadhi</button>
-            </form>
-          </div>
-          <div class="card table-wrap">
-            <h3 data-i18n="livestockList">Orodha ya mifugo</h3><br>
-            <table><thead><tr>
-              <th data-i18n="animalType">Mnyama</th>
-              <th data-i18n="quantity">Idadi</th>
-              <th data-i18n="date">Tarehe</th>
-              <th data-i18n="action">Kitendo</th>
-            </tr></thead><tbody id="livestockTable"></tbody></table>
-          </div>
-        </div>
-      </section>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="livestockType">Aina ya mnyama</label>
+                  <select id="livestockType" required>
+                    <option value="">Chagua</option>
+                    <option>Mbuzi</option>
+                    <option>Kondoo</option>
+                    <option>Ng'ombe</option>
+                    <option>Nguruwe</option>
+                    <option>Nyingine</option>
+                  </select>
+                </div>
 
-      <section class="page" id="page-finances">
-        <h2 class="section-title" data-i18n="finances">Fedha</h2>
-        <div class="two-columns">
-          <div class="card">
-            <h3 data-i18n="addFinance">Rekodi ya fedha</h3><br>
-            <form id="financeForm">
-              <div class="form-group">
-                <label data-i18n="type">Aina</label>
-                <select name="type">
-                  <option value="Mapato" data-i18n="income">Mapato</option>
-                  <option value="Matumizi" data-i18n="expenses">Matumizi</option>
-                </select>
+                <div class="field">
+                  <label for="livestockCountInput">Idadi</label>
+                  <input id="livestockCountInput" type="number" min="0" required>
+                </div>
+
+                <div class="field">
+                  <label for="livestockPurpose">Matumizi / kusudi</label>
+                  <input id="livestockPurpose" placeholder="Mfano: Maziwa">
+                </div>
+
+                <div class="field">
+                  <label for="livestockDate">Tarehe</label>
+                  <input id="livestockDate" type="date">
+                </div>
+
+                <div class="field full-width">
+                  <label for="livestockNotes">Maelezo</label>
+                  <textarea id="livestockNotes" rows="3"></textarea>
+                </div>
+
+                <div class="full-width">
+                  <button class="btn" type="submit">Hifadhi mifugo</button>
+                </div>
               </div>
-              <div class="form-group">
-                <label data-i18n="description">Maelezo</label>
-                <input name="description" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="amount">Kiasi (TZS)</label>
-                <input name="amount" type="number" min="1" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="date">Tarehe</label>
-                <input name="date" type="date" required>
-              </div>
-              <button class="primary" type="submit" data-i18n="save">Hifadhi</button>
             </form>
           </div>
 
-          <div class="card table-wrap">
-            <h3 data-i18n="financeHistory">Historia ya fedha</h3><br>
-            <table><thead><tr>
-              <th data-i18n="date">Tarehe</th>
-              <th data-i18n="type">Aina</th>
-              <th data-i18n="description">Maelezo</th>
-              <th data-i18n="amount">Kiasi</th>
-              <th data-i18n="action">Kitendo</th>
-            </tr></thead><tbody id="financeTable"></tbody></table>
+          <div class="panel">
+            <h2>Rekodi za mifugo</h2>
+            <div id="livestockTable"></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="page" id="page-activities">
-        <h2 class="section-title" data-i18n="activities">Shughuli</h2>
-        <div class="two-columns">
-          <div class="card">
-            <h3 data-i18n="addActivity">Ongeza shughuli</h3><br>
-            <form id="activityForm">
-              <div class="form-group">
-                <label data-i18n="activityName">Jina la shughuli</label>
-                <input name="name" required>
+        <section id="financesPage" class="page hidden">
+          <h1>💰 Usimamizi wa Fedha</h1>
+
+          <div class="panel">
+            <h2>Ongeza mapato au matumizi</h2>
+
+            <form id="financesForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="financeType">Aina ya muamala</label>
+                  <select id="financeType" required>
+                    <option value="income">Mapato</option>
+                    <option value="expense">Matumizi</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="financeAmount">Kiasi (TZS)</label>
+                  <input id="financeAmount" type="number" min="0.01" step="0.01" required>
+                </div>
+
+                <div class="field">
+                  <label for="financeCategory">Kundi</label>
+                  <input id="financeCategory" required placeholder="Mfano: Mauzo ya mahindi">
+                </div>
+
+                <div class="field">
+                  <label for="financeDate">Tarehe</label>
+                  <input id="financeDate" type="date">
+                </div>
+
+                <div class="field full-width">
+                  <label for="financeNotes">Maelezo</label>
+                  <textarea id="financeNotes" rows="3"></textarea>
+                </div>
+
+                <div class="full-width">
+                  <button class="btn" type="submit">Hifadhi muamala</button>
+                </div>
               </div>
-              <div class="form-group">
-                <label data-i18n="date">Tarehe</label>
-                <input name="date" type="date" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="status">Hali</label>
-                <select name="status">
-                  <option value="Haijaanza">Haijaanza</option>
-                  <option value="Inaendelea">Inaendelea</option>
-                  <option value="Imekamilika">Imekamilika</option>
-                </select>
-              </div>
-              <button class="primary" type="submit" data-i18n="save">Hifadhi</button>
             </form>
           </div>
 
-          <div class="card table-wrap">
-            <h3 data-i18n="activityList">Orodha ya shughuli</h3><br>
-            <table><thead><tr>
-              <th data-i18n="date">Tarehe</th>
-              <th data-i18n="activityName">Shughuli</th>
-              <th data-i18n="status">Hali</th>
-              <th data-i18n="action">Kitendo</th>
-            </tr></thead><tbody id="activityTable"></tbody></table>
+          <div class="panel">
+            <h2>Rekodi za fedha</h2>
+            <div id="financesTable"></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="page" id="page-admin">
-        <h2 class="section-title" data-i18n="adminDashboard">Admin Dashboard</h2>
-        <div class="card">
-          <h3 data-i18n="createAccount">Tengeneza akaunti mpya</h3>
-          <p style="font-size:12px;line-height:1.7;margin:12px 0" data-i18n="adminExplanation">
-            Sehemu hii hutumika na msimamizi kuidhinisha watumiaji wapya. Uundaji wa akaunti unahitaji Cloud Function ya backend.
-          </p>
-          <div id="adminFunctionStatus"></div>
-        </div>
-      </section>
+        <section id="activitiesPage" class="page hidden">
+          <h1>📋 Shughuli za Shamba</h1>
 
+          <div class="panel">
+            <h2>Ongeza shughuli</h2>
+
+            <form id="activitiesForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="activityName">Jina la shughuli</label>
+                  <input id="activityName" required placeholder="Mfano: Kupalilia">
+                </div>
+
+                <div class="field">
+                  <label for="activityDate">Tarehe</label>
+                  <input id="activityDate" type="date">
+                </div>
+
+                <div class="field">
+                  <label for="activityPerson">Aliyetekeleza</label>
+                  <input id="activityPerson" placeholder="Jina la mfanyakazi">
+                </div>
+
+                <div class="field">
+                  <label for="activityStatus">Hali ya shughuli</label>
+                  <select id="activityStatus">
+                    <option>Inasubiri</option>
+                    <option>Inaendelea</option>
+                    <option>Imekamilika</option>
+                  </select>
+                </div>
+
+                <div class="field full-width">
+                  <label for="activityNotes">Maelezo</label>
+                  <textarea id="activityNotes" rows="3"></textarea>
+                </div>
+
+                <div class="full-width">
+                  <button class="btn" type="submit">Hifadhi shughuli</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2>Rekodi za shughuli</h2>
+            <div id="activitiesTable"></div>
+          </div>
+        </section>
+
+      </main>
     </div>
-  </main>
-</div>
+  </section>
 
-<div class="toast" id="toast"></div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+    "use strict";
 
-<script>
-// Firebase configuration ya mradi wa Igamba Shamba.
-const firebaseConfig = {
-  apiKey: "AIzaSyBws49coiRlHBb4LOqi1YbwoAhiKqSAodc",
-  authDomain: "igamba-shamba.firebaseapp.com",
-  projectId: "igamba-shamba",
-  storageBucket: "igamba-shamba.firebasestorage.app",
-  messagingSenderId: "820460339528",
-  appId: "1:820460339528:web:5898641cac1d31f9c5337d",
-  measurementId: "G-TP9RN3H6D2"
-};
+    // Firebase configuration ya IGAMBA SHAMBA
+    const firebaseConfig = {
+      apiKey: "AIzaSyBws49coiRlHBb4LOqi1YbwoAhiKqSAodc",
+      authDomain: "igamba-shamba.firebaseapp.com",
+      projectId: "igamba-shamba",
+      storageBucket: "igamba-shamba.firebasestorage.app",
+      messagingSenderId: "820460339528",
+      appId: "1:820460339528:web:5898641cac1d31f9c5337d",
+      measurementId: "G-TP9RN3H6D2"
+    };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
 
-let language = localStorage.getItem("igambaLanguage") || "sw";
-let currentUser = null;
-let currentProfile = null;
-let stopListeners = [];
-let data = {
-  crops: [],
-  chickens: [],
-  livestock: [],
-  finances: [],
-  activities: []
-};
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-const translations = {
-  sw: {
-    loginTitle:"Ingia kwenye akaunti",
-    loginDescription:"Tumia barua pepe na nenosiri ulilopewa na msimamizi.",
-    email:"Barua pepe", password:"Nenosiri", login:"Ingia",
-    forgotPassword:"Umesahau nenosiri?",
-    noRegistration:"Usajili wa wazi umezimwa. Omba Super Admin akutengenezee akaunti.",
-    mainMenu:"MENYU KUU", dashboard:"▦ Dashboard",
-    crops:"🌱 Mazao", chickens:"🐔 Kuku",
-    livestock:"🐐 Mbuzi na Kondoo", finances:"💰 Fedha",
-    activities:"📋 Shughuli", adminDashboard:"🛡️ Admin Dashboard",
-    logout:"Toka", welcome:"Karibu Igamba Shamba! 🌱",
-    welcomeText:"Simamia mazao, mifugo, shughuli na fedha za shamba lako.",
-    income:"Mapato", expenses:"Matumizi", balance:"Salio",
-    records:"Rekodi zote", recentFinance:"Rekodi za fedha za hivi karibuni",
-    date:"Tarehe", type:"Aina", description:"Maelezo", amount:"Kiasi",
-    addCrop:"Ongeza zao", cropName:"Jina la zao", area:"Eneo (ekari)",
-    plantingDate:"Tarehe ya kupanda", status:"Hali", save:"Hifadhi",
-    cropList:"Orodha ya mazao", action:"Kitendo",
-    addChicken:"Ongeza kuku", chickenType:"Aina ya kuku",
-    quantity:"Idadi", chickenList:"Orodha ya kuku",
-    addLivestock:"Ongeza mifugo", animalType:"Aina ya mnyama",
-    livestockList:"Orodha ya mifugo", addFinance:"Rekodi ya fedha",
-    financeHistory:"Historia ya fedha", addActivity:"Ongeza shughuli",
-    activityName:"Jina la shughuli", activityList:"Orodha ya shughuli",
-    createAccount:"Tengeneza akaunti mpya",
-    adminExplanation:"Sehemu hii hutumika na msimamizi kuidhinisha watumiaji wapya. Uundaji wa akaunti unahitaji Cloud Function ya backend."
-  },
-  en: {
-    loginTitle:"Sign in to your account",
-    loginDescription:"Use the email and password provided by your administrator.",
-    email:"Email address", password:"Password", login:"Sign in",
-    forgotPassword:"Forgot password?",
-    noRegistration:"Public sign-up is disabled. Ask a Super Admin to create your account.",
-    mainMenu:"MAIN MENU", dashboard:"▦ Dashboard",
-    crops:"🌱 Crops", chickens:"🐔 Chickens",
-    livestock:"🐐 Goats and Sheep", finances:"💰 Finance",
-    activities:"📋 Activities", adminDashboard:"🛡️ Admin Dashboard",
-    logout:"Log out", welcome:"Welcome to Igamba Shamba! 🌱",
-    welcomeText:"Manage your crops, livestock, activities and farm finances.",
-    income:"Income", expenses:"Expenses", balance:"Balance",
-    records:"All records", recentFinance:"Recent financial records",
-    date:"Date", type:"Type", description:"Description", amount:"Amount",
-    addCrop:"Add crop", cropName:"Crop name", area:"Area (acres)",
-    plantingDate:"Planting date", status:"Status", save:"Save",
-    cropList:"Crop list", action:"Action",
-    addChicken:"Add chickens", chickenType:"Chicken type",
-    quantity:"Quantity", chickenList:"Chicken list",
-    addLivestock:"Add livestock", animalType:"Animal type",
-    livestockList:"Livestock list", addFinance:"Finance record",
-    financeHistory:"Finance history", addActivity:"Add activity",
-    activityName:"Activity name", activityList:"Activity list",
-    createAccount:"Create a new account",
-    adminExplanation:"This section is for administrators to manage new users. Account creation requires a backend Cloud Function."
-  }
-};
+    let currentUser = null;
+    let currentProfile = null;
+    let listeners = [];
+    let deletingRecords = false;
 
-const tr = key => translations[language][key] || translations.sw[key] || key;
+    const collections = [
+      "crops",
+      "chickens",
+      "livestock",
+      "finances",
+      "activities"
+    ];
 
-function showToast(message) {
-  const el = document.getElementById("toast");
-  el.textContent = message;
-  el.classList.add("show");
-  setTimeout(() => el.classList.remove("show"), 3000);
-}
+    const records = {
+      crops: [],
+      chickens: [],
+      livestock: [],
+      finances: [],
+      activities: []
+    };
 
-function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  }[char]));
-}
+    const $ = id => document.getElementById(id);
 
-function money(value) {
-  return "TZS " + new Intl.NumberFormat("en-TZ", {
-    maximumFractionDigits: 0
-  }).format(Number(value) || 0);
-}
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
 
-function getFormData(form) {
-  return Object.fromEntries(new FormData(form).entries());
-}
+    function showMessage(elementId, message, type = "error") {
+      const element = $(elementId);
+      element.className = "message " + type;
+      element.textContent = message;
+      element.classList.remove("hidden");
+    }
 
-function isAdmin() {
-  return currentProfile &&
-    ["superadmin", "admin"].includes(currentProfile.role) &&
-    currentProfile.status === "active";
-}
+    function clearMessage(elementId) {
+      const element = $(elementId);
+      element.textContent = "";
+      element.className = "";
+    }
 
-function renderAll() {
-  renderCrops();
-  renderChickens();
-  renderLivestock();
-  renderFinances();
-  renderActivities();
-  renderDashboard();
-}
+    function formatMoney(value) {
+      return new Intl.NumberFormat("sw-TZ", {
+        style: "currency",
+        currency: "TZS",
+        maximumFractionDigits: 2
+      }).format(Number(value || 0));
+    }
 
-function emptyRow(columns) {
-  return `<tr><td class="empty" colspan="${columns}">${language==="sw"?"Hakuna taarifa bado.":"No records yet."}</td></tr>`;
-}
+    function today() {
+      const d = new Date();
+      const offset = d.getTimezoneOffset();
+      return new Date(d.getTime() - offset * 60000)
+        .toISOString().slice(0, 10);
+    }
 
-function renderCrops() {
-  const el = document.getElementById("cropTable");
-  el.innerHTML = data.crops.length ? data.crops.map(x => `
-    <tr>
-      <td>${esc(x.name)}</td>
-      <td>${esc(x.area || 0)}</td>
-      <td>${esc(x.status || "")}</td>
-      <td><button class="light" onclick="removeRecord('crops','${esc(x.id)}')">${language==="sw"?"Futa":"Delete"}</button></td>
-    </tr>`).join("") : emptyRow(4);
-}
+    [
+      "cropDate",
+      "chickenDate",
+      "livestockDate",
+      "financeDate",
+      "activityDate"
+    ].forEach(id => {
+      $(id).value = today();
+    });
 
-function renderChickens() {
-  const el = document.getElementById("chickenTable");
-  el.innerHTML = data.chickens.length ? data.chickens.map(x => `
-    <tr>
-      <td>${esc(x.name)}</td>
-      <td>${esc(x.quantity)}</td>
-      <td>${esc(x.date || "")}</td>
-      <td><button class="light" onclick="removeRecord('chickens','${esc(x.id)}')">${language==="sw"?"Futa":"Delete"}</button></td>
-    </tr>`).join("") : emptyRow(4);
-}
+    function isSuperAdmin() {
+      return !!currentProfile &&
+        currentProfile.status === "active" &&
+        ["superadmin", "admin"].includes(
+          String(currentProfile.role || "").toLowerCase()
+        );
+    }
 
-function renderLivestock() {
-  const el = document.getElementById("livestockTable");
-  el.innerHTML = data.livestock.length ? data.livestock.map(x => `
-    <tr>
-      <td>${esc(x.name)}</td>
-      <td>${esc(x.quantity)}</td>
-      <td>${esc(x.date || "")}</td>
-      <td><button class="light" onclick="removeRecord('livestock','${esc(x.id)}')">${language==="sw"?"Futa":"Delete"}</button></td>
-    </tr>`).join("") : emptyRow(4);
-}
-
-function renderFinances() {
-  const el = document.getElementById("financeTable");
-  el.innerHTML = data.finances.length ? data.finances.map(x => `
-    <tr>
-      <td>${esc(x.date)}</td>
-      <td>${esc(x.type)}</td>
-      <td>${esc(x.description)}</td>
-      <td>${money(x.amount)}</td>
-      <td><button class="light" onclick="removeRecord('finances','${esc(x.id)}')">${language==="sw"?"Futa":"Delete"}</button></td>
-    </tr>`).join("") : emptyRow(5);
-}
-
-function renderActivities() {
-  const el = document.getElementById("activityTable");
-  el.innerHTML = data.activities.length ? data.activities.map(x => `
-    <tr>
-      <td>${esc(x.date)}</td>
-      <td>${esc(x.name)}</td>
-      <td>${esc(x.status)}</td>
-      <td><button class="light" onclick="removeRecord('activities','${esc(x.id)}')">${language==="sw"?"Futa":"Delete"}</button></td>
-    </tr>`).join("") : emptyRow(4);
-}
-
-function renderDashboard() {
-  const income = data.finances.filter(x => x.type === "Mapato" || x.type === "Income")
-    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
-
-  const expenses = data.finances.filter(x => x.type === "Matumizi" || x.type === "Expense")
-    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
-
-  document.getElementById("totalIncome").textContent = money(income);
-  document.getElementById("totalExpenses").textContent = money(expenses);
-  document.getElementById("balance").textContent = money(income - expenses);
-
-  document.getElementById("recordCount").textContent =
-    data.crops.length + data.chickens.length +
-    data.livestock.length + data.finances.length +
-    data.activities.length;
-
-  const recent = [...data.finances]
-    .sort((a,b) => String(b.date).localeCompare(String(a.date)))
-    .slice(0, 7);
-
-  document.getElementById("recentFinanceTable").innerHTML =
-    recent.length ? recent.map(x => `
-      <tr>
-        <td>${esc(x.date)}</td>
-        <td>${esc(x.type)}</td>
-        <td>${esc(x.description)}</td>
-        <td>${money(x.amount)}</td>
-      </tr>`).join("") : emptyRow(4);
-}
-
-async function addRecord(collection, record) {
-  if (!currentUser) return;
-
-  try {
-    record.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    record.createdBy = currentUser.uid;
-    await db.collection(collection).add(record);
-    showToast(language==="sw" ? "Taarifa zimehifadhiwa." : "Record saved.");
-  } catch (error) {
-    console.error(error);
-    showToast(language==="sw"
-      ? "Imeshindikana kuhifadhi. Hakiki Firestore Rules na intaneti."
-      : "Could not save. Check Firestore Rules and internet.");
-  }
-}
-
-async function removeRecord(collection, id) {
-  if (!confirm(language==="sw" ? "Una uhakika unataka kufuta rekodi hii?" : "Delete this record?")) return;
-
-  try {
-    await db.collection(collection).doc(id).delete();
-  } catch (error) {
-    console.error(error);
-    showToast(language==="sw" ? "Imeshindikana kufuta rekodi." : "Could not delete record.");
-  }
-}
-window.removeRecord = removeRecord;
-
-function setupForm(formId, collection, convert) {
-  document.getElementById(formId).addEventListener("submit", async event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const values = getFormData(form);
-    await addRecord(collection, convert(values));
-    form.reset();
-  });
-}
-
-setupForm("cropForm", "crops", d => ({
-  name: d.name.trim(),
-  area: Number(d.area) || 0,
-  date: d.date || "",
-  status: d.status
-}));
-
-setupForm("chickenForm", "chickens", d => ({
-  name: d.name,
-  quantity: Number(d.quantity),
-  date: d.date || ""
-}));
-
-setupForm("livestockForm", "livestock", d => ({
-  name: d.name,
-  quantity: Number(d.quantity),
-  date: d.date || ""
-}));
-
-setupForm("financeForm", "finances", d => ({
-  type: d.type,
-  description: d.description.trim(),
-  amount: Number(d.amount),
-  date: d.date
-}));
-
-setupForm("activityForm", "activities", d => ({
-  name: d.name.trim(),
-  date: d.date,
-  status: d.status
-}));
-
-function startFirestoreListeners() {
-  stopListeners.forEach(unsubscribe => unsubscribe());
-  stopListeners = [];
-
-  ["crops","chickens","livestock","finances","activities"].forEach(collection => {
-    const unsubscribe = db.collection(collection)
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-        data[collection] = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        renderAll();
-      }, error => {
-        console.error(collection, error);
-        showToast(language==="sw" ? "Tatizo la kusoma taarifa kutoka cloud." : "Could not read cloud data.");
+    function stopListeners() {
+      listeners.forEach(unsubscribe => {
+        try {
+          unsubscribe();
+        } catch (error) {
+          console.error("Listener cleanup error:", error);
+        }
       });
 
-    stopListeners.push(unsubscribe);
-  });
-}
-
-function showApp(user, profile) {
-  currentUser = user;
-  currentProfile = profile;
-  document.getElementById("loginView").classList.add("hidden");
-  document.getElementById("appView").classList.remove("hidden");
-  document.getElementById("currentUser").textContent = profile.name || user.email;
-
-  document.querySelectorAll(".admin-only").forEach(el => {
-    el.classList.toggle("hidden", !isAdmin());
-  });
-
-  startFirestoreListeners();
-  applyLanguage();
-}
-
-function showLogin() {
-  stopListeners.forEach(unsubscribe => unsubscribe());
-  stopListeners = [];
-  currentUser = null;
-  currentProfile = null;
-  data = {crops:[],chickens:[],livestock:[],finances:[],activities:[]};
-  document.getElementById("appView").classList.add("hidden");
-  document.getElementById("loginView").classList.remove("hidden");
-}
-
-auth.onAuthStateChanged(async user => {
-  if (!user) {
-    showLogin();
-    return;
-  }
-
-  try {
-    const profileSnapshot = await db.collection("users").doc(user.uid).get();
-
-    if (!profileSnapshot.exists || profileSnapshot.data().status !== "active") {
-      await auth.signOut();
-      document.getElementById("loginMessage").textContent =
-        language==="sw"
-          ? "Akaunti hii haijaidhinishwa. Wasiliana na Super Admin."
-          : "This account is not approved. Contact a Super Admin.";
-      return;
+      listeners = [];
     }
 
-    showApp(user, profileSnapshot.data());
-  } catch (error) {
-    console.error(error);
-    await auth.signOut();
-    document.getElementById("loginMessage").textContent =
-      language==="sw" ? "Imeshindikana kuthibitisha akaunti." : "Could not verify account.";
-  }
-});
-
-document.getElementById("loginForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  const values = getFormData(event.currentTarget);
-  const message = document.getElementById("loginMessage");
-  message.textContent = language==="sw" ? "Inaingia..." : "Signing in...";
-
-  try {
-    await auth.signInWithEmailAndPassword(values.email.trim(), values.password);
-    message.textContent = "";
-  } catch (error) {
-    console.error(error);
-    message.textContent = language==="sw"
-      ? "Imeshindikana kuingia. Hakiki barua pepe na nenosiri."
-      : "Sign-in failed. Check your email and password.";
-  }
-});
-
-document.getElementById("resetPassword").addEventListener("click", async () => {
-  const email = document.querySelector('#loginForm [name="email"]').value.trim();
-
-  if (!email) {
-    alert(language==="sw" ? "Kwanza andika barua pepe yako." : "Enter your email first.");
-    return;
-  }
-
-  try {
-    await auth.sendPasswordResetEmail(email);
-    alert(language==="sw"
-      ? "Kama barua pepe imesajiliwa, maelekezo ya kubadilisha nenosiri yametumwa."
-      : "If the email is registered, password reset instructions have been sent.");
-  } catch (error) {
-    alert(language==="sw"
-      ? "Kama barua pepe imesajiliwa, maelekezo ya kubadilisha nenosiri yametumwa."
-      : "If the email is registered, password reset instructions have been sent.");
-  }
-});
-
-document.getElementById("logout").addEventListener("click", () => auth.signOut());
-
-document.getElementById("menuToggle").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.toggle("open");
-});
-
-document.querySelectorAll(".nav-link[data-page]").forEach(button => {
-  button.addEventListener("click", () => {
-    const page = button.dataset.page;
-
-    if (page === "admin" && !isAdmin()) {
-      showToast(language==="sw" ? "Huna ruhusa ya msimamizi." : "Administrator permission required.");
-      return;
+    function showLogin() {
+      $("loginScreen").classList.remove("hidden");
+      $("appScreen").classList.add("hidden");
     }
 
-    document.querySelectorAll(".page").forEach(section => {
-      section.classList.toggle("active", section.id === "page-" + page);
+    function showApp() {
+      $("loginScreen").classList.add("hidden");
+      $("appScreen").classList.remove("hidden");
+
+      $("currentUser").textContent =
+        (currentProfile.displayName || currentUser.email) +
+        " | " + currentProfile.role;
+
+      clearMessage("loginMessage");
+      showPage("dashboard");
+    }
+
+    function showPage(pageName) {
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.add("hidden");
+      });
+
+      const page = $(pageName + "Page");
+
+      if (page) {
+        page.classList.remove("hidden");
+      }
+
+      document.querySelectorAll(".nav-btn").forEach(button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.page === pageName
+        );
+      });
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+      });
     });
 
-    document.querySelectorAll(".nav-link[data-page]").forEach(nav => {
-      nav.classList.toggle("active", nav.dataset.page === page);
+    /*
+      LOGIN:
+      Kila mtumiaji lazima awe na akaunti Firebase Authentication.
+      Profile yake lazima iwe users/{UID} kwenye Firestore.
+    */
+    $("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      clearMessage("loginMessage");
+
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      const button = $("loginButton");
+
+      button.disabled = true;
+      button.textContent = "Inaingia...";
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+      } catch (error) {
+        console.error("Login error:", error);
+
+        let message = "Imeshindikana kuingia.";
+
+        if (error.code === "auth/invalid-credential" ||
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/user-not-found") {
+          message = "Barua pepe au nenosiri si sahihi.";
+        } else if (error.code === "auth/too-many-requests") {
+          message = "Majaribio yamezidi. Subiri kisha ujaribu tena.";
+        } else if (error.code === "auth/network-request-failed") {
+          message = "Tatizo la intaneti. Hakikisha umeunganishwa.";
+        } else if (error.code === "auth/invalid-email") {
+          message = "Barua pepe haijaandikwa kwa usahihi.";
+        } else {
+          message += " Msimbo: " + (error.code || "unknown");
+        }
+
+        showMessage("loginMessage", message);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Ingia kwenye mfumo";
+      }
     });
 
-    document.getElementById("pageTitle").textContent = tr(page);
-    document.getElementById("sidebar").classList.remove("open");
-  });
-});
+    /*
+      PROFILE:
+      Inasoma nyaraka ya users/{UID}.
+      Hatutumii email kama document ID.
+    */
+    async function loadProfile(user) {
+      const profileRef = db.collection("users").doc(user.uid);
+      const profileSnap = await profileRef.get();
 
-function applyLanguage() {
-  document.documentElement.lang = language;
+      if (!profileSnap.exists) {
+        throw new Error(
+          "PROFILE_NOT_FOUND: Hakuna users/" + user.uid +
+          ". Tumia UID halisi ya akaunti ya Firebase Authentication."
+        );
+      }
 
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.dataset.i18n;
-    if (translations[language][key]) {
-      el.textContent = translations[language][key];
+      const profile = profileSnap.data();
+
+      if (profile.status !== "active") {
+        throw new Error(
+          "ACCOUNT_NOT_ACTIVE: Akaunti haijaidhinishwa. status lazima iwe active."
+        );
+      }
+
+      if (!["superadmin", "admin"].includes(
+        String(profile.role || "").toLowerCase()
+      )) {
+        throw new Error(
+          "NOT_ADMIN: Akaunti hii haina ruhusa ya Super Admin."
+        );
+      }
+
+      currentUser = user;
+      currentProfile = profile;
+
+      showApp();
+      startListeners();
     }
-  });
 
-  const active = document.querySelector(".nav-link.active");
-  if (active) {
-    document.getElementById("pageTitle").textContent = tr(active.dataset.page);
-  }
+    auth.onAuthStateChanged(async user => {
+      stopListeners();
 
-  document.getElementById("languageLogin").textContent =
-    language==="sw" ? "🇹🇿 Kiswahili / 🇬🇧 English" : "🇬🇧 English / 🇹🇿 Kiswahili";
+      currentUser = null;
+      currentProfile = null;
 
-  document.getElementById("languageApp").textContent =
-    language==="sw" ? "🇹🇿 SW / 🇬🇧 EN" : "🇬🇧 EN / 🇹🇿 SW";
+      if (!user) {
+        showLogin();
+        return;
+      }
 
-  renderAll();
-}
+      try {
+        await loadProfile(user);
+      } catch (error) {
+        console.error("Profile verification error:", error);
 
-function toggleLanguage() {
-  language = language === "sw" ? "en" : "sw";
-  localStorage.setItem("igambaLanguage", language);
-  applyLanguage();
-}
+        showLogin();
 
-document.getElementById("languageLogin").addEventListener("click", toggleLanguage);
-document.getElementById("languageApp").addEventListener("click", toggleLanguage);
+        let message = "Imeshindikana kuthibitisha akaunti.";
 
-applyLanguage();
-</script>
+        if (String(error.message).startsWith("PROFILE_NOT_FOUND:")) {
+          message =
+            "Akaunti imeingia, lakini profile ya users/" +
+            user.uid + " haipo Firestore. Tengeneza profile kwa UID hii.";
+        } else if (
+          String(error.message).startsWith("ACCOUNT_NOT_ACTIVE:")
+        ) {
+          message = "Akaunti haijaidhinishwa. Weka status = active.";
+        } else if (
+          String(error.message).startsWith("NOT_ADMIN:")
+        ) {
+          message = "Akaunti hii haijawekwa kama Super Admin.";
+        } else if (
+          error.code === "permission-denied" ||
+          error.code === "firestore/permission-denied"
+        ) {
+          message =
+            "Firestore imekataa kusoma profile. Kagua Firestore Security Rules na UID.";
+        } else {
+          message += " " + (error.code || error.message || "Unknown error");
+        }
+
+        showMessage("loginMessage", message);
+
+        try {
+          await auth.signOut();
+        } catch (signOutError) {
+          console.error("Sign out error:", signOutError);
+        }
+      }
+    });
+
+    $("logoutButton").addEventListener("click", async () => {
+      stopListeners();
+
+      try {
+        await auth.signOut();
+      } catch (error) {
+        console.error(error);
+        showMessage("appMessage", "Imeshindikana kutoka: " + error.message);
+      }
+    });
+
+    $("refreshButton").addEventListener("click", () => {
+      startListeners();
+    });
+
+    /*
+      SHARED DATA:
+      Watumiaji wote walioidhinishwa wanasoma collections zilezile.
+      Hakuna collection tofauti kwa Esromu na Ibrahim.
+    */
+    function startListeners() {
+      stopListeners();
+
+      if (!currentUser || !isSuperAdmin()) {
+        return;
+      }
+
+      clearMessage("appMessage");
+
+      collections.forEach(collectionName => {
+        const unsubscribe = db
+          .collection(collectionName)
+          .onSnapshot(snapshot => {
+            records[collectionName] = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+
+            renderCollection(collectionName);
+            renderDashboard();
+          }, error => {
+            console.error("Firestore listener error:", collectionName, error);
+
+            showMessage(
+              "appMessage",
+              "Imeshindikana kusoma " + collectionName +
+              ". Kagua Security Rules. Msimbo: " +
+              (error.code || "unknown")
+            );
+          });
+
+        listeners.push(unsubscribe);
+      });
+    }
+
+    function renderDashboard() {
+      $("cropCount").textContent = records.crops.length;
+      $("chickenCount").textContent = records.chickens.length;
+      $("livestockCount").textContent = records.livestock.length;
+      $("financeCount").textContent = records.finances.length;
+
+      let income = 0;
+      let expense = 0;
+
+      records.finances.forEach(record => {
+        const amount = Number(record.amount || 0);
+
+        if (record.type === "income") {
+          income += amount;
+        } else if (record.type === "expense") {
+          expense += amount;
+        }
+      });
+
+      $("totalIncome").textContent = formatMoney(income);
+      $("totalExpense").textContent = formatMoney(expense);
+      $("balance").textContent = formatMoney(income - expense);
+    }
+
+    function tableHtml(headers, rows) {
+      if (!rows.length) {
+        return '<div class="empty">Hakuna rekodi zilizohifadhiwa bado.</div>';
+      }
+
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr>
+            </thead>
+            <tbody>${rows.join("")}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function deleteButton(collectionName, id) {
+      return `
+        <button
+          class="btn btn-danger"
+          type="button"
+          data-delete-collection="${escapeHtml(collectionName)}"
+          data-delete-id="${escapeHtml(id)}"
+        >Futa</button>
+      `;
+    }
+
+    function renderCollection(collectionName) {
+      const list = records[collectionName] || [];
+      let rows = [];
+      let headers = [];
+
+      if (collectionName === "crops") {
+        headers = ["Zao", "Eneo", "Kiasi", "Tarehe", "Maelezo", "Hatua"];
+
+        rows = list.map(r => `
+          <tr>
+            <td>${escapeHtml(r.name)}</td>
+            <td>${escapeHtml(r.area)}</td>
+            <td>${escapeHtml(r.quantity)}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td>${escapeHtml(r.notes)}</td>
+            <td>${deleteButton(collectionName, r.id)}</td>
+          </tr>
+        `);
+      }
+
+      if (collectionName === "chickens") {
+        headers = ["Aina", "Idadi", "Mayai", "Tarehe", "Maelezo", "Hatua"];
+
+        rows = list.map(r => `
+          <tr>
+            <td>${escapeHtml(r.type)}</td>
+            <td>${escapeHtml(r.count)}</td>
+            <td>${escapeHtml(r.eggs)}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td>${escapeHtml(r.notes)}</td>
+            <td>${deleteButton(collectionName, r.id)}</td>
+          </tr>
+        `);
+      }
+
+      if (collectionName === "livestock") {
+        headers = ["Aina", "Idadi", "Kusudi", "Tarehe", "Maelezo", "Hatua"];
+
+        rows = list.map(r => `
+          <tr>
+            <td>${escapeHtml(r.type)}</td>
+            <td>${escapeHtml(r.count)}</td>
+            <td>${escapeHtml(r.purpose)}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td>${escapeHtml(r.notes)}</td>
+            <td>${deleteButton(collectionName, r.id)}</td>
+          </tr>
+        `);
+      }
+
+      if (collectionName === "finances") {
+        headers = ["Aina", "Kiasi", "Kundi", "Tarehe", "Maelezo", "Hatua"];
+
+        rows = list.map(r => `
+          <tr>
+            <td>${r.type === "income" ? "Mapato" : "Matumizi"}</td>
+            <td>${escapeHtml(formatMoney(r.amount))}</td>
+            <td>${escapeHtml(r.category)}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td>${escapeHtml(r.notes)}</td>
+            <td>${deleteButton(collectionName, r.id)}</td>
+          </tr>
+        `);
+      }
+
+      if (collectionName === "activities") {
+        headers = ["Shughuli", "Tarehe", "Aliyetekeleza", "Hali", "Maelezo", "Hatua"];
+
+        rows = list.map(r => `
+          <tr>
+            <td>${escapeHtml(r.name)}</td>
+            <td>${escapeHtml(r.date)}</td>
+            <td>${escapeHtml(r.person)}</td>
+            <td>${escapeHtml(r.status)}</td>
+            <td>${escapeHtml(r.notes)}</td>
+            <td>${deleteButton(collectionName, r.id)}</td>
+          </tr>
+        `);
+      }
+
+      const target = $(collectionName + "Table");
+      target.innerHTML = tableHtml(headers, rows);
+    }
+
+    /*
+      ADD RECORDS:
+      Rekodi zinahifadhiwa kwenye collections za pamoja.
+    */
+    async function addRecord(collectionName, data, formId) {
+      clearMessage("appMessage");
+
+      if (!currentUser || !isSuperAdmin()) {
+        showMessage("appMessage", "Huna ruhusa ya kufanya kitendo hiki.");
+        return;
+      }
+
+      try {
+        await db.collection(collectionName).add({
+          ...data,
+          createdBy: currentUser.uid,
+          createdByEmail: currentUser.email || "",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        $(formId).reset();
+
+        const dateField = {
+          crops: "cropDate",
+          chickens: "chickenDate",
+          livestock: "livestockDate",
+          finances: "financeDate",
+          activities: "activityDate"
+        }[collectionName];
+
+        if (dateField) {
+          $(dateField).value = today();
+        }
+
+        showMessage(
+          "appMessage",
+          "Rekodi imehifadhiwa kikamilifu.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Add record error:", error);
+
+        showMessage(
+          "appMessage",
+          "Imeshindikana kuhifadhi rekodi. Kagua intaneti na Firestore Rules. Msimbo: " +
+          (error.code || error.message || "unknown")
+        );
+      }
+    }
+
+    $("cropsForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      await addRecord("crops", {
+        name: $("cropName").value.trim(),
+        area: $("cropArea").value.trim(),
+        quantity: $("cropQuantity").value.trim(),
+        date: $("cropDate").value,
+        notes: $("cropNotes").value.trim()
+      }, "cropsForm");
+    });
+
+    $("chickensForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      await addRecord("chickens", {
+        type: $("chickenType").value.trim(),
+        count: Number($("chickenCountInput").value),
+        eggs: Number($("chickenEggs").value || 0),
+        date: $("chickenDate").value,
+        notes: $("chickenNotes").value.trim()
+      }, "chickensForm");
+    });
+
+    $("livestockForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      await addRecord("livestock", {
+        type: $("livestockType").value,
+        count: Number($("livestockCountInput").value),
+        purpose: $("livestockPurpose").value.trim(),
+        date: $("livestockDate").value,
+        notes: $("livestockNotes").value.trim()
+      }, "livestockForm");
+    });
+
+    $("financesForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      await addRecord("finances", {
+        type: $("financeType").value,
+        amount: Number($("financeAmount").value),
+        category: $("financeCategory").value.trim(),
+        date: $("financeDate").value,
+        notes: $("financeNotes").value.trim()
+      }, "financesForm");
+    });
+
+    $("activitiesForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      await addRecord("activities", {
+        name: $("activityName").value.trim(),
+        date: $("activityDate").value,
+        person: $("activityPerson").value.trim(),
+        status: $("activityStatus").value,
+        notes: $("activityNotes").value.trim()
+      }, "activitiesForm");
+    });
+
+    /*
+      DELETE:
+      Tukio la kufuta linathibitishwa kabla ya kuendelea.
+    */
+    document.addEventListener("click", async event => {
+      const button = event.target.closest("[data-delete-collection]");
+
+      if (!button || deletingRecords) {
+        return;
+      }
+
+      const collectionName = button.dataset.deleteCollection;
+      const recordId = button.dataset.deleteId;
+
+      if (!collections.includes(collectionName)) {
+        return;
+      }
+
+      if (!currentUser || !isSuperAdmin()) {
+        showMessage("appMessage", "Huna ruhusa ya kufuta rekodi.");
+        return;
+      }
+
+      if (!confirm("Una uhakika unataka kufuta rekodi hii?")) {
+        return;
+      }
+
+      deletingRecords = true;
+      button.disabled = true;
+
+      try {
+        await db.collection(collectionName).doc(recordId).delete();
+
+        showMessage(
+          "appMessage",
+          "Rekodi imefutwa.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Delete record error:", error);
+
+        showMessage(
+          "appMessage",
+          "Imeshindikana kufuta rekodi. Msimbo: " +
+          (error.code || error.message || "unknown")
+        );
+      } finally {
+        deletingRecords = false;
+        button.disabled = false;
+      }
+    });
+  </script>
+
 </body>
 </html>
