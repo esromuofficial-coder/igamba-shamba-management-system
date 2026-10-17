@@ -783,6 +783,98 @@ footer {
   .date-chip { display:none; }
   .login-card { padding:25px 20px; }
 }
+/* SETTINGS: THEME AND BRIGHTNESS */
+:root {
+  --brightness: 1;
+}
+
+body {
+  filter: brightness(var(--brightness));
+  transition: background .2s, color .2s, filter .2s;
+}
+
+body.dark-mode {
+  --bg: #101914;
+  --surface: #1b2820;
+  --text: #e5eee7;
+  --muted: #a3b2a7;
+  --border: #34453a;
+  --primary-light: #254b35;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body.dark-mode .topbar,
+body.dark-mode .panel,
+body.dark-mode .stat-card,
+body.dark-mode .user-chip,
+body.dark-mode .icon-btn,
+body.dark-mode .date-chip,
+body.dark-mode table,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #1b2820;
+  color: #e5eee7;
+  border-color: #34453a;
+}
+
+body.dark-mode th {
+  background: #25352a;
+  color: #c5d4c9;
+}
+
+body.dark-mode td,
+body.dark-mode .money-row,
+body.dark-mode .activity-item {
+  border-color: #34453a;
+}
+
+body.dark-mode tbody tr:hover {
+  background: #25352a;
+}
+
+body.dark-mode .btn-light {
+  background: #2b4433;
+  color: #e5eee7;
+}
+
+body.dark-mode .profile-avatar,
+body.dark-mode .avatar {
+  background: #254b35;
+  color: #c7f0d2;
+}
+
+.settings-option {
+  margin: 20px 0;
+}
+
+.settings-option label {
+  margin-bottom: 10px;
+}
+
+.settings-description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 6px;
+}
+
+.settings-range {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-range input {
+  flex: 1;
+}
+
+#brightnessValue {
+  min-width: 45px;
+  font-weight: 800;
+  font-size: 12px;
+}
 </style>
 </head>
 
