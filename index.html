@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igamba Shamba Management System</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f4;color:#20352a}
+header{background:#145c38;color:white;padding:22px 16px}
+header h1{margin:0;font-size:23px}
+header p{margin:8px 0 0;font-size:13px}
+nav{display:flex;gap:8px;overflow-x:auto;background:white;padding:12px;border-bottom:1px solid #ddd}
+nav button{border:0;border-radius:7px;padding:10px 13px;background:#e8f4ec;color:#145c38;white-space:nowrap;font-weight:bold}
+nav button:hover{background:#145c38;color:white}
+main{padding:18px;max-width:1100px;margin:auto}
+h2{color:#145c38}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.card{background:white;border-radius:12px;padding:18px;box-shadow:0 3px 12px #0000000b}
+.card h3{font-size:13px;color:#66776c;margin:0}
+.number{font-size:23px;font-weight:bold;margin-top:12px;color:#145c38}
+.panel{background:white;padding:18px;border-radius:12px;margin-top:18px}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccd8cf;border-radius:7px}
+label{font-size:13px;font-weight:bold}
+.field{display:grid;gap:7px}
+.btn{background:#145c38;color:white;border:0;border-radius:7px;padding:12px 16px;font-weight:bold}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{text-align:left;padding:11px;border-bottom:1px solid #e2e9e4;font-size:13px}
+.table-wrap{overflow-x:auto}
+footer{text-align:center;padding:25px;color:#718077;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>🌱 IGAMBA SHAMBA</h1>
+<p>Shamba Project Management System</p>
+</header>
+
+<nav>
+<button onclick="showSection('dashboard')">Dashboard</button>
+<button onclick="showSection('crops')">Mazao</button>
+<button onclick="showSection('poultry')">Kuku</button>
+<button onclick="showSection('livestock')">Mbuzi na Kondoo</button>
+<button onclick="showSection('finance')">Fedha</button>
+<button onclick="showSection('activities')">Shughuli</button>
+</nav>
+
+<main>
+<section id="dashboard">
+<h2>Karibu kwenye Shamba la Igamba 👋</h2>
+<p>Simamia shughuli, uzalishaji na fedha za shamba lako sehemu moja.</p>
+
+<div class="cards">
+<div class="card"><h3>Jumla ya Mapato</h3><div class="number" id="income">TSh 0</div></div>
+<div class="card"><h3>Jumla ya Matumizi</h3><div class="number" id="expenses">TSh 0</div></div>
+<div class="card"><h3>Salio</h3><div class="number" id="balance">TSh 0</div></div>
+<div class="card"><h3>Kumbukumbu</h3><div class="number" id="count">0</div></div>
+</div>
+
+<div class="panel">
+<h2>Ongeza Kumbukumbu</h2>
+<form id="recordForm">
+<div class="field">
+<label for="category">Aina ya Shughuli</label>
+<select id="category" required>
+<option value="Kilimo cha Mazao">Kilimo cha Mazao</option>
+<option value="Ufugaji wa Kuku">Ufugaji wa Kuku</option>
+<option value="Mbuzi na Kondoo">Mbuzi na Kondoo</option>
+<option value="Shughuli za Shamba">Shughuli za Shamba</option>
+<option value="Mapato">Mapato</option>
+<option value="Matumizi">Matumizi</option>
+</select>
+</div>
+<div class="field">
+<label for="date">Tarehe</label>
+<input id="date" type="date" required>
+</div>
+<div class="field">
+<label for="description">Maelezo</label>
+<input id="description" placeholder="Mfano: Kununua mbegu" required>
+</div>
+<div class="field">
+<label for="amount">Kiasi (TSh)</label>
+<input id="amount" type="number" min="0" step="0.01" value="0" required>
+</div>
+<div class="field">
+<label for="notes">Maelezo ya Ziada</label>
+<input id="notes" placeholder="Si lazima">
+</div>
+<div class="field" style="align-self:end">
+<button class="btn" type="submit">Hifadhi Kumbukumbu</button>
+</div>
+</form>
+</div>
+
+<div class="panel">
+<h2>Kumbukumbu za Shamba</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tarehe</th><th>Aina</th><th>Maelezo</th><th>Kiasi (TSh)</th><th>Hatua</th></tr></thead>
+<tbody id="records">
+<tr><td colspan="5">Bado hakuna kumbukumbu.</td></tr>
+</tbody>
+</table>
+</div>
+<button class="btn" onclick="exportCSV()" style="margin-top:15px">Pakua Ripoti (CSV)</button>
+</div>
+</section>
+
+<section id="crops" hidden><div class="panel"><h2>🌾 Kilimo cha Mazao</h2><p>Rekodi za shughuli za kilimo zinaweza kuongezwa kupitia fomu ya Dashboard.</p><button class="btn" onclick="showSection('dashboard')">Ongeza Kumbukumbu</button></div></section>
+<section id="poultry" hidden><div class="panel"><h2>🐔 Usimamizi wa Kuku</h2><p>Rekodi shughuli za kuku kupitia fomu ya Dashboard.</p><button class="btn" onclick="showSection('dashboard')">Ongeza Kumbukumbu</button></div></section>
+<section id="livestock" hidden><div class="panel"><h2>🐐 Mbuzi na Kondoo</h2><p>Rekodi shughuli za mbuzi na kondoo kupitia fomu ya Dashboard.</p><button class="btn" onclick="showSection('dashboard')">Ongeza Kumbukumbu</button></div></section>
+<section id="finance" hidden><div class="panel"><h2>💰 Usimamizi wa Fedha</h2><p>Rekodi mapato na matumizi kupitia fomu ya Dashboard.</p><button class="btn" onclick="showSection('dashboard')">Ongeza Kumbukumbu</button></div></section>
+<section id="activities" hidden><div class="panel"><h2>🧤 Shughuli za Shamba</h2><p>Rekodi shughuli zako za kila siku kupitia fomu ya Dashboard.</p><button class="btn" onclick="showSection('dashboard')">Ongeza Kumbukumbu</button></div></section>
+</main>
+
+<footer>© 2026 Igamba Shamba Project Management System</footer>
+
+<script>
+let records=[];
+try{records=JSON.parse(localStorage.getItem('igambaRecords')||'[]')}catch(e){records=[]}
+
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
+
+function saveRecords(){
+localStorage.setItem('igambaRecords',JSON.stringify(records));
+renderRecords();
+}
+
+function money(value){
+return 'TSh '+Number(value).toLocaleString('en-US',{maximumFractionDigits:2});
+}
+
+function renderRecords(){
+const tbody=document.getElementById('records');
+if(records.length===0){
+tbody.innerHTML='<tr><td colspan="5">Bado hakuna kumbukumbu.</td></tr>';
+}else{
+tbody.innerHTML=records.map((r,i)=>`
+<tr>
+<td>${escapeHTML(r.date)}</td>
+<td>${escapeHTML(r.category)}</td>
+<td>${escapeHTML(r.description)}</td>
+<td>${money(r.amount)}</td>
+<td><button onclick="deleteRecord(${i})">Futa</button></td>
+</tr>`).join('');
+}
+const income=records.filter(r=>r.category==='Mapato').reduce((s,r)=>s+r.amount,0);
+const expenses=records.filter(r=>r.category==='Matumizi').reduce((s,r)=>s+r.amount,0);
+document.getElementById('income').textContent=money(income);
+document.getElementById('expenses').textContent=money(expenses);
+document.getElementById('balance').textContent=money(income-expenses);
+document.getElementById('count').textContent=records.length;
+}
+
+function escapeHTML(text){
+return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById('recordForm').addEventListener('submit',function(e){
+e.preventDefault();
+records.unshift({
+category:document.getElementById('category').value,
+date:document.getElementById('date').value,
+description:document.getElementById('description').value.trim(),
+amount:Number(document.getElementById('amount').value||0),
+notes:document.getElementById('notes').value.trim()
+});
+saveRecords();
+this.reset();
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
+alert('Kumbukumbu imehifadhiwa kwenye kifaa hiki.');
+});
+
+function deleteRecord(i){
+if(confirm('Una uhakika unataka kufuta kumbukumbu hii?')){
+records.splice(i,1);
+saveRecords();
+}
+}
+
+function showSection(id){
+document.querySelectorAll('main section').forEach(s=>s.hidden=true);
+document.getElementById(id).hidden=false;
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function exportCSV(){
+const header=['Tarehe','Aina','Maelezo','Kiasi_TSh','Maelezo_Ziada'];
+const rows=records.map(r=>[r.date,r.category,r.description,r.amount,r.notes]);
+const csv=[header,...rows].map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+const link=document.createElement('a');
+link.href=URL.createObjectURL(blob);
+link.download='igamba-shamba-records.csv';
+link.click();
+URL.revokeObjectURL(link.href);
+}
+
+renderRecords();
+</script>
+</body>
+</html>
