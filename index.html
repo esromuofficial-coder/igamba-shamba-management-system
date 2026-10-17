@@ -111,6 +111,11 @@
       background: var(--green-dark);
     }
 
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
     .btn-block {
       width: 100%;
     }
@@ -308,13 +313,6 @@
       font-weight: bold;
     }
 
-    .loading {
-      padding: 15px;
-      background: #fff8df;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
     @media (max-width: 900px) {
       .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -375,7 +373,7 @@
 
 <body>
 
-  <!-- LOGIN -->
+  <!-- SEHEMU YA KUINGIA -->
   <section id="loginScreen" class="login-screen">
     <div class="login-card">
       <div class="logo">🌱 IGAMBA SHAMBA</div>
@@ -417,7 +415,7 @@
     </div>
   </section>
 
-  <!-- APPLICATION -->
+  <!-- MFUMO MKUU -->
   <section id="appScreen" class="hidden">
 
     <header class="app-header">
@@ -446,6 +444,7 @@
       <main>
         <div id="appMessage" aria-live="polite"></div>
 
+        <!-- DASHBOARD -->
         <section id="dashboardPage" class="page">
           <h1>Dashboard</h1>
           <p>Muhtasari wa taarifa za shamba la IGAMBA.</p>
@@ -474,6 +473,7 @@
 
           <div class="panel">
             <h2>Mapato na matumizi</h2>
+
             <div class="cards">
               <div>
                 <div class="stat-label">Jumla ya mapato</div>
@@ -494,11 +494,12 @@
 
           <div class="panel">
             <h2>Taarifa za mfumo</h2>
-            <p>Watumiaji walioidhinishwa wanaona rekodi kutoka kwenye hifadhidata ileile.</p>
+            <p>Esromu na Ibrahim wanatumia hifadhidata moja ya shamba.</p>
             <p><span class="badge">Shared Farm Records</span></p>
           </div>
         </section>
 
+        <!-- MAZAO -->
         <section id="cropsPage" class="page hidden">
           <h1>🌾 Usimamizi wa Mazao</h1>
 
@@ -545,6 +546,7 @@
           </div>
         </section>
 
+        <!-- KUKU -->
         <section id="chickensPage" class="page hidden">
           <h1>🐔 Usimamizi wa Kuku</h1>
 
@@ -591,6 +593,7 @@
           </div>
         </section>
 
+        <!-- MIFUGO -->
         <section id="livestockPage" class="page hidden">
           <h1>🐐 Usimamizi wa Mifugo</h1>
 
@@ -644,6 +647,7 @@
           </div>
         </section>
 
+        <!-- FEDHA -->
         <section id="financesPage" class="page hidden">
           <h1>💰 Usimamizi wa Fedha</h1>
 
@@ -693,6 +697,7 @@
           </div>
         </section>
 
+        <!-- SHUGHULI -->
         <section id="activitiesPage" class="page hidden">
           <h1>📋 Shughuli za Shamba</h1>
 
@@ -747,7 +752,7 @@
     </div>
   </section>
 
-  <!-- Firebase SDK -->
+  <!-- FIREBASE SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -755,7 +760,7 @@
   <script>
     "use strict";
 
-    // Firebase configuration ya IGAMBA SHAMBA
+    // FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyBws49coiRlHBb4LOqi1YbwoAhiKqSAodc",
       authDomain: "igamba-shamba.firebaseapp.com",
@@ -794,6 +799,21 @@
 
     const $ = id => document.getElementById(id);
 
+    // UID ZA WASIMAMIZI
+    const ADMIN_ACCOUNTS = {
+      "tInkosHKmuYQkpo5Juy5DRTlg2l2": {
+        displayName: "Esromu",
+        role: "superadmin",
+        status: "active"
+      },
+
+      "MRVqhFpwKCeVnBmWSU929qnT6L83": {
+        displayName: "Ibrahim",
+        role: "superadmin",
+        status: "active"
+      }
+    };
+
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;",
@@ -828,8 +848,10 @@
     function today() {
       const d = new Date();
       const offset = d.getTimezoneOffset();
+
       return new Date(d.getTime() - offset * 60000)
-        .toISOString().slice(0, 10);
+        .toISOString()
+        .slice(0, 10);
     }
 
     [
@@ -845,9 +867,7 @@
     function isSuperAdmin() {
       return !!currentProfile &&
         currentProfile.status === "active" &&
-        ["superadmin", "admin"].includes(
-          String(currentProfile.role || "").toLowerCase()
-        );
+        currentProfile.role === "superadmin";
     }
 
     function stopListeners() {
@@ -872,8 +892,9 @@
       $("appScreen").classList.remove("hidden");
 
       $("currentUser").textContent =
-        (currentProfile.displayName || currentUser.email) +
-        " | " + currentProfile.role;
+        currentProfile.displayName +
+        " | Super Admin | " +
+        (currentUser.email || "");
 
       clearMessage("loginMessage");
       showPage("dashboard");
@@ -904,11 +925,7 @@
       });
     });
 
-    /*
-      LOGIN:
-      Kila mtumiaji lazima awe na akaunti Firebase Authentication.
-      Profile yake lazima iwe users/{UID} kwenye Firestore.
-    */
+    // LOGIN
     $("loginForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -928,9 +945,11 @@
 
         let message = "Imeshindikana kuingia.";
 
-        if (error.code === "auth/invalid-credential" ||
-            error.code === "auth/wrong-password" ||
-            error.code === "auth/user-not-found") {
+        if (
+          error.code === "auth/invalid-credential" ||
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found"
+        ) {
           message = "Barua pepe au nenosiri si sahihi.";
         } else if (error.code === "auth/too-many-requests") {
           message = "Majaribio yamezidi. Subiri kisha ujaribu tena.";
@@ -949,45 +968,26 @@
       }
     });
 
-    /*
-      PROFILE:
-      Inasoma nyaraka ya users/{UID}.
-      Hatutumii email kama document ID.
-    */
+    // PROFILE YA WASIMAMIZI
+    // HTML inatambua UID hizi, lakini Firestore Rules bado zinahitajika.
     async function loadProfile(user) {
-      const profileRef = db.collection("users").doc(user.uid);
-      const profileSnap = await profileRef.get();
+      const adminProfile = ADMIN_ACCOUNTS[user.uid];
 
-      if (!profileSnap.exists) {
+      if (!adminProfile) {
         throw new Error(
-          "PROFILE_NOT_FOUND: Hakuna users/" + user.uid +
-          ". Tumia UID halisi ya akaunti ya Firebase Authentication."
-        );
-      }
-
-      const profile = profileSnap.data();
-
-      if (profile.status !== "active") {
-        throw new Error(
-          "ACCOUNT_NOT_ACTIVE: Akaunti haijaidhinishwa. status lazima iwe active."
-        );
-      }
-
-      if (!["superadmin", "admin"].includes(
-        String(profile.role || "").toLowerCase()
-      )) {
-        throw new Error(
-          "NOT_ADMIN: Akaunti hii haina ruhusa ya Super Admin."
+          "NOT_ADMIN: UID hii haijaidhinishwa kuwa Super Admin: " +
+          user.uid
         );
       }
 
       currentUser = user;
-      currentProfile = profile;
+      currentProfile = adminProfile;
 
       showApp();
       startListeners();
     }
 
+    // KUHAKIKI AKAUNTI BAADA YA LOGIN
     auth.onAuthStateChanged(async user => {
       stopListeners();
 
@@ -1008,24 +1008,10 @@
 
         let message = "Imeshindikana kuthibitisha akaunti.";
 
-        if (String(error.message).startsWith("PROFILE_NOT_FOUND:")) {
+        if (String(error.message).startsWith("NOT_ADMIN:")) {
           message =
-            "Akaunti imeingia, lakini profile ya users/" +
-            user.uid + " haipo Firestore. Tengeneza profile kwa UID hii.";
-        } else if (
-          String(error.message).startsWith("ACCOUNT_NOT_ACTIVE:")
-        ) {
-          message = "Akaunti haijaidhinishwa. Weka status = active.";
-        } else if (
-          String(error.message).startsWith("NOT_ADMIN:")
-        ) {
-          message = "Akaunti hii haijawekwa kama Super Admin.";
-        } else if (
-          error.code === "permission-denied" ||
-          error.code === "firestore/permission-denied"
-        ) {
-          message =
-            "Firestore imekataa kusoma profile. Kagua Firestore Security Rules na UID.";
+            "UID ya akaunti hii haijaidhinishwa kuwa Super Admin. " +
+            "UID: " + user.uid;
         } else {
           message += " " + (error.code || error.message || "Unknown error");
         }
@@ -1040,6 +1026,7 @@
       }
     });
 
+    // LOGOUT
     $("logoutButton").addEventListener("click", async () => {
       stopListeners();
 
@@ -1047,19 +1034,20 @@
         await auth.signOut();
       } catch (error) {
         console.error(error);
-        showMessage("appMessage", "Imeshindikana kutoka: " + error.message);
+
+        showMessage(
+          "appMessage",
+          "Imeshindikana kutoka: " + error.message
+        );
       }
     });
 
+    // REFRESH
     $("refreshButton").addEventListener("click", () => {
       startListeners();
     });
 
-    /*
-      SHARED DATA:
-      Watumiaji wote walioidhinishwa wanasoma collections zilezile.
-      Hakuna collection tofauti kwa Esromu na Ibrahim.
-    */
+    // DATA ZA PAMOJA ZA SHAMBA
     function startListeners() {
       stopListeners();
 
@@ -1081,12 +1069,16 @@
             renderCollection(collectionName);
             renderDashboard();
           }, error => {
-            console.error("Firestore listener error:", collectionName, error);
+            console.error(
+              "Firestore listener error:",
+              collectionName,
+              error
+            );
 
             showMessage(
               "appMessage",
               "Imeshindikana kusoma " + collectionName +
-              ". Kagua Security Rules. Msimbo: " +
+              ". Kagua Firestore Security Rules. Msimbo: " +
               (error.code || "unknown")
             );
           });
@@ -1095,6 +1087,7 @@
       });
     }
 
+    // DASHBOARD
     function renderDashboard() {
       $("cropCount").textContent = records.crops.length;
       $("chickenCount").textContent = records.chickens.length;
@@ -1119,6 +1112,7 @@
       $("balance").textContent = formatMoney(income - expense);
     }
 
+    // JEDWALI
     function tableHtml(headers, rows) {
       if (!rows.length) {
         return '<div class="empty">Hakuna rekodi zilizohifadhiwa bado.</div>';
@@ -1128,7 +1122,9 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr>
+              <tr>
+                ${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}
+              </tr>
             </thead>
             <tbody>${rows.join("")}</tbody>
           </table>
@@ -1136,6 +1132,7 @@
       `;
     }
 
+    // KITufe CHA KUFUTA
     function deleteButton(collectionName, id) {
       return `
         <button
@@ -1147,13 +1144,17 @@
       `;
     }
 
+    // KUONYESHA REKODI
     function renderCollection(collectionName) {
       const list = records[collectionName] || [];
+
       let rows = [];
       let headers = [];
 
       if (collectionName === "crops") {
-        headers = ["Zao", "Eneo", "Kiasi", "Tarehe", "Maelezo", "Hatua"];
+        headers = [
+          "Zao", "Eneo", "Kiasi", "Tarehe", "Maelezo", "Hatua"
+        ];
 
         rows = list.map(r => `
           <tr>
@@ -1168,7 +1169,9 @@
       }
 
       if (collectionName === "chickens") {
-        headers = ["Aina", "Idadi", "Mayai", "Tarehe", "Maelezo", "Hatua"];
+        headers = [
+          "Aina", "Idadi", "Mayai", "Tarehe", "Maelezo", "Hatua"
+        ];
 
         rows = list.map(r => `
           <tr>
@@ -1183,7 +1186,9 @@
       }
 
       if (collectionName === "livestock") {
-        headers = ["Aina", "Idadi", "Kusudi", "Tarehe", "Maelezo", "Hatua"];
+        headers = [
+          "Aina", "Idadi", "Kusudi", "Tarehe", "Maelezo", "Hatua"
+        ];
 
         rows = list.map(r => `
           <tr>
@@ -1198,7 +1203,9 @@
       }
 
       if (collectionName === "finances") {
-        headers = ["Aina", "Kiasi", "Kundi", "Tarehe", "Maelezo", "Hatua"];
+        headers = [
+          "Aina", "Kiasi", "Kundi", "Tarehe", "Maelezo", "Hatua"
+        ];
 
         rows = list.map(r => `
           <tr>
@@ -1213,7 +1220,10 @@
       }
 
       if (collectionName === "activities") {
-        headers = ["Shughuli", "Tarehe", "Aliyetekeleza", "Hali", "Maelezo", "Hatua"];
+        headers = [
+          "Shughuli", "Tarehe", "Aliyetekeleza",
+          "Hali", "Maelezo", "Hatua"
+        ];
 
         rows = list.map(r => `
           <tr>
@@ -1231,15 +1241,15 @@
       target.innerHTML = tableHtml(headers, rows);
     }
 
-    /*
-      ADD RECORDS:
-      Rekodi zinahifadhiwa kwenye collections za pamoja.
-    */
+    // KUONGEZA REKODI
     async function addRecord(collectionName, data, formId) {
       clearMessage("appMessage");
 
       if (!currentUser || !isSuperAdmin()) {
-        showMessage("appMessage", "Huna ruhusa ya kufanya kitendo hiki.");
+        showMessage(
+          "appMessage",
+          "Huna ruhusa ya kufanya kitendo hiki."
+        );
         return;
       }
 
@@ -1275,12 +1285,14 @@
 
         showMessage(
           "appMessage",
-          "Imeshindikana kuhifadhi rekodi. Kagua intaneti na Firestore Rules. Msimbo: " +
+          "Imeshindikana kuhifadhi rekodi. " +
+          "Kagua intaneti na Firestore Rules. Msimbo: " +
           (error.code || error.message || "unknown")
         );
       }
     }
 
+    // FOMU YA MAZAO
     $("cropsForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -1293,6 +1305,7 @@
       }, "cropsForm");
     });
 
+    // FOMU YA KUKU
     $("chickensForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -1305,6 +1318,7 @@
       }, "chickensForm");
     });
 
+    // FOMU YA MIFUGO
     $("livestockForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -1317,6 +1331,7 @@
       }, "livestockForm");
     });
 
+    // FOMU YA FEDHA
     $("financesForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -1329,6 +1344,7 @@
       }, "financesForm");
     });
 
+    // FOMU YA SHUGHULI
     $("activitiesForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -1341,10 +1357,7 @@
       }, "activitiesForm");
     });
 
-    /*
-      DELETE:
-      Tukio la kufuta linathibitishwa kabla ya kuendelea.
-    */
+    // KUFUTA REKODI
     document.addEventListener("click", async event => {
       const button = event.target.closest("[data-delete-collection]");
 
@@ -1389,10 +1402,9 @@
         );
       } finally {
         deletingRecords = false;
-        button.disabled = false;
       }
     });
-  </script>
 
+  </script>
 </body>
 </html>
