@@ -3,225 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IGAMBA SHAMBA | Farm Management System</title>
+<title>IGAMBA SHAMBA | System</title>
 <style>
-:root[data-theme="light"] {
-  --bg-main: #f3f6f3;
-  --bg-surface: #ffffff;
-  --text-main: #142118;
-  --text-muted: #627266;
-  --border-color: #dce4dd;
-  --primary: #176b45;
-  --primary-hover: #104e32;
-  --primary-light: #e4f2e8;
-  --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  --header-bg: rgba(255, 255, 255, 0.9);
+:root {
+  --bg-color: #f4f6f4;
+  --panel-bg: #ffffff;
+  --text-color: #1a231e;
+  --primary-color: #176b45;
+  --sidebar-bg: #0d281c;
+  --font-family: 'Inter', system-ui, sans-serif;
+  --font-size: 14px;
 }
 
-:root[data-theme="dark"] {
-  --bg-main: #111a14;
-  --bg-surface: #1a281e;
-  --text-main: #e8f0ea;
-  --text-muted: #94a899;
-  --border-color: #2a3d30;
-  --primary: #229963;
-  --primary-hover: #1b7a4f;
-  --primary-light: #183825;
-  --card-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  --header-bg: rgba(26, 40, 30, 0.9);
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
-* { box-sizing: border-box; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
-body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg-main); color: var(--text-main); }
 .hidden { display: none !important; }
+.app-layout { display: flex; min-height: 100vh; }
 
-/* LAYOUT */
-.app-container { display: flex; min-height: 100vh; }
-.sidebar { width: 260px; background: #0c261b; color: white; padding: 20px 15px; display: flex; flex-direction: column; }
-.main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-.topbar { height: 70px; background: var(--header-bg); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; backdrop-filter: blur(10px); sticky: top; }
-.content-area { padding: 25px; flex: 1; overflow-y: auto; }
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar-bg);
+  color: white;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+}
 
-/* BRAND & NAV */
-.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 18px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.nav-btn { width: 100%; display: flex; align-items: center; gap: 12px; border: 0; background: transparent; color: #b0c4b6; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; margin-top: 4px; font-weight: 600; }
-.nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.1); color: white; }
-.nav-btn.active { background: var(--primary); }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 
-/* CARDS & PANELS */
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 25px; }
-.stat-card { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; box-shadow: var(--card-shadow); }
-.stat-val { font-size: 24px; font-weight: 800; margin-top: 8px; }
+.brand img { width: 35px; height: 35px; border-radius: 8px; object-fit: cover; }
 
-.panel { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 22px; border-radius: 16px; margin-bottom: 22px; box-shadow: var(--card-shadow); }
-.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.nav-btn {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 5px;
+  background: transparent;
+  border: 0;
+  color: #b3c5b9;
+  text-align: left;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* MAIN CONTENT */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.topbar {
+  height: 65px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid #e0e6e1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+}
+
+.content { padding: 25px; flex: 1; overflow-y: auto; }
+
+/* PANELS & CARDS */
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid #e0e6e1;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+.card { background: var(--panel-bg); padding: 18px; border-radius: 12px; border: 1px solid #e0e6e1; }
+.card-val { font-size: 22px; font-weight: 800; margin-top: 8px; }
 
 /* FORMS & BUTTONS */
-.btn { border: 0; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; background: var(--primary); color: white; display: inline-flex; align-items: center; gap: 8px; }
-.btn:hover { background: var(--primary-hover); }
-.btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-.field { margin-bottom: 14px; }
-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-input, select, textarea { width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-main); }
+.btn {
+  background: var(--primary-color);
+  color: white;
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-/* GALLERY GRID */
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
-.gallery-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; }
-.gallery-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
-.gallery-info { padding: 12px; }
+.btn-outline { background: transparent; border: 1px solid #ccc; color: inherit; }
 
-/* TABLES */
-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-th, td { padding: 12px; border-bottom: 1px solid var(--border-color); }
-th { color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+.field { margin-bottom: 15px; }
+label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 12px; }
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
 
-/* LOGIN SCREEN */
-.login-bg { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0c261b, #176b45); }
-.login-box { background: white; padding: 35px; border-radius: 20px; width: 100%; max-width: 400px; color: #142118; }
+/* LOGIN */
+.login-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0d281c, #176b45);
+}
+
+.login-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  color: #1a231e;
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
-<div id="loginScreen" class="login-bg">
-  <div class="login-box">
-    <div style="text-align:center; font-size:40px; margin-bottom:10px;">🌱</div>
-    <h2 style="text-align:center; margin:0 0 5px 0;">IGAMBA SHAMBA</h2>
-    <p style="text-align:center; color:#666; font-size:13px; margin-bottom:20px;" id="loginSub">Ingia kwenye Mfumo wa Shamba</p>
+<!-- LOGIN -->
+<div id="loginPage" class="login-bg">
+  <div class="login-card">
+    <div style="text-align:center; margin-bottom:15px;">
+      <span id="loginLogoText" style="font-size:35px;">🌱</span>
+      <h2 id="loginTitle" style="margin:5px 0;">IGAMBA SHAMBA</h2>
+      <p style="color:#666; font-size:12px;">Mfumo wa Usimamizi wa Shamba</p>
+    </div>
 
     <div class="field">
-      <label for="langSelectLogin">Language / Lugha</label>
-      <select id="langSelectLogin" onchange="changeLanguage(this.value)">
+      <label>Lugha / Language</label>
+      <select onchange="setLang(this.value)">
         <option value="sw">Swahili</option>
         <option value="en">English</option>
       </select>
     </div>
 
-    <form id="loginForm" onsubmit="event.preventDefault(); doLogin();">
+    <form onsubmit="event.preventDefault(); login();">
       <div class="field">
         <label>Barua pepe / Email</label>
-        <input type="email" id="loginEmail" value="owner@igamba.com" required>
+        <input type="email" value="admin@igamba.com" required>
       </div>
       <div class="field">
         <label>Nenosiri / Password</label>
-        <input type="password" id="loginPass" value="123456" required>
+        <input type="password" value="123456" required>
       </div>
-      <button type="submit" class="btn" style="width:100%; justify-content:center;" id="loginBtn">Ingia Mfumoni →</button>
+      <button type="submit" class="btn" style="width:100%;">Ingia Mfumoni →</button>
     </form>
   </div>
 </div>
 
-<!-- MAIN APP -->
-<div id="appScreen" class="app-container hidden">
+<!-- APP -->
+<div id="appPage" class="app-layout hidden">
   <aside class="sidebar">
-    <div class="brand">🌱 IGAMBA SHAMBA</div>
+    <div class="brand">
+      <span id="appLogoIcon">🌱</span>
+      <span id="appLogoName">IGAMBA SHAMBA</span>
+    </div>
     <div style="margin-top:20px;">
-      <button class="nav-btn active" onclick="showPage('dashboard')" id="navDash">▦ Muhtasari</button>
-      <button class="nav-btn" onclick="showPage('finances')" id="navFin">💰 Fedha & Mtaji</button>
-      <button class="nav-btn" onclick="showPage('gallery')" id="navGal">📷 Picha za Shamba</button>
-      <button class="nav-btn" onclick="showPage('crops')" id="navCrops">🌾 Mazao & Mifugo</button>
+      <button class="nav-btn active" onclick="showTab('dash')" id="tabDashBtn">▦ Muhtasari</button>
+      <button class="nav-btn" onclick="showTab('fin')" id="tabFinBtn">💰 Fedha & Mtaji</button>
+      <button class="nav-btn" onclick="showTab('gal')" id="tabGalBtn">📷 Picha za Shamba</button>
+      <button class="nav-btn" onclick="showTab('appear')" id="tabAppearBtn">🎨 Muonekano (Admin)</button>
     </div>
   </aside>
 
-  <main class="main-content">
+  <main class="main">
     <header class="topbar">
-      <h3 id="topTitle">Muhtasari wa Shamba</h3>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <select id="langSelectTop" style="padding:6px 10px;" onchange="changeLanguage(this.value)">
-          <option value="sw">SW</option>
-          <option value="en">EN</option>
-        </select>
-        <button class="btn btn-outline" style="padding:6px 12px;" onclick="toggleTheme()" id="themeBtn">🌙 Mode</button>
-        <button class="btn btn-outline" style="padding:6px 12px;" onclick="doLogout()">↪ Toka</button>
+      <h3 id="topTitle" style="margin:0;">Muhtasari wa Shamba</h3>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-outline btn" onclick="toggleTheme()" id="themeBtn">🌙 Mwanga</button>
+        <button class="btn-outline btn" onclick="logout()">↪ Toka</button>
       </div>
     </header>
 
-    <div class="content-area">
+    <div class="content">
 
       <!-- DASHBOARD -->
-      <section id="dashboardPage">
+      <section id="dashTab">
         <div class="grid-4">
-          <div class="stat-card">
-            <div style="color:var(--text-muted); font-size:12px;" id="lblSales">Mauzo ya Shamba</div>
-            <div class="stat-val" style="color:#229963;" id="valSales">TZS 0</div>
+          <div class="card">
+            <div style="color:#666; font-size:12px;" id="lblSales">Mauzo ya Shamba</div>
+            <div class="card-val" style="color:#176b45;" id="valSales">TZS 0</div>
           </div>
-          <div class="stat-card">
-            <div style="color:var(--text-muted); font-size:12px;" id="lblCapital">Mtaji kutoka kwa Mmiliki</div>
-            <div class="stat-val" style="color:#2b7fff;" id="valCapital">TZS 0</div>
+          <div class="card">
+            <div style="color:#666; font-size:12px;" id="lblCapital">Mtaji wa Mmiliki</div>
+            <div class="card-val" style="color:#2b7fff;" id="valCapital">TZS 0</div>
           </div>
-          <div class="stat-card">
-            <div style="color:var(--text-muted); font-size:12px;" id="lblExpenses">Jumla ya Matumizi</div>
-            <div class="stat-val" style="color:#d9534f;" id="valExpenses">TZS 0</div>
+          <div class="card">
+            <div style="color:#666; font-size:12px;" id="lblExpenses">Jumla ya Matumizi</div>
+            <div class="card-val" style="color:#d9534f;" id="valExpenses">TZS 0</div>
           </div>
-          <div class="stat-card">
-            <div style="color:var(--text-muted); font-size:12px;" id="lblNet">Salio la Mfukoni</div>
-            <div class="stat-val" id="valNet">TZS 0</div>
+          <div class="card">
+            <div style="color:#666; font-size:12px;" id="lblNet">Salio la Mfukoni</div>
+            <div class="card-val" id="valNet">TZS 0</div>
           </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <h4 style="margin:0;" id="lblRecentFin">Miamala ya Karibuni</h4>
-            <button class="btn" onclick="showPage('finances')" id="lblAddTxBtn">+ Weka Muamala</button>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th id="thType">Aina</th>
-                <th id="thCat">Kategoria / Sababu</th>
-                <th id="thAmt">Kiasi</th>
-                <th id="thDate">Tarehe</th>
-              </tr>
-            </thead>
-            <tbody id="dashTxTable"></tbody>
-          </table>
         </div>
       </section>
 
-      <!-- FINANCES & CAPITAL -->
-      <section id="financesPage" class="hidden">
+      <!-- FINANCES -->
+      <section id="finTab" class="hidden">
         <div class="panel">
-          <h4 style="margin:0 0 15px 0;" id="lblNewTx">Rekodi Muamala au Mtaji Mpya</h4>
-          <form onsubmit="event.preventDefault(); addTransaction();" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+          <h3>Ongeza Muamala au Mtaji</h3>
+          <form onsubmit="event.preventDefault(); addTx();" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
             <div class="field">
-              <label id="lblTxType">Aina ya Muamala</label>
+              <label>Aina ya Muamala</label>
               <select id="txType">
-                <option value="income">Mauzo (Income)</option>
-                <option value="capital">Mtaji wa Mmiliki (Owner Capital)</option>
-                <option value="expense">Matumizi (Expense)</option>
+                <option value="income">Mauzo ya Shamba</option>
+                <option value="capital">Mtaji Kutoka kwa Mmiliki</option>
+                <option value="expense">Matumizi ya Shamba</option>
               </select>
             </div>
             <div class="field">
-              <label id="lblTxAmt">Kiasi (TZS)</label>
-              <input type="number" id="txAmount" placeholder="100000" required>
+              <label>Kiasi (TZS)</label>
+              <input type="number" id="txAmt" required>
             </div>
             <div class="field">
-              <label id="lblTxCat">Kategoria / Maelezo</label>
-              <input type="text" id="txCategory" placeholder="Mfano: Chakula cha Kuku / Mtaji Pampu" required>
-            </div>
-            <div class="field">
-              <label id="lblTxDate">Tarehe</label>
-              <input type="date" id="txDate" required>
+              <label>Maelezo</label>
+              <input type="text" id="txDesc" placeholder="Mfano: Chakula cha Kuku" required>
             </div>
             <div style="grid-column: 1 / -1;">
-              <button type="submit" class="btn" id="btnSaveTx">💾 Hifadhi Muamala</button>
+              <button type="submit" class="btn">Hifadhi Muamala</button>
             </div>
           </form>
         </div>
       </section>
 
-      <!-- FARM GALLERY -->
-      <section id="galleryPage" class="hidden">
+      <!-- GALLERY -->
+      <section id="galTab" class="hidden">
         <div class="panel">
-          <h4 style="margin:0 0 15px 0;" id="lblAddPhoto">Pakia Picha Mpya ya Shamba</h4>
-          <form onsubmit="event.preventDefault(); addPhoto();" style="display:flex; gap:12px; flex-wrap:wrap;">
-            <input type="text" id="photoTitle" placeholder="Kichwa cha picha (mfano: Uvunaji Nyanya)" required style="flex:1;">
-            <input type="file" id="photoInput" accept="image/*" required style="flex:1;">
-            <button type="submit" class="btn" id="btnUploadPhoto">📤 Pakia Picha</button>
-          </form>
+          <h3>Pakia Picha ya Shamba</h3>
+          <input type="file" id="imgInput" accept="image/*" style="margin-bottom:10px;">
+          <button class="btn" onclick="uploadImg()">Pakia Picha</button>
         </div>
+        <div id="imgGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;"></div>
+      </section>
 
-        <div class="gallery-grid" id="galleryGrid"></div>
+      <!-- APPEARANCE (ADMIN) -->
+      <section id="appearTab" class="hidden">
+        <div class="panel">
+          <h3>🎨 Mipangilio ya Muonekano (Appearance Settings)</h3>
+          
+          <div class="field">
+            <label>Logo ya Shamba (Weka Link au Emoji)</label>
+            <input type="text" id="appLogoInput" value="🌱" onchange="updateLogo(this.value)">
+          </div>
+
+          <div class="field">
+            <label>Rangi Kuu (Primary Color)</label>
+            <input type="color" id="primaryColorInput" value="#176b45" onchange="updatePrimaryColor(this.value)">
+          </div>
+
+          <div class="field">
+            <label>Aina ya Maandishi (Font Family)</label>
+            <select onchange="updateFont(this.value)">
+              <option value="'Inter', sans-serif">Inter (Modern & Clean)</option>
+              <option value="'Segoe UI', sans-serif">Segoe UI</option>
+              <option value="Georgia, serif">Georgia (Serif)</option>
+              <option value="monospace">Monospace</option>
+            </select>
+          </div>
+        </div>
       </section>
 
     </div>
@@ -229,187 +288,70 @@ th { color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
 </div>
 
 <script>
-// STATE MANAGEMENT
-let currentLang = 'sw';
-let currentTheme = 'light';
-let transactions = [
-  { type: 'capital', amount: 500000, category: 'Mtaji wa kuanzia pampu', date: '2026-10-15' },
-  { type: 'income', amount: 120000, category: 'Mauzo ya Kuku wa Nyama', date: '2026-10-18' },
-  { type: 'expense', amount: 45000, category: 'Chakula cha Kuku (Starter)', date: '2026-10-19' }
-];
-let galleryPhotos = [];
+let lang = 'sw';
+let sales = 120000, capital = 500000, expenses = 45000;
 
-const dictionary = {
-  sw: {
-    loginSub: 'Ingia kwenye Mfumo wa Shamba',
-    navDash: '▦ Muhtasari',
-    navFin: '💰 Fedha & Mtaji',
-    navGal: '📷 Picha za Shamba',
-    navCrops: '🌾 Mazao & Mifugo',
-    topDash: 'Muhtasari wa Shamba',
-    topFin: 'Usimamizi wa Fedha & Mtaji',
-    topGal: 'Albamu ya Picha za Shamba',
-    lblSales: 'Mauzo ya Shamba',
-    lblCapital: 'Mtaji wa Mmiliki',
-    lblExpenses: 'Jumla ya Matumizi',
-    lblNet: 'Salio la Mfukoni',
-    lblRecentFin: 'Miamala ya Karibuni',
-    lblAddTxBtn: '+ Weka Muamala',
-    thType: 'Aina',
-    thCat: 'Kategoria / Sababu',
-    thAmt: 'Kiasi',
-    thDate: 'Tarehe',
-    lblNewTx: 'Rekodi Muamala au Mtaji Mpya',
-    lblTxType: 'Aina ya Muamala',
-    lblTxAmt: 'Kiasi (TZS)',
-    lblTxCat: 'Kategoria / Maelezo',
-    lblTxDate: 'Tarehe',
-    btnSaveTx: '💾 Hifadhi Muamala',
-    lblAddPhoto: 'Pakia Picha Mpya ya Shamba',
-    btnUploadPhoto: '📤 Pakia Picha'
-  },
-  en: {
-    loginSub: 'Log in to Farm System',
-    navDash: '▦ Dashboard',
-    navFin: '💰 Finance & Capital',
-    navGal: '📷 Farm Gallery',
-    navCrops: '🌾 Crops & Livestock',
-    topDash: 'Farm Dashboard',
-    topFin: 'Finance & Capital Management',
-    topGal: 'Farm Photo Gallery',
-    lblSales: 'Farm Sales',
-    lblCapital: 'Owner Capital',
-    lblExpenses: 'Total Expenses',
-    lblNet: 'Net Balance',
-    lblRecentFin: 'Recent Transactions',
-    lblAddTxBtn: '+ Add Transaction',
-    thType: 'Type',
-    thCat: 'Category / Reason',
-    thAmt: 'Amount',
-    thDate: 'Date',
-    lblNewTx: 'Record New Transaction or Capital',
-    lblTxType: 'Transaction Type',
-    lblTxAmt: 'Amount (TZS)',
-    lblTxCat: 'Category / Note',
-    lblTxDate: 'Date',
-    btnSaveTx: '💾 Save Transaction',
-    lblAddPhoto: 'Upload New Farm Photo',
-    btnUploadPhoto: '📤 Upload Photo'
-  }
-};
-
-function doLogin() {
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('appScreen').classList.remove('hidden');
-  updateCalculations();
+function login() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('appPage').classList.remove('hidden');
+  calc();
 }
 
-function doLogout() {
-  document.getElementById('appScreen').classList.add('hidden');
-  document.getElementById('loginScreen').classList.remove('hidden');
+function logout() {
+  document.getElementById('appPage').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
 }
 
-function toggleTheme() {
-  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', currentTheme);
-  document.getElementById('themeBtn').textContent = currentTheme === 'light' ? '🌙 Mode' : '☀️ Mode';
+function showTab(tab) {
+  ['dashTab', 'finTab', 'galTab', 'appearTab'].forEach(t => document.getElementById(t).classList.add('hidden'));
+  document.getElementById(tab + 'Tab').classList.remove('hidden');
 }
 
-function changeLanguage(lang) {
-  currentLang = lang;
-  document.getElementById('langSelectLogin').value = lang;
-  document.getElementById('langSelectTop').value = lang;
-
-  const d = dictionary[lang];
-  for (let key in d) {
-    const el = document.getElementById(key);
-    if (el) el.textContent = d[key];
-  }
-}
-
-function showPage(page) {
-  ['dashboardPage', 'financesPage', 'galleryPage'].forEach(p => {
-    document.getElementById(p).classList.add('hidden');
-  });
-  document.getElementById(page + 'Page').classList.remove('hidden');
-
-  const titles = {
-    dashboard: dictionary[currentLang].topDash,
-    finances: dictionary[currentLang].topFin,
-    gallery: dictionary[currentLang].topGal
-  };
-  document.getElementById('topTitle').textContent = titles[page];
-}
-
-function addTransaction() {
-  const type = document.getElementById('txType').value;
-  const amount = Number(document.getElementById('txAmount').value);
-  const category = document.getElementById('txCategory').value;
-  const date = document.getElementById('txDate').value;
-
-  transactions.unshift({ type, amount, category, date });
-  updateCalculations();
-  alert(currentLang === 'sw' ? 'Muamala umeingizwa!' : 'Transaction saved!');
-  showPage('dashboard');
-}
-
-function updateCalculations() {
-  let sales = 0, capital = 0, expenses = 0;
-
-  transactions.forEach(t => {
-    if (t.type === 'income') sales += t.amount;
-    if (t.type === 'capital') capital += t.amount;
-    if (t.type === 'expense') expenses += t.amount;
-  });
-
-  const net = (sales + capital) - expenses;
-
+function calc() {
   document.getElementById('valSales').textContent = 'TZS ' + sales.toLocaleString();
   document.getElementById('valCapital').textContent = 'TZS ' + capital.toLocaleString();
   document.getElementById('valExpenses').textContent = 'TZS ' + expenses.toLocaleString();
-  document.getElementById('valNet').textContent = 'TZS ' + net.toLocaleString();
-
-  // Render Table
-  const tbody = document.getElementById('dashTxTable');
-  tbody.innerHTML = transactions.map(t => `
-    <tr>
-      <td><strong>${t.type === 'income' ? ' Mauzo' : t.type === 'capital' ? ' Mtaji' : ' Matumizi'}</strong></td>
-      <td>${t.category}</td>
-      <td>TZS ${t.amount.toLocaleString()}</td>
-      <td>${t.date}</td>
-    </tr>
-  `).join('');
+  document.getElementById('valNet').textContent = 'TZS ' + ((sales + capital) - expenses).toLocaleString();
 }
 
-function addPhoto() {
-  const title = document.getElementById('photoTitle').value;
-  const file = document.getElementById('photoInput').files[0];
-
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    galleryPhotos.unshift({ title, src: e.target.result, date: new Date().toLocaleDateString() });
-    renderGallery();
-  };
-  reader.readAsDataURL(file);
+function addTx() {
+  let type = document.getElementById('txType').value;
+  let amt = Number(document.getElementById('txAmt').value);
+  
+  if (type === 'income') sales += amt;
+  if (type === 'capital') capital += amt;
+  if (type === 'expense') expenses += amt;
+  
+  calc();
+  alert('Muamala umehifadhiwa!');
+  showTab('dash');
 }
 
-function renderGallery() {
-  const grid = document.getElementById('galleryGrid');
-  grid.innerHTML = galleryPhotos.map(p => `
-    <div class="gallery-card">
-      <img src="${p.src}" class="gallery-img" alt="Farm Photo">
-      <div class="gallery-info">
-        <strong>${p.title}</strong>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">${p.date}</div>
-      </div>
-    </div>
-  `).join('');
+function updateLogo(val) {
+  document.getElementById('loginLogoText').textContent = val;
+  document.getElementById('appLogoIcon').textContent = val;
 }
 
-// Set Default Date
-document.getElementById('txDate').valueAsDate = new Date();
+function updatePrimaryColor(val) {
+  document.documentElement.style.setProperty('--primary-color', val);
+}
+
+function updateFont(val) {
+  document.documentElement.style.setProperty('--font-family', val);
+}
+
+function toggleTheme() {
+  let bg = document.documentElement.style.getPropertyValue('--bg-color');
+  if (bg === '#121212') {
+    document.documentElement.style.setProperty('--bg-color', '#f4f6f4');
+    document.documentElement.style.setProperty('--panel-bg', '#ffffff');
+    document.documentElement.style.setProperty('--text-color', '#1a231e');
+  } else {
+    document.documentElement.style.setProperty('--bg-color', '#121212');
+    document.documentElement.style.setProperty('--panel-bg', '#1e1e1e');
+    document.documentElement.style.setProperty('--text-color', '#ffffff');
+  }
+}
 </script>
 </body>
 </html>
