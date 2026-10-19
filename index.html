@@ -6,879 +6,907 @@
 <meta name="theme-color" content="#123b2a">
 <title>IGAMBA SHAMBA | Farm Management</title>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
 <style>
 :root {
-  --primary:#176b45;
-  --primary-dark:#10452d;
-  --primary-light:#e7f4eb;
-  --bg:#f5f7f5;
-  --surface:#ffffff;
-  --text:#1b2c22;
-  --muted:#7b887f;
-  --border:#e5ebe6;
-  --red:#d84b4b;
-  --orange:#e8a33c;
-  --blue:#397bd4;
-  --shadow:0 5px 24px rgba(22,48,31,.055);
-  --radius:16px;
+  --primary: #176b45;
+  --primary-dark: #10452d;
+  --primary-light: #e7f4eb;
+  --bg: #f3f6f4;
+  --surface: #ffffff;
+  --text: #1b2c22;
+  --muted: #6b7a70;
+  --border: #e2eae4;
+  --red: #d84b4b;
+  --orange: #e8a33c;
+  --blue: #397bd4;
+  --shadow: 0 4px 20px rgba(22,48,31,.06);
+  --radius: 14px;
+  --sidebar-width: 260px;
 }
 
-* { box-sizing:border-box; }
+[data-theme="dark"] {
+  --primary: #2d9e66;
+  --primary-dark: #1f7a4d;
+  --primary-light: #1a2f24;
+  --bg: #0f1713;
+  --surface: #18241d;
+  --text: #e8f0ea;
+  --muted: #8a9a90;
+  --border: #2a3a30;
+  --shadow: 0 4px 24px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  margin:0;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  transition: background .25s, color .25s;
 }
 
-button,input,select,textarea { font:inherit; }
-button { cursor:pointer; }
-button:disabled { opacity:.5;cursor:not-allowed; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
 
-.hidden { display:none!important; }
+.hidden { display: none !important; }
 
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline:3px solid #91cbaa;
-  outline-offset:2px;
+  outline: 3px solid #91cbaa;
+  outline-offset: 2px;
 }
 
+/* ========== LOGIN ========== */
 .login-screen {
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:22px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
   background:
-    radial-gradient(circle at 10% 15%,rgba(80,172,113,.25),transparent 30%),
-    linear-gradient(135deg,#0e3022,#176b45 65%,#248552);
+    radial-gradient(circle at 15% 20%, rgba(80,172,113,.28), transparent 32%),
+    linear-gradient(140deg, #0c2a1e, #176b45 60%, #1f8a55);
 }
 
 .login-card {
-  background:white;
-  width:100%;
-  max-width:420px;
-  border-radius:24px;
-  padding:34px;
-  box-shadow:0 25px 80px rgba(0,0,0,.2);
+  background: var(--surface);
+  width: 100%;
+  max-width: 420px;
+  border-radius: 22px;
+  padding: 36px 32px;
+  box-shadow: 0 28px 80px rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.08);
 }
 
 .login-logo {
-  width:66px;
-  height:66px;
-  margin:0 auto 16px;
-  display:grid;
-  place-items:center;
-  border-radius:20px;
-  background:var(--primary-light);
-  font-size:34px;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: var(--primary-light);
+  font-size: 34px;
 }
 
 .login-card h1 {
-  text-align:center;
-  font-size:25px;
-  margin:0 0 6px;
-  letter-spacing:-.8px;
-}
-
-.login-subtitle {
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:28px;
-}
-
-.field { margin-bottom:15px; }
-
-label {
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:7px;
-}
-
-input,select,textarea {
-  width:100%;
-  border:1px solid #dce5de;
-  border-radius:10px;
-  padding:12px 13px;
-  color:var(--text);
-  background:white;
-  min-width:0;
-}
-
-input:focus,select:focus,textarea:focus {
-  border-color:var(--primary);
-  outline:none;
-}
-
-textarea { resize:vertical; }
-
-.btn {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  border:0;
-  padding:11px 15px;
-  border-radius:10px;
-  background:var(--primary);
-  color:white;
-  font-size:13px;
-  font-weight:750;
-  transition:.15s;
-}
-
-.btn:hover { background:var(--primary-dark); }
-
-.btn-block { width:100%; }
-
-.btn-light {
-  background:#edf4ef;
-  color:var(--primary-dark);
-}
-
-.btn-light:hover { background:#dcebe0; }
-
-.btn-danger {
-  background:#fff0f0;
-  color:#bb3030;
-}
-
-.btn-danger:hover { background:#ffdddd; }
-
-.btn-small {
-  padding:7px 10px;
-  font-size:12px;
-}
-
-.message {
-  padding:12px 14px;
-  border-radius:11px;
-  margin:12px 0;
-  font-size:13px;
-  line-height:1.5;
-  overflow-wrap:anywhere;
-}
-
-.error {
-  background:#fff0f0;
-  color:#a12d2d;
-  border:1px solid #ffd7d7;
-}
-
-.success {
-  background:#eaf8ed;
-  color:#176b37;
-  border:1px solid #ccebd4;
-}
-
-.info {
-  background:#eef5ff;
-  color:#285ca1;
-  border:1px solid #d8e7ff;
-}
-
-/* MAIN LAYOUT */
-
-.app { min-height:100vh; }
-
-.sidebar {
-  position:fixed;
-  inset:0 auto 0 0;
-  width:250px;
-  background:#123b2a;
-  color:white;
-  padding:23px 15px;
-  display:flex;
-  flex-direction:column;
-  z-index:30;
-  overflow-y:auto;
-}
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:0 8px 25px;
-  border-bottom:1px solid rgba(255,255,255,.12);
-}
-
-.brand-icon {
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  background:#e0f4e5;
-  color:#123b2a;
-  font-size:25px;
-}
-
-.brand-name {
-  font-weight:850;
-  letter-spacing:-.5px;
-  font-size:16px;
-}
-
-.brand-sub {
-  color:#a9c7b4;
-  font-size:10px;
-  margin-top:4px;
-}
-
-.nav-label {
-  color:#8eb29a;
-  text-transform:uppercase;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1.3px;
-  padding:23px 11px 9px;
-}
-
-.nav-btn {
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  border:0;
-  border-radius:11px;
-  padding:12px 13px;
-  margin:2px 0;
-  color:#d3e4d8;
-  background:transparent;
-  text-align:left;
-  font-size:13px;
-  font-weight:650;
-}
-
-.nav-icon {
-  width:23px;
-  text-align:center;
-  font-size:17px;
-}
-
-.nav-btn:hover {
-  background:rgba(255,255,255,.07);
-  color:white;
-}
-
-.nav-btn.active {
-  background:#e7f4eb;
-  color:#145a36;
-  font-weight:800;
-}
-
-.sidebar-bottom {
-  margin-top:auto;
-  padding-top:20px;
-}
-
-.farm-mini {
-  padding:15px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:13px;
-}
-
-.farm-mini-title { font-size:12px;font-weight:800; }
-.farm-mini-sub { font-size:11px;color:#aac6b3;margin-top:6px; }
-
-.main-area {
-  margin-left:250px;
-  min-height:100vh;
-  min-width:0;
-}
-
-.topbar {
-  height:82px;
-  background:rgba(255,255,255,.94);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:0 32px;
-  position:sticky;
-  top:0;
-  z-index:20;
-  backdrop-filter:blur(12px);
-}
-
-.topbar-left {
-  display:flex;
-  align-items:center;
-  gap:13px;
-  min-width:0;
-}
-
-.top-title {
-  font-size:19px;
-  font-weight:850;
-  letter-spacing:-.6px;
-}
-
-.top-sub {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.top-actions {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.icon-btn {
-  border:1px solid var(--border);
-  background:white;
-  width:40px;
-  height:40px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  color:var(--text);
-}
-
-.user-chip {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 11px 6px 6px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:white;
-  max-width:245px;
-}
-
-.avatar {
-  flex-shrink:0;
-  width:35px;
-  height:35px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  background:var(--primary-light);
-  color:var(--primary);
-  font-size:13px;
-  font-weight:850;
-}
-
-.user-chip-name {
-  font-size:12px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.user-chip-role {
-  font-size:10px;
-  color:var(--muted);
-  margin-top:3px;
-}
-
-.content { padding:28px 32px 45px; }
-
-.page { display:none; }
-.page.active { display:block; }
-
-.page-heading {
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:23px;
-}
-
-.page-heading h1 {
-  font-size:25px;
-  margin:0;
-  letter-spacing:-1px;
-}
-
-.page-heading p {
-  margin:8px 0 0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-}
-
-.heading-actions {
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-}
-
-.date-chip {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:10px 13px;
-  font-size:12px;
-  color:#58685c;
-}
-
-/* STAT CARDS */
-
-.stats-grid {
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:22px;
-}
-
-.stat-card {
-  background:white;
-  padding:20px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  box-shadow:var(--shadow);
-  min-width:0;
-}
-
-.stat-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-}
-
-.stat-name {
-  color:#748177;
-  font-size:12px;
-  font-weight:650;
-}
-
-.stat-icon {
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  flex-shrink:0;
-}
-
-.ic-green { background:#e7f6eb; }
-.ic-orange { background:#fff2df; }
-.ic-blue { background:#e9f1ff; }
-.ic-red { background:#ffebeb; }
-
-.stat-value {
-  font-size:27px;
-  font-weight:850;
-  letter-spacing:-1px;
-  margin-top:18px;
-  overflow-wrap:anywhere;
-}
-
-.stat-foot {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:7px;
-}
-
-.dashboard-grid {
-  display:grid;
-  grid-template-columns:minmax(0,1.45fr) minmax(270px,1fr);
-  gap:18px;
-  align-items:start;
-}
-
-.panel {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:21px;
-  box-shadow:var(--shadow);
-  margin-bottom:18px;
-  min-width:0;
-}
-
-.panel-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.panel-title {
-  font-size:15px;
-  font-weight:850;
-  margin:0;
-}
-
-.panel-subtitle {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:5px;
-}
-
-.link-btn {
-  border:0;
-  background:transparent;
-  color:var(--primary);
-  font-size:12px;
-  font-weight:800;
-  padding:7px;
-}
-
-.money-row {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:15px 0;
-  border-bottom:1px solid #edf1ed;
-}
-
-.money-row:last-child { border-bottom:0; }
-
-.money-label {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:12px;
-  color:#647167;
-}
-
-.money-dot {
-  width:9px;
-  height:9px;
-  border-radius:50%;
-}
-
-.money-value {
-  font-size:15px;
-  font-weight:850;
-  text-align:right;
-  overflow-wrap:anywhere;
-}
-
-.activity-item {
-  display:flex;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid #edf1ed;
-}
-
-.activity-item:last-child { border-bottom:0; }
-
-.activity-symbol {
-  width:37px;
-  height:37px;
-  flex-shrink:0;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:#eef5ef;
-  font-size:17px;
-}
-
-.activity-title {
-  font-size:12px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.activity-meta {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:5px;
-}
-
-.empty {
-  padding:25px 10px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* FORMS AND TABLES */
-
-.form-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-
-.full { grid-column:1/-1; }
-
-.form-actions {
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-top:5px;
-}
-
-.toolbar {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:17px;
-}
-
-.search-box {
-  width:100%;
-  max-width:340px;
-}
-
-.table-wrap {
-  overflow-x:auto;
-  width:100%;
-  border:1px solid var(--border);
-  border-radius:12px;
-}
-
-table {
-  width:100%;
-  min-width:700px;
-  border-collapse:collapse;
-  background:white;
-}
-
-th {
-  background:#f5f8f5;
-  color:#66746a;
-  text-align:left;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.5px;
-  padding:14px 13px;
-  white-space:nowrap;
-}
-
-td {
-  padding:13px;
-  border-top:1px solid #edf1ed;
-  font-size:12px;
-  vertical-align:middle;
-  overflow-wrap:anywhere;
-}
-
-tbody tr:hover { background:#fbfdfb; }
-
-.table-actions {
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.badge {
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  background:#e6f6eb;
-  color:#1b7041;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.badge-red { background:#ffeded;color:#ae3535; }
-.badge-orange { background:#fff1db;color:#966018; }
-.badge-blue { background:#eaf1ff;color:#315eac; }
-
-.form-section-title {
-  font-size:14px;
-  font-weight:850;
-  margin:0 0 18px;
-}
-
-.profile-grid {
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:18px;
-}
-
-.profile-hero {
-  display:flex;
-  align-items:center;
-  gap:15px;
-  margin-bottom:22px;
-}
-
-.profile-avatar {
-  width:65px;
-  height:65px;
-  border-radius:19px;
-  display:grid;
-  place-items:center;
-  background:var(--primary-light);
-  color:var(--primary);
-  font-size:23px;
-  font-weight:900;
-}
-
-.profile-name {
-  font-size:18px;
-  font-weight:850;
-  overflow-wrap:anywhere;
-}
-
-.profile-email {
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
-  overflow-wrap:anywhere;
-}
-
-.mobile-menu { display:none; }
-
-footer {
-  padding:24px 0 0;
-  text-align:center;
-  color:#98a39a;
-  font-size:10px;
-}
-
-@media(max-width:1150px) {
-  .sidebar { width:220px; }
-  .main-area { margin-left:220px; }
-  .content { padding:23px; }
-  .topbar { padding:0 23px; }
-  .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .dashboard-grid { grid-template-columns:1fr; }
-}
-
-@media(max-width:760px) {
-  .sidebar {
-    width:270px;
-    transform:translateX(-105%);
-    transition:transform .22s ease;
-    box-shadow:12px 0 35px rgba(0,0,0,.15);
-  }
-
-  .sidebar.open { transform:translateX(0); }
-  .main-area { margin-left:0; }
-  .topbar { height:72px;padding:0 15px; }
-  .content { padding:20px 14px 35px; }
-  .mobile-menu { display:grid; }
-  .top-title { font-size:16px; }
-  .top-sub { display:none; }
-  .user-chip { padding:4px;border:0; }
-  .user-chip-text { display:none; }
-  .top-actions { gap:6px; }
-  .page-heading h1 { font-size:22px; }
-  .panel { padding:16px; }
-  .profile-grid { grid-template-columns:1fr; }
-}
-
-@media(max-width:450px) {
-  .stats-grid { gap:9px; }
-  .stat-card { padding:13px; }
-  .stat-name { font-size:10px; }
-  .stat-icon { width:31px;height:31px;font-size:16px; }
-  .stat-value { font-size:21px;margin-top:14px; }
-  .stat-foot { font-size:10px; }
-  .form-grid { grid-template-columns:1fr; }
-  .full { grid-column:auto; }
-  .date-chip { display:none; }
-  .login-card { padding:25px 20px; }
-}
-/* SETTINGS: THEME AND BRIGHTNESS */
-:root {
-  --brightness: 1;
-}
-
-body {
-  filter: brightness(var(--brightness));
-  transition: background .2s, color .2s, filter .2s;
-}
-
-body.dark-mode {
-  --bg: #101914;
-  --surface: #1b2820;
-  --text: #e5eee7;
-  --muted: #a3b2a7;
-  --border: #34453a;
-  --primary-light: #254b35;
-  background: var(--bg);
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 6px;
+  letter-spacing: -.7px;
   color: var(--text);
 }
 
-body.dark-mode .topbar,
-body.dark-mode .panel,
-body.dark-mode .stat-card,
-body.dark-mode .user-chip,
-body.dark-mode .icon-btn,
-body.dark-mode .date-chip,
-body.dark-mode table,
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea {
-  background: #1b2820;
-  color: #e5eee7;
-  border-color: #34453a;
-}
-
-body.dark-mode th {
-  background: #25352a;
-  color: #c5d4c9;
-}
-
-body.dark-mode td,
-body.dark-mode .money-row,
-body.dark-mode .activity-item {
-  border-color: #34453a;
-}
-
-body.dark-mode tbody tr:hover {
-  background: #25352a;
-}
-
-body.dark-mode .btn-light {
-  background: #2b4433;
-  color: #e5eee7;
-}
-
-body.dark-mode .profile-avatar,
-body.dark-mode .avatar {
-  background: #254b35;
-  color: #c7f0d2;
-}
-
-.settings-option {
-  margin: 20px 0;
-}
-
-.settings-option label {
-  margin-bottom: 10px;
-}
-
-.settings-description {
+.login-subtitle {
+  text-align: center;
   color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-  margin-top: 6px;
+  font-size: 13px;
+  margin-bottom: 28px;
 }
 
-.settings-range {
+.field { margin-bottom: 16px; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  color: var(--text);
+}
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 12px 14px;
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color .15s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+textarea { resize: vertical; min-height: 70px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  padding: 11px 16px;
+  border-radius: 11px;
+  background: var(--primary);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background .15s, transform .1s;
+}
+
+.btn:hover { background: var(--primary-dark); }
+.btn:active { transform: scale(.98); }
+.btn-block { width: 100%; }
+
+.btn-light {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+.btn-light:hover { background: #d5ebdd; }
+[data-theme="dark"] .btn-light { background: #243830; color: #a8d4b8; }
+[data-theme="dark"] .btn-light:hover { background: #2e4a3a; }
+
+.btn-danger {
+  background: #fff0f0;
+  color: #bb3030;
+}
+.btn-danger:hover { background: #ffdddd; }
+[data-theme="dark"] .btn-danger { background: #3a2222; color: #f08080; }
+
+.btn-small { padding: 7px 11px; font-size: 12px; }
+
+.message {
+  padding: 12px 14px;
+  border-radius: 11px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.error { background: #fff0f0; color: #a12d2d; border: 1px solid #ffd7d7; }
+.success { background: #eaf8ed; color: #176b37; border: 1px solid #ccebd4; }
+.info { background: #eef5ff; color: #285ca1; border: 1px solid #d8e7ff; }
+
+[data-theme="dark"] .error { background: #3a1f1f; color: #f0a0a0; border-color: #5a3030; }
+[data-theme="dark"] .success { background: #1a3020; color: #8fd4a0; border-color: #2a5030; }
+[data-theme="dark"] .info { background: #1a2535; color: #90b8f0; border-color: #2a3a50; }
+
+/* ========== TOAST ========== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 360px;
+}
+
+.toast {
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 30px rgba(0,0,0,.15);
+  animation: slideIn .3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast.success { background: #176b45; color: white; }
+.toast.error { background: #c0392b; color: white; }
+.toast.info { background: #2980b9; color: white; }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ========== LAYOUT ========== */
+.app { min-height: 100vh; }
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar-width);
+  background: #123b2a;
+  color: white;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+  overflow-y: auto;
+  transition: transform .25s ease;
+}
+
+.brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 0 8px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
-.settings-range input {
-  flex: 1;
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #e0f4e5;
+  color: #123b2a;
+  font-size: 24px;
 }
 
-#brightnessValue {
-  min-width: 45px;
+.brand-name { font-weight: 800; font-size: 15px; letter-spacing: -.3px; }
+.brand-sub { color: #a9c7b4; font-size: 10px; margin-top: 3px; }
+
+.nav-label {
+  color: #8eb29a;
+  text-transform: uppercase;
+  font-size: 10px;
   font-weight: 800;
+  letter-spacing: 1.2px;
+  padding: 20px 11px 8px;
+}
+
+.nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  border-radius: 11px;
+  padding: 11px 13px;
+  margin: 2px 0;
+  color: #d3e4d8;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+
+.nav-icon { width: 22px; text-align: center; font-size: 16px; }
+
+.nav-btn:hover { background: rgba(255,255,255,.08); color: white; }
+.nav-btn.active {
+  background: #e7f4eb;
+  color: #145a36;
+  font-weight: 750;
+}
+
+.sidebar-bottom { margin-top: auto; padding-top: 18px; }
+
+.farm-mini {
+  padding: 14px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 13px;
+}
+
+.farm-mini-title { font-size: 12px; font-weight: 750; }
+.farm-mini-sub { font-size: 11px; color: #aac6b3; margin-top: 5px; }
+
+.main-area {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  min-width: 0;
+  transition: margin .25s;
+}
+
+.topbar {
+  height: 72px;
+  background: rgba(255,255,255,.92);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(14px);
+  transition: background .25s;
+}
+
+[data-theme="dark"] .topbar {
+  background: rgba(24,36,29,.92);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.top-title { font-size: 18px; font-weight: 800; letter-spacing: -.4px; }
+.top-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  transition: background .15s;
+}
+
+.icon-btn:hover { background: var(--primary-light); }
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 11px 5px 5px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  max-width: 220px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-light);
+  color: var(--primary);
   font-size: 12px;
+  font-weight: 800;
+}
+
+.user-chip-name { font-size: 12px; font-weight: 750; }
+.user-chip-role { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+.content { padding: 26px 28px 40px; }
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-heading h1 {
+  font-size: 24px;
+  letter-spacing: -.6px;
+  margin-bottom: 4px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.heading-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.date-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ========== STATS ========== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .15s;
+}
+
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-name { color: var(--muted); font-size: 12px; font-weight: 600; }
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.ic-green { background: #e7f6eb; }
+.ic-orange { background: #fff2df; }
+.ic-blue { background: #e9f1ff; }
+.ic-red { background: #ffebeb; }
+.ic-purple { background: #f0e8ff; }
+
+[data-theme="dark"] .ic-green { background: #1a3024; }
+[data-theme="dark"] .ic-orange { background: #302818; }
+[data-theme="dark"] .ic-blue { background: #1a2535; }
+[data-theme="dark"] .ic-red { background: #301a1a; }
+[data-theme="dark"] .ic-purple { background: #251a30; }
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.8px;
+  margin-top: 14px;
+}
+
+.stat-foot { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+/* ========== DASHBOARD ========== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panel-title { font-size: 15px; font-weight: 800; }
+.panel-subtitle { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.link-btn {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 750;
+  padding: 6px;
+}
+
+.chart-container {
+  position: relative;
+  height: 220px;
+  margin-top: 8px;
+}
+
+.money-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.money-row:last-child { border-bottom: 0; }
+
+.money-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.money-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.money-value { font-size: 14px; font-weight: 800; }
+
+.activity-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: 0; }
+
+.activity-symbol {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-light);
+  font-size: 16px;
+}
+
+.activity-title { font-size: 12px; font-weight: 750; }
+.activity-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.empty {
+  padding: 28px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ========== FORMS & TABLES ========== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.full { grid-column: 1 / -1; }
+
+.form-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.search-box { width: 100%; max-width: 280px; }
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.filter-row input[type="date"],
+.filter-row select {
+  width: auto;
+  min-width: 140px;
+  padding: 8px 11px;
+  font-size: 12px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+th {
+  background: var(--primary-light);
+  color: var(--muted);
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  padding: 13px 12px;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+[data-theme="dark"] th { background: #1e2e25; }
+
+td {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+tbody tr:hover { background: rgba(23,107,69,.04); }
+
+.table-actions { display: flex; gap: 6px; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: #e6f6eb;
+  color: #1b7041;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.badge-red { background: #ffeded; color: #ae3535; }
+.badge-orange { background: #fff1db; color: #966018; }
+.badge-blue { background: #eaf1ff; color: #315eac; }
+.badge-purple { background: #f0e8ff; color: #6b3fa0; }
+
+[data-theme="dark"] .badge { background: #1a3024; color: #7dca9a; }
+[data-theme="dark"] .badge-red { background: #3a2222; color: #f08080; }
+[data-theme="dark"] .badge-orange { background: #302818; color: #e0b060; }
+[data-theme="dark"] .badge-blue { background: #1a2535; color: #80a8e0; }
+
+.form-section-title {
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.profile-name { font-size: 17px; font-weight: 800; }
+.profile-email { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+.mobile-menu { display: none; }
+
+footer {
+  padding: 22px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Overlay for mobile sidebar */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 35;
+}
+
+/* ========== SETTINGS MODAL ========== */
+.settings-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.settings-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 24px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  border: 1px solid var(--border);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.settings-header h2 {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.settings-section {
+  margin-bottom: 16px;
+}
+
+.settings-section label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.settings-section select {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Font size classes */
+html.font-small { font-size: 14px; }
+html.font-medium { font-size: 16px; }
+html.font-large { font-size: 18px; }
+
+/* Font family classes */
+html.font-system body { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+html.font-serif body { font-family: Georgia, "Times New Roman", Times, serif; }
+html.font-mono body { font-family: "SF Mono", "Fira Code", Consolas, monospace; }
+html.font-rounded body { font-family: "Nunito", "Segoe UI Rounded", system-ui, sans-serif; }
+
+/* Loading spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1150px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    transform: translateX(-105%);
+    box-shadow: 12px 0 40px rgba(0,0,0,.2);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .main-area { margin-left: 0; }
+  .topbar { height: 64px; padding: 0 14px; }
+  .content { padding: 18px 14px 32px; }
+  .mobile-menu { display: grid; }
+  .top-sub { display: none; }
+  .user-chip-text { display: none; }
+  .user-chip { padding: 4px; border: 0; }
+  .page-heading h1 { font-size: 20px; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .full { grid-column: auto; }
+  .date-chip { display: none; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { gap: 10px; }
+  .stat-card { padding: 14px; }
+  .stat-value { font-size: 22px; }
+  .login-card { padding: 28px 20px; }
 }
 </style>
 </head>
 
 <body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal" class="settings-modal hidden">
+  <div class="settings-card">
+    <div class="settings-header">
+      <h2>⚙️ Mipangilio / Settings</h2>
+      <button id="closeSettings" class="icon-btn" type="button">✕</button>
+    </div>
+
+    <div class="settings-section">
+      <label>🌍 Lugha / Language</label>
+      <select id="langSelect">
+        <option value="sw">Kiswahili</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div class="settings-section">
+      <label>🔤 Ukubwa wa maandishi / Font Size</label>
+      <select id="fontSizeSelect">
+        <option value="small">Ndogo / Small</option>
+        <option value="medium" selected>Kawaida / Medium</option>
+        <option value="large">Kubwa / Large</option>
+      </select>
+    </div>
+
+    <div class="settings-section">
+      <label>✍️ Aina ya font / Font Family</label>
+      <select id="fontFamilySelect">
+        <option value="system">System Default</option>
+        <option value="serif">Serif</option>
+        <option value="mono">Monospace</option>
+        <option value="rounded">Rounded</option>
+      </select>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5">
+      Mabadiliko yanahifadhiwa moja kwa moja kwenye kifaa chako.
+    </p>
+  </div>
+</div>
 
 <!-- LOGIN -->
 <section id="loginScreen" class="login-screen">
@@ -893,20 +921,18 @@ body.dark-mode .avatar {
         <input id="email" type="email" autocomplete="username"
           placeholder="Ingiza barua pepe yako" required>
       </div>
-
       <div class="field">
         <label for="password">Nenosiri</label>
         <input id="password" type="password" autocomplete="current-password"
           placeholder="Ingiza nenosiri" required>
       </div>
-
       <button id="loginButton" class="btn btn-block" type="submit">
         Ingia kwenye mfumo →
       </button>
     </form>
 
     <div id="loginMessage" aria-live="polite"></div>
-    <p style="text-align:center;color:#8b968d;font-size:11px;margin-top:24px">
+    <p style="text-align:center;color:var(--muted);font-size:11px;margin-top:22px">
       Mfumo wa kidijitali wa kusimamia shamba.
     </p>
   </div>
@@ -929,25 +955,26 @@ body.dark-mode .avatar {
     <button class="nav-btn active" data-page="dashboard">
       <span class="nav-icon">▦</span> Dashboard
     </button>
-
     <button class="nav-btn" data-page="crops">
       <span class="nav-icon">🌾</span> Mazao
     </button>
-
     <button class="nav-btn" data-page="chickens">
       <span class="nav-icon">🐔</span> Kuku
     </button>
-
     <button class="nav-btn" data-page="livestock">
       <span class="nav-icon">🐐</span> Mifugo
     </button>
-
+    <button class="nav-btn" data-page="inventory">
+      <span class="nav-icon">📦</span> Mali ya Shamba
+    </button>
+    <button class="nav-btn" data-page="workers">
+      <span class="nav-icon">👷‍♂️</span> Wafanyakazi
+    </button>
     <button class="nav-btn" data-page="finances">
       <span class="nav-icon">💰</span> Fedha
     </button>
-
     <button class="nav-btn" data-page="activities">
-      <span class="nav-icon">📋</span> Shughuli za shamba
+      <span class="nav-icon">📋</span> Shughuli
     </button>
 
     <div class="nav-label">Mipangilio</div>
@@ -955,11 +982,9 @@ body.dark-mode .avatar {
     <button class="nav-btn" data-page="reports">
       <span class="nav-icon">📊</span> Ripoti na PDF
     </button>
-
     <button class="nav-btn" data-page="users">
       <span class="nav-icon">👥</span> Watumiaji
     </button>
-
     <button class="nav-btn" data-page="profile">
       <span class="nav-icon">⚙️</span> Wasifu wangu
     </button>
@@ -973,11 +998,9 @@ body.dark-mode .avatar {
   </aside>
 
   <div class="main-area">
-
     <header class="topbar">
       <div class="topbar-left">
-        <button id="mobileMenu" class="icon-btn mobile-menu"
-          type="button" aria-label="Fungua menyu">☰</button>
+        <button id="mobileMenu" class="icon-btn mobile-menu" type="button" aria-label="Fungua menyu">☰</button>
         <div>
           <div id="topTitle" class="top-title">Dashboard</div>
           <div class="top-sub">Muhtasari wa shughuli za shamba</div>
@@ -987,8 +1010,9 @@ body.dark-mode .avatar {
       <div class="top-actions">
         <div class="date-chip" id="todayDate"></div>
 
-        <button id="refreshButton" class="icon-btn"
-          type="button" title="Refresh taarifa">↻</button>
+        <button id="settingsBtn" class="icon-btn" type="button" title="Mipangilio">⚙️</button>
+        <button id="themeToggle" class="icon-btn" type="button" title="Badilisha theme">🌙</button>
+        <button id="refreshButton" class="icon-btn" type="button" title="Refresh">↻</button>
 
         <div class="user-chip">
           <div id="topAvatar" class="avatar">IG</div>
@@ -998,8 +1022,7 @@ body.dark-mode .avatar {
           </div>
         </div>
 
-        <button id="logoutButton" class="icon-btn"
-          type="button" title="Toka">↪</button>
+        <button id="logoutButton" class="icon-btn" type="button" title="Toka">↪</button>
       </div>
     </header>
 
@@ -1011,7 +1034,7 @@ body.dark-mode .avatar {
         <div class="page-heading">
           <div>
             <h1>Karibu kwenye Dashboard 👋</h1>
-            <p>Huu ni muhtasari wa taarifa zilizohifadhiwa za shamba lako.</p>
+            <p>Muhtasari wa taarifa zilizohifadhiwa za shamba lako.</p>
           </div>
           <div class="heading-actions">
             <button class="btn btn-light" data-goto="reports">📊 Ripoti</button>
@@ -1027,32 +1050,29 @@ body.dark-mode .avatar {
             <div id="cropCount" class="stat-value">0</div>
             <div class="stat-foot">Taarifa za mazao</div>
           </div>
-
           <div class="stat-card">
             <div class="stat-top">
               <div class="stat-name">Rekodi za kuku</div>
               <div class="stat-icon ic-orange">🐔</div>
             </div>
             <div id="chickenCount" class="stat-value">0</div>
-            <div class="stat-foot">Taarifa za ufugaji wa kuku</div>
+            <div class="stat-foot">Ufugaji wa kuku</div>
           </div>
-
           <div class="stat-card">
             <div class="stat-top">
-              <div class="stat-name">Rekodi za mifugo</div>
-              <div class="stat-icon ic-blue">🐐</div>
+              <div class="stat-name">Wafanyakazi</div>
+              <div class="stat-icon ic-blue">👷‍♂️</div>
             </div>
-            <div id="livestockCount" class="stat-value">0</div>
-            <div class="stat-foot">Taarifa za mifugo</div>
+            <div id="workerCount" class="stat-value">0</div>
+            <div class="stat-foot">Rasilimali watu</div>
           </div>
-
           <div class="stat-card">
             <div class="stat-top">
-              <div class="stat-name">Rekodi za fedha</div>
-              <div class="stat-icon ic-red">💰</div>
+              <div class="stat-name">Mali ya shamba</div>
+              <div class="stat-icon ic-purple">📦</div>
             </div>
-            <div id="financeCount" class="stat-value">0</div>
-            <div class="stat-foot">Mapato na matumizi</div>
+            <div id="inventoryCount" class="stat-value">0</div>
+            <div class="stat-foot">Stoki na vifaa</div>
           </div>
         </div>
 
@@ -1062,33 +1082,26 @@ body.dark-mode .avatar {
               <div class="panel-header">
                 <div>
                   <h2 class="panel-title">Muhtasari wa fedha</h2>
-                  <div class="panel-subtitle">Jumla ya miamala iliyohifadhiwa</div>
+                  <div class="panel-subtitle">Mapato, matumizi na salio</div>
                 </div>
-                <button class="link-btn" data-goto="finances">Angalia fedha →</button>
+                <button class="link-btn" data-goto="finances">Angalia →</button>
               </div>
-
-              <div class="money-row">
-                <div class="money-label">
-                  <span class="money-dot" style="background:#269b5a"></span>
-                  Jumla ya mapato
-                </div>
-                <div id="totalIncome" class="money-value">TZS 0</div>
+              <div class="chart-container">
+                <canvas id="financeChart"></canvas>
               </div>
-
-              <div class="money-row">
-                <div class="money-label">
-                  <span class="money-dot" style="background:#e35a5a"></span>
-                  Jumla ya matumizi
+              <div style="margin-top:16px">
+                <div class="money-row">
+                  <div class="money-label"><span class="money-dot" style="background:#269b5a"></span> Jumla ya mapato</div>
+                  <div id="totalIncome" class="money-value">TZS 0</div>
                 </div>
-                <div id="totalExpense" class="money-value">TZS 0</div>
-              </div>
-
-              <div class="money-row">
-                <div class="money-label">
-                  <span class="money-dot" style="background:#397bd4"></span>
-                  Salio la hesabu
+                <div class="money-row">
+                  <div class="money-label"><span class="money-dot" style="background:#e35a5a"></span> Jumla ya matumizi</div>
+                  <div id="totalExpense" class="money-value">TZS 0</div>
                 </div>
-                <div id="balance" class="money-value">TZS 0</div>
+                <div class="money-row">
+                  <div class="money-label"><span class="money-dot" style="background:#397bd4"></span> Salio</div>
+                  <div id="balance" class="money-value">TZS 0</div>
+                </div>
               </div>
             </div>
 
@@ -1096,7 +1109,7 @@ body.dark-mode .avatar {
               <div class="panel-header">
                 <div>
                   <h2 class="panel-title">Rekodi za karibuni</h2>
-                  <div class="panel-subtitle">Taarifa za hivi karibuni kutoka kwenye hifadhidata</div>
+                  <div class="panel-subtitle">Taarifa za hivi karibuni</div>
                 </div>
               </div>
               <div id="recentRecords"></div>
@@ -1107,1690 +1120,21 @@ body.dark-mode .avatar {
             <div class="panel">
               <div class="panel-header">
                 <div>
-                  <h2 class="panel-title">Ufikiaji wa haraka</h2>
-                  <div class="panel-subtitle">Nenda moja kwa moja kwenye kazi</div>
+                  <h2 class="panel-title">Shughuli zinazokaribia</h2>
+                  <div class="panel-subtitle">Shughuli zisizokamilika</div>
                 </div>
               </div>
-
-              <div class="activity-item">
-                <div class="activity-symbol">🌾</div>
-                <div style="flex:1">
-                  <div class="activity-title">Usimamizi wa mazao</div>
-                  <div class="activity-meta">Ongeza au hariri rekodi za mazao.</div>
-                  <button class="link-btn" data-goto="crops">Fungua →</button>
-                </div>
-              </div>
-
-              <div class="activity-item">
-                <div class="activity-symbol">🐔</div>
-                <div style="flex:1">
-                  <div class="activity-title">Usimamizi wa kuku</div>
-                  <div class="activity-meta">Idadi, mayai na taarifa za kuku.</div>
-                  <button class="link-btn" data-goto="chickens">Fungua →</button>
-                </div>
-              </div>
-
-              <div class="activity-item">
-                <div class="activity-symbol">💰</div>
-                <div style="flex:1">
-                  <div class="activity-title">Usimamizi wa fedha</div>
-                  <div class="activity-meta">Rekodi za mapato na matumizi.</div>
-                  <button class="link-btn" data-goto="finances">Fungua →</button>
-                </div>
-              </div>
-
-              <div class="activity-item">
-                <div class="activity-symbol">📄</div>
-                <div style="flex:1">
-                  <div class="activity-title">Pakua ripoti</div>
-                  <div class="activity-meta">Tengeneza ripoti ya PDF.</div>
-                  <button class="link-btn" data-goto="reports">Fungua →</button>
-                </div>
-              </div>
+              <div id="upcomingActivities"></div>
             </div>
 
             <div class="panel">
-              <h2 class="panel-title">Hali ya mfumo</h2>
-              <div style="display:flex;align-items:center;gap:10px;margin-top:16px">
-                <span class="money-dot" style="background:#269b5a"></span>
-                <span style="font-size:12px">Akaunti imeingia</span>
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Ufikiaji wa haraka</h2>
+                  <div class="panel-subtitle">Nenda moja kwa moja</div>
+                </div>
               </div>
-              <div style="font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px">
-                Data husomwa kutoka kwenye Firestore. Ruhusa za Firebase huamua
-                ni shughuli zipi akaunti inaweza kufanya.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CROPS -->
-      <section id="cropsPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>🌾 Usimamizi wa mazao</h1>
-            <p>Hifadhi, tafuta, hariri na pakua taarifa za mazao.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 id="cropsFormTitle" class="form-section-title">Ongeza zao jipya</h2>
-          <form id="cropsForm">
-            <input type="hidden" id="cropEditId">
-            <div class="form-grid">
-              <div class="field">
-                <label for="cropName">Jina la zao *</label>
-                <input id="cropName" required placeholder="Mfano: Mahindi">
-              </div>
-              <div class="field">
-                <label for="cropArea">Eneo la shamba</label>
-                <input id="cropArea" placeholder="Mfano: Ekari 3">
-              </div>
-              <div class="field">
-                <label for="cropQuantity">Kiasi kilichovunwa</label>
-                <input id="cropQuantity" placeholder="Mfano: Magunia 20">
-              </div>
-              <div class="field">
-                <label for="cropDate">Tarehe</label>
-                <input id="cropDate" type="date">
-              </div>
-              <div class="field full">
-                <label for="cropNotes">Maelezo</label>
-                <textarea id="cropNotes" rows="2"></textarea>
-              </div>
-              <div class="full form-actions">
-                <button class="btn" type="submit">💾 Hifadhi zao</button>
-                <button class="btn btn-light hidden" id="cancelCropEdit" type="button">Ghairi uhariri</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Rekodi za mazao</h2>
-            <input class="search-box" id="searchCrops" placeholder="Tafuta zao...">
-          </div>
-          <div id="cropsTable"></div>
-        </div>
-      </section>
-
-      <!-- CHICKENS -->
-      <section id="chickensPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>🐔 Usimamizi wa kuku</h1>
-            <p>Simamia idadi ya kuku, mayai na taarifa za ufugaji.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 id="chickensFormTitle" class="form-section-title">Ongeza rekodi za kuku</h2>
-          <form id="chickensForm">
-            <input type="hidden" id="chickenEditId">
-            <div class="form-grid">
-              <div class="field">
-                <label for="chickenType">Aina ya kuku *</label>
-                <input id="chickenType" required placeholder="Mfano: Kienyeji">
-              </div>
-              <div class="field">
-                <label for="chickenCountInput">Idadi ya kuku *</label>
-                <input id="chickenCountInput" type="number" min="0" required>
-              </div>
-              <div class="field">
-                <label for="chickenEggs">Idadi ya mayai</label>
-                <input id="chickenEggs" type="number" min="0" value="0">
-              </div>
-              <div class="field">
-                <label for="chickenDate">Tarehe</label>
-                <input id="chickenDate" type="date">
-              </div>
-              <div class="field full">
-                <label for="chickenNotes">Maelezo</label>
-                <textarea id="chickenNotes" rows="2"></textarea>
-              </div>
-              <div class="full form-actions">
-                <button class="btn" type="submit">💾 Hifadhi rekodi</button>
-                <button class="btn btn-light hidden" id="cancelChickenEdit" type="button">Ghairi uhariri</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Rekodi za kuku</h2>
-            <input class="search-box" id="searchChickens" placeholder="Tafuta rekodi...">
-          </div>
-          <div id="chickensTable"></div>
-        </div>
-      </section>
-
-      <!-- LIVESTOCK -->
-      <section id="livestockPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>🐐 Usimamizi wa mifugo</h1>
-            <p>Hifadhi idadi, aina na taarifa za mifugo.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 id="livestockFormTitle" class="form-section-title">Ongeza mifugo</h2>
-          <form id="livestockForm">
-            <input type="hidden" id="livestockEditId">
-            <div class="form-grid">
-              <div class="field">
-                <label for="livestockType">Aina ya mnyama *</label>
-                <select id="livestockType" required>
-                  <option value="">Chagua aina</option>
-                  <option>Mbuzi</option>
-                  <option>Kondoo</option>
-                  <option>Ng'ombe</option>
-                  <option>Nguruwe</option>
-                  <option>Kuku</option>
-                  <option>Nyingine</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="livestockCountInput">Idadi *</label>
-                <input id="livestockCountInput" type="number" min="0" required>
-              </div>
-              <div class="field">
-                <label for="livestockPurpose">Kusudi</label>
-                <input id="livestockPurpose" placeholder="Mfano: Maziwa">
-              </div>
-              <div class="field">
-                <label for="livestockDate">Tarehe</label>
-                <input id="livestockDate" type="date">
-              </div>
-              <div class="field full">
-                <label for="livestockNotes">Maelezo</label>
-                <textarea id="livestockNotes" rows="2"></textarea>
-              </div>
-              <div class="full form-actions">
-                <button class="btn" type="submit">💾 Hifadhi mifugo</button>
-                <button class="btn btn-light hidden" id="cancelLivestockEdit" type="button">Ghairi uhariri</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Rekodi za mifugo</h2>
-            <input class="search-box" id="searchLivestock" placeholder="Tafuta rekodi...">
-          </div>
-          <div id="livestockTable"></div>
-        </div>
-      </section>
-
-      <!-- FINANCES -->
-      <section id="financesPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>💰 Usimamizi wa fedha</h1>
-            <p>Fuatilia mapato, matumizi na salio la shamba.</p>
-          </div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-name">Mapato</div>
-            <div id="financeIncomeCard" class="stat-value">TZS 0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-name">Matumizi</div>
-            <div id="financeExpenseCard" class="stat-value">TZS 0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-name">Salio</div>
-            <div id="financeBalanceCard" class="stat-value">TZS 0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-name">Miamala</div>
-            <div id="financeTransactionsCard" class="stat-value">0</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 id="financesFormTitle" class="form-section-title">Ongeza muamala mpya</h2>
-          <form id="financesForm">
-            <input type="hidden" id="financeEditId">
-            <div class="form-grid">
-              <div class="field">
-                <label for="financeType">Aina ya muamala *</label>
-                <select id="financeType" required>
-                  <option value="income">Mapato</option>
-                  <option value="expense">Matumizi</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="financeAmount">Kiasi (TZS) *</label>
-                <input id="financeAmount" type="number" min="0.01" step="0.01" required>
-              </div>
-              <div class="field">
-                <label for="financeCategory">Kundi / sababu *</label>
-                <input id="financeCategory" required placeholder="Mfano: Mauzo ya mahindi">
-              </div>
-              <div class="field">
-                <label for="financeDate">Tarehe</label>
-                <input id="financeDate" type="date">
-              </div>
-              <div class="field full">
-                <label for="financeNotes">Maelezo</label>
-                <textarea id="financeNotes" rows="2"></textarea>
-              </div>
-              <div class="full form-actions">
-                <button class="btn" type="submit">💾 Hifadhi muamala</button>
-                <button class="btn btn-light hidden" id="cancelFinanceEdit" type="button">Ghairi uhariri</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Miamala ya fedha</h2>
-            <input class="search-box" id="searchFinances" placeholder="Tafuta muamala...">
-          </div>
-          <div id="financesTable"></div>
-        </div>
-      </section>
-
-      <!-- ACTIVITIES -->
-      <section id="activitiesPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>📋 Shughuli za shamba</h1>
-            <p>Rekodi shughuli, tarehe na watu waliohusika.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 id="activitiesFormTitle" class="form-section-title">Ongeza shughuli</h2>
-          <form id="activitiesForm">
-            <input type="hidden" id="activityEditId">
-            <div class="form-grid">
-              <div class="field">
-                <label for="activityName">Jina la shughuli *</label>
-                <input id="activityName" required placeholder="Mfano: Kupalilia">
-              </div>
-              <div class="field">
-                <label for="activityDate">Tarehe</label>
-                <input id="activityDate" type="date">
-              </div>
-              <div class="field">
-                <label for="activityPerson">Aliyetekeleza</label>
-                <input id="activityPerson" placeholder="Jina la mfanyakazi">
-              </div>
-              <div class="field">
-                <label for="activityStatus">Hali</label>
-                <select id="activityStatus">
-                  <option>Inasubiri</option>
-                  <option>Inaendelea</option>
-                  <option>Imekamilika</option>
-                </select>
-              </div>
-              <div class="field full">
-                <label for="activityNotes">Maelezo</label>
-                <textarea id="activityNotes" rows="2"></textarea>
-              </div>
-              <div class="full form-actions">
-                <button class="btn" type="submit">💾 Hifadhi shughuli</button>
-                <button class="btn btn-light hidden" id="cancelActivityEdit" type="button">Ghairi uhariri</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Orodha ya shughuli</h2>
-            <input class="search-box" id="searchActivities" placeholder="Tafuta shughuli...">
-          </div>
-          <div id="activitiesTable"></div>
-        </div>
-      </section>
-
-      <!-- REPORTS -->
-      <section id="reportsPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>📊 Ripoti na upakuaji</h1>
-            <p>Chagua taarifa unazotaka kutoa na kupakua kama PDF.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2 class="form-section-title">Tengeneza ripoti ya PDF</h2>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="reportType">Aina ya ripoti</label>
-              <select id="reportType">
-                <option value="summary">Ripoti ya jumla ya shamba</option>
-                <option value="crops">Ripoti ya mazao</option>
-                <option value="chickens">Ripoti ya kuku</option>
-                <option value="livestock">Ripoti ya mifugo</option>
-                <option value="finances">Ripoti ya fedha</option>
-                <option value="activities">Ripoti ya shughuli</option>
-                <option value="all">Taarifa zote</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="reportStart">Kuanzia tarehe (hiari)</label>
-              <input id="reportStart" type="date">
-            </div>
-
-            <div class="field">
-              <label for="reportEnd">Mpaka tarehe (hiari)</label>
-              <input id="reportEnd" type="date">
-            </div>
-
-            <div class="field">
-              <label for="reportFarmName">Jina la shamba kwenye ripoti</label>
-              <input id="reportFarmName" value="IGAMBA SHAMBA">
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button id="downloadPdf" class="btn" type="button">📄 Pakua PDF</button>
-            <button id="downloadCsv" class="btn btn-light" type="button">⬇ Pakua CSV</button>
-          </div>
-
-          <div id="reportMessage" aria-live="polite"></div>
-        </div>
-
-        <div class="panel">
-          <h2 class="form-section-title">Muhtasari wa ripoti</h2>
-          <div id="reportPreview"></div>
-        </div>
-      </section>
-
-      <!-- USERS -->
-      <section id="usersPage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>👥 Usimamizi wa watumiaji</h1>
-            <p>Orodha ya profile zilizohifadhiwa kwenye Firestore.</p>
-          </div>
-          <button id="refreshUsers" class="btn btn-light" type="button">↻ Sasisha orodha</button>
-        </div>
-
-        <div class="panel">
-          <h2 class="form-section-title">Akaunti ya msimamizi aliyeingia</h2>
-          <div class="profile-hero">
-            <div id="usersAvatar" class="profile-avatar">IG</div>
-            <div>
-              <div id="usersName" class="profile-name">Mtumiaji</div>
-              <div id="usersEmail" class="profile-email"></div>
-              <div style="margin-top:9px"><span id="usersRoleBadge" class="badge">Super Admin</span></div>
-            </div>
-          </div>
-          <p style="font-size:12px;line-height:1.8;color:var(--muted)">
-            Orodha hapa inasoma profile kutoka Firestore. Kutengeneza akaunti
-            halisi ya kuingia kunahitaji akaunti kuundwa katika Firebase Authentication
-            au kupitia huduma salama ya backend.
-          </p>
-        </div>
-
-        <div class="panel">
-          <div class="toolbar">
-            <h2 class="panel-title">Profile zilizopo</h2>
-            <input id="searchUsers" class="search-box" placeholder="Tafuta mtumiaji...">
-          </div>
-          <div id="usersTable"></div>
-          <div id="usersMessage"></div>
-        </div>
-      </section>
-
-      <!-- PROFILE -->
-      <section id="profilePage" class="page">
-        <div class="page-heading">
-          <div>
-            <h1>⚙️ Wasifu wangu</h1>
-            <p>Angalia na uhariri jina la kuonyesha kwenye mfumo.</p>
-          </div>
-        </div>
-
-        <div class="profile-grid">
-          <div class="panel">
-            <div class="profile-hero">
-              <div id="profileAvatar" class="profile-avatar">IG</div>
-              <div>
-                <div id="profileNameHeading" class="profile-name">Mtumiaji</div>
-                <div id="profileEmailHeading" class="profile-email"></div>
-              </div>
-            </div>
-
-            <form id="profileForm">
-              <div class="field">
-                <label for="profileDisplayName">Jina la kuonyesha</label>
-                <input id="profileDisplayName" required>
-              </div>
-              <div class="field">
-                <label for="profileEmail">Barua pepe ya kuingia</label>
-                <input id="profileEmail" disabled>
-              </div>
-              <div class="field">
-                <label for="profileRole">Nafasi</label>
-                <input id="profileRole" disabled>
-              </div>
-              <button class="btn" type="submit">💾 Hifadhi jina</button>
-            </form>
-
-            <div id="profileMessage"></div>
-          </div>
-
-          <div class="panel">
-            <h2 class="form-section-title">Usalama wa akaunti</h2>
-            <p style="font-size:12px;line-height:1.8;color:var(--muted)">
-              Barua pepe na nenosiri vinasimamiwa na Firebase Authentication.
-              Kubadilisha jina la kuonyesha hakubadilishi barua pepe au nenosiri.
-            </p>
-            <button id="resetPassword" class="btn btn-light" type="button">
-              Tuma barua ya kubadilisha nenosiri
-            </button>
-            <div id="securityMessage"></div>
-          </div>
-        </div>
-      </section>
-
-      <footer>IGAMBA SHAMBA · Farm Management System</footer>
-    </main>
-  </div>
-</div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-
-<!-- PDF libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
-
-<script>
-"use strict";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-  apiKey: "AIzaSyBws49coiRlHBb4LOqi1YbwoAhiKqSAodc",
-  authDomain: "igamba-shamba.firebaseapp.com",
-  projectId: "igamba-shamba",
-  storageBucket: "igamba-shamba.firebasestorage.app",
-  messagingSenderId: "820460339528",
-  appId: "1:820460339528:web:5898641cac1d31f9c5337d",
-  measurementId: "G-TP9RN3H6D2"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-const ADMIN_ACCOUNTS = {
-  "tInkosHKmuYQkpo5Juy5DRTlg2l2": {
-    displayName:"Esromu",
-    role:"superadmin",
-    status:"active"
-  },
-  "MRVqhFpwKCeVnBmWSU929qnT6L83": {
-    displayName:"Ibrahim",
-    role:"superadmin",
-    status:"active"
-  }
-};
-
-const collections = [
-  "crops","chickens","livestock","finances","activities"
-];
-
-const records = {
-  crops:[],
-  chickens:[],
-  livestock:[],
-  finances:[],
-  activities:[]
-};
-
-const PAGE_TITLES = {
-  dashboard:"Dashboard",
-  crops:"Usimamizi wa mazao",
-  chickens:"Usimamizi wa kuku",
-  livestock:"Usimamizi wa mifugo",
-  finances:"Usimamizi wa fedha",
-  activities:"Shughuli za shamba",
-  reports:"Ripoti na upakuaji",
-  users:"Watumiaji",
-  profile:"Wasifu wangu"
-};
-
-let currentUser = null;
-let currentProfile = null;
-let listeners = [];
-let userProfiles = [];
-let busy = false;
-let activePage = "dashboard";
-
-const $ = id => document.getElementById(id);
-
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[c]);
-}
-
-function showMessage(id, message, type="error") {
-  const el = $(id);
-  if (!el) return;
-  el.className = "message " + type;
-  el.textContent = message;
-  el.classList.remove("hidden");
-}
-
-function clearMessage(id) {
-  const el = $(id);
-  if (!el) return;
-  el.textContent = "";
-  el.className = "";
-}
-
-function initials(name) {
-  return String(name || "IG")
-    .trim()
-    .split(/\s+/)
-    .slice(0,2)
-    .map(part => part.charAt(0).toUpperCase())
-    .join("") || "IG";
-}
-
-function today() {
-  const d = new Date();
-  const offset = d.getTimezoneOffset();
-  return new Date(d.getTime() - offset * 60000)
-    .toISOString().slice(0,10);
-}
-
-function formatMoney(value) {
-  return "TZS " + new Intl.NumberFormat("en-TZ", {
-    maximumFractionDigits:2
-  }).format(Number(value || 0));
-}
-
-function formatDate(value) {
-  if (!value) return "—";
-  return escapeHtml(value);
-}
-
-function isSuperAdmin() {
-  return !!currentUser &&
-    !!currentProfile &&
-    currentProfile.status === "active" &&
-    currentProfile.role === "superadmin";
-}
-
-function setDefaultDates() {
-  [
-    "cropDate","chickenDate","livestockDate",
-    "financeDate","activityDate"
-  ].forEach(id => {
-    if ($(id) && !$(id).value) $(id).value = today();
-  });
-}
-
-function stopListeners() {
-  listeners.forEach(unsubscribe => {
-    try { unsubscribe(); } catch (e) { console.error(e); }
-  });
-  listeners = [];
-}
-
-function showLogin() {
-  $("loginScreen").classList.remove("hidden");
-  $("app").classList.add("hidden");
-}
-
-function showApp() {
-  $("loginScreen").classList.add("hidden");
-  $("app").classList.remove("hidden");
-
-  const name = currentProfile.displayName || currentUser.email || "Mtumiaji";
-  $("topUserName").textContent = name;
-  $("topUserRole").textContent =
-    currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
-  $("topAvatar").textContent = initials(name);
-  $("todayDate").textContent = new Date().toLocaleDateString("sw-TZ", {
-    day:"numeric",month:"short",year:"numeric"
-  });
-
-  fillProfile();
-  showPage("dashboard");
-}
-
-function showPage(name) {
-  if (!PAGE_TITLES[name]) return;
-
-  activePage = name;
-
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
-
-  const page = $(name + "Page");
-  if (page) page.classList.add("active");
-
-  document.querySelectorAll(".nav-btn").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === name);
-  });
-
-  $("topTitle").textContent = PAGE_TITLES[name];
-  $("sidebar").classList.remove("open");
-
-  if (name === "reports") renderReportPreview();
-  if (name === "users") loadUsers();
-}
-
-document.querySelectorAll(".nav-btn").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
-});
-
-document.querySelectorAll("[data-goto]").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.goto));
-});
-
-$("mobileMenu").addEventListener("click", () => {
-  $("sidebar").classList.toggle("open");
-});
-
-/* LOGIN */
-$("loginForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  clearMessage("loginMessage");
-
-  const button = $("loginButton");
-  button.disabled = true;
-  button.textContent = "Inaingia...";
-
-  try {
-    await auth.signInWithEmailAndPassword(
-      $("email").value.trim(),
-      $("password").value
-    );
-  } catch (error) {
-    console.error(error);
-
-    let message = "Imeshindikana kuingia.";
-    if ([
-      "auth/invalid-credential",
-      "auth/wrong-password",
-      "auth/user-not-found"
-    ].includes(error.code)) {
-      message = "Barua pepe au nenosiri si sahihi.";
-    } else if (error.code === "auth/too-many-requests") {
-      message = "Majaribio yamezidi. Jaribu tena baadaye.";
-    } else if (error.code === "auth/network-request-failed") {
-      message = "Tatizo la intaneti.";
-    } else if (error.code === "auth/invalid-email") {
-      message = "Barua pepe si sahihi.";
-    } else {
-      message += " " + (error.code || error.message || "");
-    }
-
-    showMessage("loginMessage", message);
-  } finally {
-    button.disabled = false;
-    button.textContent = "Ingia kwenye mfumo →";
-  }
-});
-
-/* AUTH AND PROFILE */
-async function loadProfile(user) {
-  if (ADMIN_ACCOUNTS[user.uid]) {
-    currentUser = user;
-    currentProfile = {
-      ...ADMIN_ACCOUNTS[user.uid],
-      uid:user.uid,
-      email:user.email || ""
-    };
-    showApp();
-    startListeners();
-    return;
-  }
-
-  const snap = await db.collection("users").doc(user.uid).get();
-
-  if (!snap.exists) {
-    throw new Error("PROFILE_NOT_FOUND");
-  }
-
-  const profile = snap.data();
-
-  if (profile.status !== "active") {
-    throw new Error("ACCOUNT_INACTIVE");
-  }
-
-  currentUser = user;
-  currentProfile = {
-    ...profile,
-    uid:user.uid,
-    email:user.email || ""
-  };
-
-  showApp();
-  startListeners();
-}
-
-auth.onAuthStateChanged(async user => {
-  stopListeners();
-  currentUser = null;
-  currentProfile = null;
-
-  if (!user) {
-    showLogin();
-    return;
-  }
-
-  try {
-    await loadProfile(user);
-  } catch (error) {
-    console.error("Profile error:", error);
-    showLogin();
-
-    let message = "Imeshindikana kuthibitisha akaunti.";
-
-    if (error.message === "PROFILE_NOT_FOUND") {
-      message = "Profile ya akaunti hii haipo kwenye Firestore.";
-    } else if (error.message === "ACCOUNT_INACTIVE") {
-      message = "Akaunti hii imesimamishwa. Wasiliana na msimamizi.";
-    } else {
-      message += " " + (error.code || error.message || "");
-    }
-
-    showMessage("loginMessage", message);
-
-    try { await auth.signOut(); } catch (_) {}
-  }
-});
-
-$("logoutButton").addEventListener("click", async () => {
-  stopListeners();
-  try {
-    await auth.signOut();
-  } catch (error) {
-    showMessage("appMessage", "Imeshindikana kutoka: " + error.message);
-  }
-});
-
-$("refreshButton").addEventListener("click", () => {
-  if (!currentUser) return;
-  startListeners();
-});
-
-/* FIRESTORE DATA */
-function startListeners() {
-  stopListeners();
-
-  if (!currentUser || !isSuperAdmin()) return;
-
-  clearMessage("appMessage");
-
-  collections.forEach(name => {
-    const unsubscribe = db.collection(name).onSnapshot(snapshot => {
-      records[name] = snapshot.docs.map(doc => ({
-        id:doc.id,
-        ...doc.data()
-      }));
-
-      renderCollection(name);
-      renderDashboard();
-      renderFinanceCards();
-      renderRecentRecords();
-
-      if (activePage === "reports") renderReportPreview();
-    }, error => {
-      console.error("Firestore error", name, error);
-      showMessage(
-        "appMessage",
-        "Imeshindikana kusoma " + name +
-        ". Kagua Firestore Security Rules. Msimbo: " +
-        (error.code || "unknown")
-      );
-    });
-
-    listeners.push(unsubscribe);
-  });
-}
-
-/* DASHBOARD */
-function getFinancialTotals() {
-  let income = 0;
-  let expense = 0;
-
-  records.finances.forEach(record => {
-    const amount = Number(record.amount || 0);
-    if (record.type === "income") income += amount;
-    if (record.type === "expense") expense += amount;
-  });
-
-  return {income,expense,balance:income-expense};
-}
-
-function renderDashboard() {
-  $("cropCount").textContent = records.crops.length;
-  $("chickenCount").textContent = records.chickens.length;
-  $("livestockCount").textContent = records.livestock.length;
-  $("financeCount").textContent = records.finances.length;
-
-  const totals = getFinancialTotals();
-  $("totalIncome").textContent = formatMoney(totals.income);
-  $("totalExpense").textContent = formatMoney(totals.expense);
-  $("balance").textContent = formatMoney(totals.balance);
-}
-
-function renderFinanceCards() {
-  const totals = getFinancialTotals();
-  $("financeIncomeCard").textContent = formatMoney(totals.income);
-  $("financeExpenseCard").textContent = formatMoney(totals.expense);
-  $("financeBalanceCard").textContent = formatMoney(totals.balance);
-  $("financeTransactionsCard").textContent = records.finances.length;
-}
-
-function renderRecentRecords() {
-  const items = [];
-
-  collections.forEach(name => {
-    records[name].forEach(record => {
-      items.push({
-        collection:name,
-        record,
-        date:record.date || ""
-      });
-    });
-  });
-
-  items.sort((a,b) => String(b.date).localeCompare(String(a.date)));
-
-  const latest = items.slice(0,6);
-
-  if (!latest.length) {
-    $("recentRecords").innerHTML =
-      '<div class="empty">Bado hakuna rekodi za kuonyesha.</div>';
-    return;
-  }
-
-  const labels = {
-    crops:["🌾","Zao"],
-    chickens:["🐔","Kuku"],
-    livestock:["🐐","Mifugo"],
-    finances:["💰","Fedha"],
-    activities:["📋","Shughuli"]
-  };
-
-  $("recentRecords").innerHTML = latest.map(item => {
-    const [icon,label] = labels[item.collection];
-    const r = item.record;
-    const name =
-      r.name || r.type || r.category || r.purpose || label;
-    return `
-      <div class="activity-item">
-        <div class="activity-symbol">${icon}</div>
-        <div style="flex:1;min-width:0">
-          <div class="activity-title">${escapeHtml(name)}</div>
-          <div class="activity-meta">
-            ${escapeHtml(label)} · ${formatDate(r.date)}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-/* TABLES */
-function deleteButton(collection,id) {
-  return `<button class="btn btn-danger btn-small"
-    data-action="delete" data-collection="${escapeHtml(collection)}"
-    data-id="${escapeHtml(id)}">Futa</button>`;
-}
-
-function editButton(collection,id) {
-  return `<button class="btn btn-light btn-small"
-    data-action="edit" data-collection="${escapeHtml(collection)}"
-    data-id="${escapeHtml(id)}">Hariri</button>`;
-}
-
-function tableHtml(headers, rows) {
-  if (!rows.length) {
-    return '<div class="empty">Hakuna rekodi zinazolingana na utafutaji.</div>';
-  }
-
-  return `<div class="table-wrap"><table>
-    <thead><tr>${headers.map(h=>`<th>${escapeHtml(h)}</th>`).join("")}</tr></thead>
-    <tbody>${rows.join("")}</tbody>
-  </table></div>`;
-}
-
-function searchRecords(collection) {
-  const input = $("search" + collection.charAt(0).toUpperCase() + collection.slice(1));
-  const term = input ? input.value.trim().toLowerCase() : "";
-
-  return records[collection].filter(record => {
-    if (!term) return true;
-    return Object.values(record).some(value =>
-      String(value ?? "").toLowerCase().includes(term)
-    );
-  });
-}
-
-function renderCollection(collection) {
-  const list = searchRecords(collection);
-  let headers = [];
-  let rows = [];
-
-  if (collection === "crops") {
-    headers = ["Zao","Eneo","Kiasi","Tarehe","Maelezo","Hatua"];
-    rows = list.map(r=>`<tr>
-      <td>${escapeHtml(r.name)}</td>
-      <td>${escapeHtml(r.area)}</td>
-      <td>${escapeHtml(r.quantity)}</td>
-      <td>${formatDate(r.date)}</td>
-      <td>${escapeHtml(r.notes)}</td>
-      <td><div class="table-actions">${editButton(collection,r.id)}${deleteButton(collection,r.id)}</div></td>
-    </tr>`);
-  }
-
-  if (collection === "chickens") {
-    headers = ["Aina","Idadi","Mayai","Tarehe","Maelezo","Hatua"];
-    rows = list.map(r=>`<tr>
-      <td>${escapeHtml(r.type)}</td>
-      <td>${escapeHtml(r.count)}</td>
-      <td>${escapeHtml(r.eggs)}</td>
-      <td>${formatDate(r.date)}</td>
-      <td>${escapeHtml(r.notes)}</td>
-      <td><div class="table-actions">${editButton(collection,r.id)}${deleteButton(collection,r.id)}</div></td>
-    </tr>`);
-  }
-
-  if (collection === "livestock") {
-    headers = ["Aina","Idadi","Kusudi","Tarehe","Maelezo","Hatua"];
-    rows = list.map(r=>`<tr>
-      <td>${escapeHtml(r.type)}</td>
-      <td>${escapeHtml(r.count)}</td>
-      <td>${escapeHtml(r.purpose)}</td>
-      <td>${formatDate(r.date)}</td>
-      <td>${escapeHtml(r.notes)}</td>
-      <td><div class="table-actions">${editButton(collection,r.id)}${deleteButton(collection,r.id)}</div></td>
-    </tr>`);
-  }
-
-  if (collection === "finances") {
-    headers = ["Aina","Kiasi","Kundi","Tarehe","Maelezo","Hatua"];
-    rows = list.map(r=>`<tr>
-      <td><span class="badge ${r.type==="expense"?"badge-red":"badge"}">${r.type==="income"?"Mapato":"Matumizi"}</span></td>
-      <td>${escapeHtml(formatMoney(r.amount))}</td>
-      <td>${escapeHtml(r.category)}</td>
-      <td>${formatDate(r.date)}</td>
-      <td>${escapeHtml(r.notes)}</td>
-      <td><div class="table-actions">${editButton(collection,r.id)}${deleteButton(collection,r.id)}</div></td>
-    </tr>`);
-  }
-
-  if (collection === "activities") {
-    headers = ["Shughuli","Tarehe","Aliyetekeleza","Hali","Maelezo","Hatua"];
-    rows = list.map(r=>`<tr>
-      <td>${escapeHtml(r.name)}</td>
-      <td>${formatDate(r.date)}</td>
-      <td>${escapeHtml(r.person)}</td>
-      <td>${escapeHtml(r.status)}</td>
-      <td>${escapeHtml(r.notes)}</td>
-      <td><div class="table-actions">${editButton(collection,r.id)}${deleteButton(collection,r.id)}</div></td>
-    </tr>`);
-  }
-
-  $(collection + "Table").innerHTML = tableHtml(headers,rows);
-}
-
-collections.forEach(collection => {
-  const inputId = "search" + collection.charAt(0).toUpperCase() + collection.slice(1);
-  if ($(inputId)) {
-    $(inputId).addEventListener("input", () => renderCollection(collection));
-  }
-});
-
-/* ADD AND EDIT RECORDS */
-const FORM_CONFIG = {
-  crops:{
-    form:"cropsForm",
-    id:"cropEditId",
-    title:"cropsFormTitle",
-    cancel:"cancelCropEdit",
-    fields:{
-      name:"cropName",
-      area:"cropArea",
-      quantity:"cropQuantity",
-      date:"cropDate",
-      notes:"cropNotes"
-    },
-    defaultTitle:"Ongeza zao jipya"
-  },
-  chickens:{
-    form:"chickensForm",
-    id:"chickenEditId",
-    title:"chickensFormTitle",
-    cancel:"cancelChickenEdit",
-    fields:{
-      type:"chickenType",
-      count:"chickenCountInput",
-      eggs:"chickenEggs",
-      date:"chickenDate",
-      notes:"chickenNotes"
-    },
-    defaultTitle:"Ongeza rekodi za kuku"
-  },
-  livestock:{
-    form:"livestockForm",
-    id:"livestockEditId",
-    title:"livestockFormTitle",
-    cancel:"cancelLivestockEdit",
-    fields:{
-      type:"livestockType",
-      count:"livestockCountInput",
-      purpose:"livestockPurpose",
-      date:"livestockDate",
-      notes:"livestockNotes"
-    },
-    defaultTitle:"Ongeza mifugo"
-  },
-  finances:{
-    form:"financesForm",
-    id:"financeEditId",
-    title:"financesFormTitle",
-    cancel:"cancelFinanceEdit",
-    fields:{
-      type:"financeType",
-      amount:"financeAmount",
-      category:"financeCategory",
-      date:"financeDate",
-      notes:"financeNotes"
-    },
-    defaultTitle:"Ongeza muamala mpya"
-  },
-  activities:{
-    form:"activitiesForm",
-    id:"activityEditId",
-    title:"activitiesFormTitle",
-    cancel:"cancelActivityEdit",
-    fields:{
-      name:"activityName",
-      date:"activityDate",
-      person:"activityPerson",
-      status:"activityStatus",
-      notes:"activityNotes"
-    },
-    defaultTitle:"Ongeza shughuli"
-  }
-};
-
-function resetEdit(collection) {
-  const config = FORM_CONFIG[collection];
-  $(config.form).reset();
-  $(config.id).value = "";
-  $(config.title).textContent = config.defaultTitle;
-  $(config.cancel).classList.add("hidden");
-
-  const dateField = config.fields.date;
-  if (dateField) $(dateField).value = today();
-
-  if (collection === "chickens") $("chickenEggs").value = "0";
-  if (collection === "finances") $("financeType").value = "income";
-  if (collection === "activities") $("activityStatus").value = "Inasubiri";
-}
-
-async function saveRecord(collection,data,id) {
-  if (!currentUser || !isSuperAdmin()) {
-    showMessage("appMessage","Huna ruhusa ya kufanya kitendo hiki.");
-    return;
-  }
-
-  try {
-    if (id) {
-      await db.collection(collection).doc(id).update({
-        ...data,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        updatedBy:currentUser.uid
-      });
-      showMessage("appMessage","Rekodi imehaririwa kikamilifu.","success");
-    } else {
-      await db.collection(collection).add({
-        ...data,
-        createdBy:currentUser.uid,
-        createdByEmail:currentUser.email || "",
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
-      });
-      showMessage("appMessage","Rekodi imehifadhiwa kikamilifu.","success");
-    }
-
-    resetEdit(collection);
-  } catch (error) {
-    console.error(error);
-    showMessage(
-      "appMessage",
-      "Imeshindikana kuhifadhi rekodi. Kagua ruhusa za Firestore. " +
-      (error.code || error.message || "")
-    );
-  }
-}
-
-Object.entries(FORM_CONFIG).forEach(([collection,config]) => {
-  $(config.form).addEventListener("submit", async event => {
-    event.preventDefault();
-
-    const data = {};
-    Object.entries(config.fields).forEach(([key,id]) => {
-      const element = $(id);
-      if (element.type === "number") {
-        data[key] = Number(element.value || 0);
-      } else {
-        data[key] = element.value.trim();
-      }
-    });
-
-    if (collection === "finances" && data.amount <= 0) {
-      showMessage("appMessage","Kiasi lazima kiwe kikubwa kuliko sifuri.");
-      return;
-    }
-
-    const editId = $(config.id).value;
-    await saveRecord(collection,data,editId);
-  });
-
-  $(config.cancel).addEventListener("click", () => resetEdit(collection));
-});
-
-/* TABLE ACTIONS */
-document.addEventListener("click", async event => {
-  const button = event.target.closest("[data-action]");
-  if (!button) return;
-
-  const action = button.dataset.action;
-  const collection = button.dataset.collection;
-  const id = button.dataset.id;
-
-  if (!collections.includes(collection)) return;
-
-  if (!currentUser || !isSuperAdmin()) {
-    showMessage("appMessage","Huna ruhusa ya kufanya kitendo hiki.");
-    return;
-  }
-
-  const record = records[collection].find(item=>item.id===id);
-  if (!record) return;
-
-  if (action === "edit") {
-    const config = FORM_CONFIG[collection];
-
-    Object.entries(config.fields).forEach(([key,fieldId]) => {
-      $(fieldId).value = record[key] ?? "";
-    });
-
-    $(config.id).value = id;
-    $(config.title).textContent = "Hariri rekodi";
-    $(config.cancel).classList.remove("hidden");
-
-    showPage(collection);
-    $(config.form).scrollIntoView({behavior:"smooth",block:"start"});
-  }
-
-  if (action === "delete") {
-    if (!confirm("Una uhakika unataka kufuta rekodi hii? Kitendo hiki hakiwezi kutenduliwa.")) {
-      return;
-    }
-
-    button.disabled = true;
-
-    try {
-      await db.collection(collection).doc(id).delete();
-      showMessage("appMessage","Rekodi imefutwa.","success");
-    } catch (error) {
-      console.error(error);
-      showMessage(
-        "appMessage",
-        "Imeshindikana kufuta rekodi. " + (error.code || error.message || "")
-      );
-    } finally {
-      button.disabled = false;
-    }
-  }
-});
-
-/* REPORTS */
-function reportCollections(type) {
-  if (type === "summary") return [];
-  if (type === "all") return collections;
-  return collections.includes(type) ? [type] : [];
-}
-
-function filterByDate(items) {
-  const start = $("reportStart").value;
-  const end = $("reportEnd").value;
-
-  return items.filter(item => {
-    const date = item.date || "";
-    if (start && (!date || date < start)) return false;
-    if (end && (!date || date > end)) return false;
-    return true;
-  });
-}
-
-function getReportRows(collection) {
-  const data = filterByDate(records[collection]);
-
-  const fields = {
-    crops:["name","area","quantity","date","notes"],
-    chickens:["type","count","eggs","date","notes"],
-    livestock:["type","count","purpose","date","notes"],
-    finances:["type","amount","category","date","notes"],
-    activities:["name","date","person","status","notes"]
-  }[collection];
-
-  return {
-    fields,
-    data:data.map(record=>fields.map(field=>{
-      if (field === "type" && collection === "finances") {
-        return record.type === "income" ? "Mapato" : "Matumizi";
-      }
-      if (field === "amount" && collection === "finances") {
-        return formatMoney(record.amount);
-      }
-      return String(record[field] ?? "");
-    }))
-  };
-}
-
-function renderReportPreview() {
-  const type = $("reportType").value;
-  const selected = reportCollections(type);
-
-  if (type === "summary") {
-    const totals = getFinancialTotals();
-    $("reportPreview").innerHTML = `
-      <div class="money-row"><span>Rekodi za mazao</span><strong>${records.crops.length}</strong></div>
-      <div class="money-row"><span>Rekodi za kuku</span><strong>${records.chickens.length}</strong></div>
-      <div class="money-row"><span>Rekodi za mifugo</span><strong>${records.livestock.length}</strong></div>
-      <div class="money-row"><span>Rekodi za fedha</span><strong>${records.finances.length}</strong></div>
-      <div class="money-row"><span>Mapato</span><strong>${escapeHtml(formatMoney(totals.income))}</strong></div>
-      <div class="money-row"><span>Matumizi</span><strong>${escapeHtml(formatMoney(totals.expense))}</strong></div>
-      <div class="money-row"><span>Salio</span><strong>${escapeHtml(formatMoney(totals.balance))}</strong></div>
-    `;
-    return;
-  }
-
-  const count = selected.reduce((sum,name)=>sum+filterByDate(records[name]).length,0);
-
-  $("reportPreview").innerHTML = `
-    <div class="money-row">
-      <span>Makundi ya taarifa</span>
-      <strong>${selected.length}</strong>
-    </div>
-    <div class="money-row">
-      <span>Jumla ya rekodi zinazolingana</span>
-      <strong>${count}</strong>
-    </div>
-    <p style="font-size:11px;color:var(--muted);line-height:1.7">
-      Rekodi zilizochaguliwa: ${selected.map(escapeHtml).join(", ")}.
-      Unaweza kupakua PDF au CSV.
-    </p>
-  `;
-}
-
-$("reportType").addEventListener("change",renderReportPreview);
-$("reportStart").addEventListener("change",renderReportPreview);
-$("reportEnd").addEventListener("change",renderReportPreview);
-
-function addPdfTable(doc,title,headers,body) {
-  if (typeof doc.autoTable !== "function") {
-    throw new Error("PDF_TABLE_MISSING");
-  }
-
-  doc.setFontSize(13);
-  doc.text(title,14,doc.lastAutoTable ? doc.lastAutoTable.finalY+15 : 43);
-
-  doc.autoTable({
-    head:[headers],
-    body:body.length ? body : [["Hakuna rekodi","","","",""]],
-    startY:doc.lastAutoTable ? doc.lastAutoTable.finalY+20 : 49,
-    theme:"grid",
-    styles:{fontSize:8,cellPadding:3,overflow:"linebreak"},
-    headStyles:{fillColor:[23,107,69]},
-    margin:{left:14,right:14}
-  });
-}
-
-$("downloadPdf").addEventListener("click", () => {
-  clearMessage("reportMessage");
-
-  try {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      throw new Error("PDF_LIBRARY_MISSING");
-    }
-
-    const {jsPDF} = window.jspdf;
-    const doc = new jsPDF({orientation:"landscape"});
-    const type = $("reportType").value;
-    const farmName = $("reportFarmName").value.trim() || "IGAMBA SHAMBA";
-
-    doc.setFontSize(21);
-    doc.setTextColor(23,107,69);
-    doc.text(farmName,14,19);
-
-    doc.setFontSize(12);
-    doc.setTextColor(45,60,49);
-    doc.text("Ripoti ya usimamizi wa shamba",14,28);
-
-    doc.setFontSize(9);
-    doc.setTextColor(100,110,103);
-    doc.text(
-      "Tarehe ya kutengeneza: " + today() +
-      " | Kipindi: " + ($("reportStart").value || "Mwanzo") +
-      " hadi " + ($("reportEnd").value || "Leo"),
-      14,35
-    );
-
-    if (type === "summary") {
-      const totals = getFinancialTotals();
-
-      addPdfTable(
-        doc,
-        "Muhtasari wa shamba",
-        ["Kipengele","Jumla"],
-        [
-          ["Rekodi za mazao",String(records.crops.length)],
-          ["Rekodi za kuku",String(records.chickens.length)],
-          ["Rekodi za mifugo",String(records.livestock.length)],
-          ["Miamala ya fedha",String(records.finances.length)],
-          ["Mapato",formatMoney(totals.income)],
-          ["Matumizi",formatMoney(totals.expense)],
-          ["Salio",formatMoney(totals.balance)]
-        ]
-      );
-    } else {
-      const selected = reportCollections(type);
-
-      selected.forEach((collection,index)=>{
-        const report = getReportRows(collection);
-        const headers = report.fields.map(field=>{
-          const map = {
-            name:"Jina",
-            area:"Eneo",
-            quantity:"Kiasi",
-            date:"Tarehe",
-            notes:"Maelezo",
-            type:"Aina",
-            count:"Idadi",
-            eggs:"Mayai",
-            purpose:"Kusudi",
-            amount:"Kiasi",
-            category:"Kundi",
-            person:"Aliyetekeleza",
-            status:"Hali"
-          };
-          return map[field] || field;
-        });
-
-        if (index > 0) doc.addPage();
-
-        addPdfTable(
-          doc,
-          "Ripoti: " + collection.toUpperCase(),
-          headers,
-          report.data
-        );
-      });
-    }
-
-    doc.save("IGAMBA_SHAMBA_Ripoti_" + type + "_" + today() + ".pdf");
-    showMessage("reportMessage","Ripoti ya PDF imeandaliwa.","success");
-  } catch (error) {
-    console.error(error);
-
-    let message = "Imeshindikana kutengeneza PDF.";
-    if (error.message === "PDF_LIBRARY_MISSING" ||
-        error.message === "PDF_TABLE_MISSING") {
-      message = "Maktaba ya PDF haijapakia. Hakikisha intaneti ipo kisha jaribu tena.";
-    }
-    showMessage("reportMessage",message);
-  }
-});
-
-/* CSV EXPORT */
-function csvEscape(value) {
-  let text = String(value ?? "");
-
-  // Zuia spreadsheet formula injection kwenye maandishi yanayoanza na alama hizi.
-  if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
-
-  return '"' + text.replace(/"/g,'""') + '"';
-}
-
-function downloadCsvFile(filename,rows) {
-  const csv = "\uFEFF" + rows.map(row=>row.map(csvEscape).join(",")).join("\r\n");
-  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}
-
-$("downloadCsv").addEventListener("click", () => {
-  const type = $("reportType").value;
-  const selected = type === "summary" ? collections : reportCollections(type);
-  const rows = [["IGAMBA SHAMBA - RIPOTI",today()]];
-
-  selected.forEach(collection=>{
-    rows.push([]);
-    rows.push(["AINA YA TAARIFA",collection.toUpperCase()]);
-    const report = getReportRows(collection);
-    rows.push(report.fields);
-    report.data.forEach(row=>rows.push(row));
-  });
-
-  if (type === "summary") {
-    const totals = getFinancialTotals();
-    rows.push([]);
-    rows.push(["MUHTASARI"]);
-    rows.push(["Rekodi za mazao",records.crops.length]);
-    rows.push(["Rekodi za kuku",records.chickens.length]);
-    rows.push(["Rekodi za mifugo",records.livestock.length]);
-    rows.push(["Mapato",totals.income]);
-    rows.push(["Matumizi",totals.expense]);
-    rows.push(["Salio",totals.balance]);
-  }
-
-  downloadCsvFile("IGAMBA_SHAMBA_Ripoti_" + type + "_" + today() + ".csv",rows);
-  showMessage("reportMessage","Faili la CSV limeandaliwa.","success");
-});
-
-/* USERS */
-async function loadUsers() {
-  if (!currentUser || !isSuperAdmin()) return;
-
-  clearMessage("usersMessage");
-
-  try {
-    const snapshot = await db.collection("users").get();
-
-    userProfiles = snapshot.docs.map(doc=>({
-      uid:doc.id,
-      ...doc.data()
-    }));
-
-    // Wasimamizi waliowekwa kwenye HTML waonyeshwe hata kama profile zao
-    // hazipo kwenye collection ya users.
-    Object.entries(ADMIN_ACCOUNTS).forEach(([uid,admin])=>{
-      if (!userProfiles.some(profile=>profile.uid===uid)) {
-        userProfiles.push({
-          uid,
-          ...admin,
-          email:uid===currentUser.uid ? currentUser.email : "",
-          _profileMissing:true
-        });
-      }
-    });
-
-    renderUsers();
-  } catch (error) {
-    console.error(error);
-    showMessage(
-      "usersMessage",
-      "Imeshindikana kusoma users. Kagua Firestore Security Rules. " +
-      (error.code || error.message || "")
-    );
-  }
-}
-
-function renderUsers() {
-  const term = $("searchUsers").value.trim().toLowerCase();
-
-  const filtered = userProfiles.filter(user =>
-    [user.displayName,user.email,user.role,user.uid]
-      .some(value=>String(value||"").toLowerCase().includes(term))
-  );
-
-  const rows = filtered.map(user=>`
-    <tr>
-      <td>${escapeHtml(user.displayName || "Bila jina")}</td>
-      <td>${escapeHtml(user.email || "—")}</td>
-      <td><span class="badge">${escapeHtml(user.role || "user")}</span></td>
-      <td>${user.status==="active"
-        ? '<span class="badge">Active</span>'
-        : '<span class="badge badge-red">Haijathibitishwa / inactive</span>'}</td>
-      <td>${user._profileMissing
-        ? '<span class="badge badge-orange">Profile haipo</span>'
-        : '<span class="badge">Profile ipo</span>'}</td>
-    </tr>
-  `);
-
-  $("usersTable").innerHTML = tableHtml(
-    ["Jina","Barua pepe","Nafasi","Hali","Profile"],
-    rows
-  );
-}
-
-$("searchUsers").addEventListener("input",renderUsers);
-$("refreshUsers").addEventListener("click",loadUsers);
-
-/* PROFILE */
-function fillProfile() {
-  if (!currentUser || !currentProfile) return;
-
-  const name = currentProfile.displayName || currentUser.email || "Mtumiaji";
-  const email = currentUser.email || "";
-
-  $("profileAvatar").textContent = initials(name);
-  $("profileNameHeading").textContent = name;
-  $("profileEmailHeading").textContent = email;
-  $("profileDisplayName").value = name;
-  $("profileEmail").value = email;
-  $("profileRole").value =
-    currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
-
-  $("usersAvatar").textContent = initials(name);
-  $("usersName").textContent = name;
-  $("usersEmail").textContent = email;
-  $("usersRoleBadge").textContent =
-    currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
-}
-
-$("profileForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  clearMessage("profileMessage");
-
-  if (!currentUser || !currentProfile) return;
-
-  const displayName = $("profileDisplayName").value.trim();
-  if (!displayName) {
-    showMessage("profileMessage","Jina linahitajika.");
-    return;
-  }
-
-  try {
-    if (ADMIN_ACCOUNTS[currentUser.uid]) {
-      // Kwa wasimamizi hawa, jina la kuonyesha limehifadhiwa ndani ya
-      // usanidi wa HTML. Hifadhi ya Firestore itatumika kama profile ipo.
-      await db.collection("users").doc(currentUser.uid).set({
-        displayName,
-        role:"superadmin",
-        status:"active",
-        email:currentUser.email || "",
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      },{merge:true});
-    } else {
-      await db.collection("users").doc(currentUser.uid).set({
-        displayName,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      },{merge:true});
-    }
-
-    currentProfile.displayName = displayName;
-    fillProfile();
-
-    $("topUserName").textContent = displayName;
-    $("topAvatar").textContent = initials(displayName);
-
-    showMessage("profileMessage","Jina limehifadhiwa.","success");
-  } catch (error) {
-    console.error(error);
-    showMessage(
-      "profileMessage",
-      "Imeshindikana kuhifadhi wasifu. Firestore Rules zinaweza kuzuia kuandika profile. " +
-      (error.code || error.message || "")
-    );
-  }
-});
-
-/* PASSWORD RESET */
-$("resetPassword").addEventListener("click",async()=>{
-  clearMessage("securityMessage");
-
-  if (!currentUser || !currentUser.email) {
-    showMessage("securityMessage","Barua pepe ya akaunti haipatikani.");
-    return;
-  }
-
-  try {
-    await auth.sendPasswordResetEmail(currentUser.email);
-    showMessage(
-      "securityMessage",
-      "Barua ya kubadilisha nenosiri imetumwa kwa " + currentUser.email,
-      "success"
-    );
-  } catch (error) {
-    console.error(error);
-    showMessage(
-      "securityMessage",
-      "Imeshindikana kutuma barua. " + (error.code || error.message || "")
-    );
-  }
-});
-
-/* INITIALIZATION */
-setDefaultDates();
-renderDashboard();
-renderFinanceCards();
-renderRecentRecords();
-renderReportPreview();
-showLogin();
-</script>
-
-</body>
-</html>
+              <div class="activity-item">
+                <div class="activity-symbol">🌾</div>
+                <div style="flex:1">
+                  <div class="activity-title">Usimamizi
