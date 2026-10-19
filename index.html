@@ -1137,4 +1137,1866 @@ html.font-rounded body { font-family: "Nunito", "Segoe UI Rounded", system-ui, s
               <div class="activity-item">
                 <div class="activity-symbol">🌾</div>
                 <div style="flex:1">
-                  <div class="activity-title">Usimamizi
+                  <div class="activity-title">Usimamizi wa mazao</div>
+                  <div class="activity-meta">Ongeza au hariri rekodi</div>
+                  <button class="link-btn" data-goto="crops">Fungua →</button>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-symbol">👷‍♂️</div>
+                <div style="flex:1">
+                  <div class="activity-title">Wafanyakazi</div>
+                  <div class="activity-meta">Mishahara na taarifa</div>
+                  <button class="link-btn" data-goto="workers">Fungua →</button>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-symbol">💰</div>
+                <div style="flex:1">
+                  <div class="activity-title">Usimamizi wa fedha</div>
+                  <div class="activity-meta">Mapato na matumizi</div>
+                  <button class="link-btn" data-goto="finances">Fungua →</button>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-symbol">📄</div>
+                <div style="flex:1">
+                  <div class="activity-title">Pakua ripoti</div>
+                  <div class="activity-meta">PDF au CSV</div>
+                  <button class="link-btn" data-goto="reports">Fungua →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CROPS -->
+      <section id="cropsPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>🌾 Usimamizi wa mazao</h1>
+            <p>Hifadhi, tafuta, hariri na pakua taarifa za mazao.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="cropsFormTitle" class="form-section-title">Ongeza zao jipya</h2>
+          <form id="cropsForm">
+            <input type="hidden" id="cropEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="cropName">Jina la zao *</label>
+                <input id="cropName" required placeholder="Mfano: Mahindi">
+              </div>
+              <div class="field">
+                <label for="cropArea">Eneo la shamba</label>
+                <input id="cropArea" placeholder="Mfano: Ekari 3">
+              </div>
+              <div class="field">
+                <label for="cropQuantity">Kiasi kilichovunwa</label>
+                <input id="cropQuantity" placeholder="Mfano: Magunia 20">
+              </div>
+              <div class="field">
+                <label for="cropDate">Tarehe</label>
+                <input id="cropDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="cropNotes">Maelezo</label>
+                <textarea id="cropNotes" rows="2"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi zao</button>
+                <button class="btn btn-light hidden" id="cancelCropEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Rekodi za mazao</h2>
+            <input class="search-box" id="searchCrops" placeholder="Tafuta zao...">
+          </div>
+          <div class="filter-row">
+            <input type="date" id="filterCropStart" title="Kuanzia">
+            <input type="date" id="filterCropEnd" title="Mpaka">
+            <button class="btn btn-light btn-small" type="button" onclick="renderCollection('crops')">Chuja</button>
+          </div>
+          <div id="cropsTable"></div>
+        </div>
+      </section>
+
+      <!-- CHICKENS -->
+      <section id="chickensPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>🐔 Usimamizi wa kuku</h1>
+            <p>Simamia idadi ya kuku, mayai na taarifa za ufugaji.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="chickensFormTitle" class="form-section-title">Ongeza rekodi za kuku</h2>
+          <form id="chickensForm">
+            <input type="hidden" id="chickenEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="chickenType">Aina ya kuku *</label>
+                <input id="chickenType" required placeholder="Mfano: Kienyeji">
+              </div>
+              <div class="field">
+                <label for="chickenCountInput">Idadi ya kuku *</label>
+                <input id="chickenCountInput" type="number" min="0" required>
+              </div>
+              <div class="field">
+                <label for="chickenEggs">Idadi ya mayai</label>
+                <input id="chickenEggs" type="number" min="0" value="0">
+              </div>
+              <div class="field">
+                <label for="chickenDate">Tarehe</label>
+                <input id="chickenDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="chickenNotes">Maelezo</label>
+                <textarea id="chickenNotes" rows="2"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi rekodi</button>
+                <button class="btn btn-light hidden" id="cancelChickenEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Rekodi za kuku</h2>
+            <input class="search-box" id="searchChickens" placeholder="Tafuta...">
+          </div>
+          <div id="chickensTable"></div>
+        </div>
+      </section>
+
+      <!-- LIVESTOCK -->
+      <section id="livestockPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>🐐 Usimamizi wa mifugo</h1>
+            <p>Hifadhi idadi, aina na taarifa za mifugo.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="livestockFormTitle" class="form-section-title">Ongeza mifugo</h2>
+          <form id="livestockForm">
+            <input type="hidden" id="livestockEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="livestockType">Aina ya mnyama *</label>
+                <select id="livestockType" required>
+                  <option value="">Chagua aina</option>
+                  <option>Mbuzi</option>
+                  <option>Kondoo</option>
+                  <option>Ng'ombe</option>
+                  <option>Nguruwe</option>
+                  <option>Kuku</option>
+                  <option>Nyingine</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="livestockCountInput">Idadi *</label>
+                <input id="livestockCountInput" type="number" min="0" required>
+              </div>
+              <div class="field">
+                <label for="livestockPurpose">Kusudi</label>
+                <input id="livestockPurpose" placeholder="Mfano: Maziwa">
+              </div>
+              <div class="field">
+                <label for="livestockDate">Tarehe</label>
+                <input id="livestockDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="livestockNotes">Maelezo</label>
+                <textarea id="livestockNotes" rows="2"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi mifugo</button>
+                <button class="btn btn-light hidden" id="cancelLivestockEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Rekodi za mifugo</h2>
+            <input class="search-box" id="searchLivestock" placeholder="Tafuta...">
+          </div>
+          <div id="livestockTable"></div>
+        </div>
+      </section>
+
+      <!-- INVENTORY -->
+      <section id="inventoryPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>📦 Mali ya Shamba (Inventory)</h1>
+            <p>Simamia stoki za mbolea, dawa, chakula cha mifugo na vifaa.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="inventoryFormTitle" class="form-section-title">Ongeza mali mpya</h2>
+          <form id="inventoryForm">
+            <input type="hidden" id="inventoryEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="inventoryName">Jina la mali *</label>
+                <input id="inventoryName" required placeholder="Mfano: Mbolea ya DAP">
+              </div>
+              <div class="field">
+                <label for="inventoryCategory">Kundi *</label>
+                <select id="inventoryCategory" required>
+                  <option value="">Chagua kundi</option>
+                  <option>Mbolea</option>
+                  <option>Dawa</option>
+                  <option>Chakula cha mifugo</option>
+                  <option>Vifaa</option>
+                  <option>Mbegu</option>
+                  <option>Nyingine</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="inventoryQuantity">Kiasi *</label>
+                <input id="inventoryQuantity" type="number" min="0" step="0.01" required>
+              </div>
+              <div class="field">
+                <label for="inventoryUnit">Kipimo</label>
+                <input id="inventoryUnit" placeholder="Mfano: Kg, Lita, Vipande">
+              </div>
+              <div class="field">
+                <label for="inventoryMinStock">Stoki ya chini (alert)</label>
+                <input id="inventoryMinStock" type="number" min="0" value="0">
+              </div>
+              <div class="field">
+                <label for="inventoryDate">Tarehe</label>
+                <input id="inventoryDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="inventoryNotes">Maelezo</label>
+                <textarea id="inventoryNotes" rows="2"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi mali</button>
+                <button class="btn btn-light hidden" id="cancelInventoryEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Orodha ya mali</h2>
+            <input class="search-box" id="searchInventory" placeholder="Tafuta mali...">
+          </div>
+          <div id="inventoryTable"></div>
+        </div>
+      </section>
+
+      <!-- WORKERS (NEW) -->
+      <section id="workersPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>👷‍♂️ Wafanyakazi (Workers)</h1>
+            <p>Simamia taarifa za wafanyakazi, namba za simu na mishahara.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="workersFormTitle" class="form-section-title">Ongeza mfanyakazi mpya</h2>
+          <form id="workersForm">
+            <input type="hidden" id="workerEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="workerName">Jina kamili *</label>
+                <input id="workerName" required placeholder="Mfano: Juma Ally">
+              </div>
+              <div class="field">
+                <label for="workerPhone">Namba ya simu</label>
+                <input id="workerPhone" placeholder="Mfano: 0712345678">
+              </div>
+              <div class="field">
+                <label for="workerRole">Nafasi / Kazi *</label>
+                <input id="workerRole" required placeholder="Mfano: Msimamizi / Mlinzi">
+              </div>
+              <div class="field">
+                <label for="workerSalary">Mshahara (TZS)</label>
+                <input id="workerSalary" type="number" min="0" step="100" placeholder="Mfano: 150000">
+              </div>
+              <div class="field">
+                <label for="workerDate">Tarehe ya kuanza</label>
+                <input id="workerDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="workerNotes">Maelezo ya ziada</label>
+                <textarea id="workerNotes" rows="2" placeholder="Anwani, masharti, n.k."></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi mfanyakazi</button>
+                <button class="btn btn-light hidden" id="cancelWorkerEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Orodha ya wafanyakazi</h2>
+            <input class="search-box" id="searchWorkers" placeholder="Tafuta mfanyakazi...">
+          </div>
+          <div id="workersTable"></div>
+        </div>
+      </section>
+
+      <!-- FINANCES -->
+      <section id="financesPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>💰 Usimamizi wa fedha</h1>
+            <p>Fuatilia mapato, matumizi na salio la shamba.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-name">Mapato</div>
+            <div id="financeIncomeCard" class="stat-value">TZS 0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-name">Matumizi</div>
+            <div id="financeExpenseCard" class="stat-value">TZS 0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-name">Salio</div>
+            <div id="financeBalanceCard" class="stat-value">TZS 0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-name">Miamala</div>
+            <div id="financeTransactionsCard" class="stat-value">0</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="financesFormTitle" class="form-section-title">Ongeza muamala mpya</h2>
+          <form id="financesForm">
+            <input type="hidden" id="financeEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="financeType">Aina ya muamala *</label>
+                <select id="financeType" required>
+                  <option value="income">💰 Pesa iliyoingia (Mapato)</option>
+                  <option value="expense">📤 Matumizi</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="financeAmount">Kiasi (TZS) *</label>
+                <input id="financeAmount" type="number" min="0.01" step="0.01" required placeholder="Mfano: 50000">
+              </div>
+              <div class="field">
+                <label for="financeCategory">Kundi *</label>
+                <select id="financeCategory" required>
+                  <option value="">-- Chagua kundi --</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="financeDate">Tarehe</label>
+                <input id="financeDate" type="date">
+              </div>
+              <div class="field full">
+                <label for="financeNotes">Maelezo / Kazi iliyofanywa</label>
+                <textarea id="financeNotes" rows="3" placeholder="Andika mwenyewe kazi iliyofanywa au maelezo ya muamala. Mfano: Mauzo ya mahindi magunia 10 kwa mteja Juma"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi muamala</button>
+                <button class="btn btn-light hidden" id="cancelFinanceEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Miamala ya fedha</h2>
+            <input class="search-box" id="searchFinances" placeholder="Tafuta muamala...">
+          </div>
+          <div id="financesTable"></div>
+        </div>
+      </section>
+
+      <!-- ACTIVITIES -->
+      <section id="activitiesPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>📋 Shughuli za shamba</h1>
+            <p>Rekodi shughuli, tarehe na watu waliohusika.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 id="activitiesFormTitle" class="form-section-title">Ongeza shughuli</h2>
+          <form id="activitiesForm">
+            <input type="hidden" id="activityEditId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="activityName">Jina la shughuli *</label>
+                <input id="activityName" required placeholder="Mfano: Kupalilia">
+              </div>
+              <div class="field">
+                <label for="activityDate">Tarehe</label>
+                <input id="activityDate" type="date">
+              </div>
+              <div class="field">
+                <label for="activityPerson">Aliyetekeleza</label>
+                <input id="activityPerson" placeholder="Jina la mfanyakazi">
+              </div>
+              <div class="field">
+                <label for="activityStatus">Hali</label>
+                <select id="activityStatus">
+                  <option>Inasubiri</option>
+                  <option>Inaendelea</option>
+                  <option>Imekamilika</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="activityNotes">Maelezo</label>
+                <textarea id="activityNotes" rows="2"></textarea>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit">💾 Hifadhi shughuli</button>
+                <button class="btn btn-light hidden" id="cancelActivityEdit" type="button">Ghairi</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Orodha ya shughuli</h2>
+            <input class="search-box" id="searchActivities" placeholder="Tafuta shughuli...">
+          </div>
+          <div id="activitiesTable"></div>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section id="reportsPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>📊 Ripoti na upakuaji</h1>
+            <p>Chagua taarifa unazotaka kutoa na kupakua kama PDF au CSV.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="form-section-title">Tengeneza ripoti</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="reportType">Aina ya ripoti</label>
+              <select id="reportType">
+                <option value="summary">Ripoti ya jumla ya shamba</option>
+                <option value="crops">Ripoti ya mazao</option>
+                <option value="chickens">Ripoti ya kuku</option>
+                <option value="livestock">Ripoti ya mifugo</option>
+                <option value="inventory">Ripoti ya mali</option>
+                <option value="workers">Ripoti ya wafanyakazi</option>
+                <option value="finances">Ripoti ya fedha</option>
+                <option value="activities">Ripoti ya shughuli</option>
+                <option value="all">Taarifa zote</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="reportStart">Kuanzia tarehe (hiari)</label>
+              <input id="reportStart" type="date">
+            </div>
+            <div class="field">
+              <label for="reportEnd">Mpaka tarehe (hiari)</label>
+              <input id="reportEnd" type="date">
+            </div>
+            <div class="field">
+              <label for="reportFarmName">Jina la shamba</label>
+              <input id="reportFarmName" value="IGAMBA SHAMBA">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="downloadPdf" class="btn" type="button">📄 Pakua PDF</button>
+            <button id="downloadCsv" class="btn btn-light" type="button">⬇ Pakua CSV</button>
+          </div>
+          <div id="reportMessage" aria-live="polite"></div>
+        </div>
+
+        <div class="panel">
+          <h2 class="form-section-title">Muhtasari wa ripoti</h2>
+          <div id="reportPreview"></div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="usersPage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>👥 Usimamizi wa watumiaji</h1>
+            <p>Ongeza watumiaji wapya na angalia orodha ya profile zilizopo.</p>
+          </div>
+          <button id="refreshUsers" class="btn btn-light" type="button">↻ Sasisha</button>
+        </div>
+
+        <div class="panel">
+          <h2 class="form-section-title">Akaunti ya msimamizi aliyeingia</h2>
+          <div class="profile-hero">
+            <div id="usersAvatar" class="profile-avatar">IG</div>
+            <div>
+              <div id="usersName" class="profile-name">Mtumiaji</div>
+              <div id="usersEmail" class="profile-email"></div>
+              <div style="margin-top:8px"><span id="usersRoleBadge" class="badge">Super Admin</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD NEW USER FORM -->
+        <div class="panel">
+          <h2 class="form-section-title">➕ Ongeza mtumiaji mpya</h2>
+          <form id="addUserForm">
+            <div class="form-grid">
+              <div class="field">
+                <label for="newUserName">Jina kamili *</label>
+                <input id="newUserName" required placeholder="Mfano: Juma Ally">
+              </div>
+              <div class="field">
+                <label for="newUserEmail">Barua pepe *</label>
+                <input id="newUserEmail" type="email" required placeholder="mfano@gmail.com">
+              </div>
+              <div class="field">
+                <label for="newUserPassword">Nenosiri *</label>
+                <input id="newUserPassword" type="password" required minlength="6" placeholder="Angalau herufi 6">
+              </div>
+              <div class="field">
+                <label for="newUserRole">Nafasi *</label>
+                <select id="newUserRole" required>
+                  <option value="user">Mtumiaji wa kawaida</option>
+                  <option value="superadmin">Super Admin</option>
+                </select>
+              </div>
+              <div class="full form-actions">
+                <button class="btn" type="submit" id="addUserBtn">💾 Unda mtumiaji</button>
+              </div>
+            </div>
+          </form>
+          <div id="addUserMessage"></div>
+          <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">
+            Baada ya kuunda, mtumiaji ataweza kuingia kwa barua pepe na nenosiri ulivyoweka.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 class="panel-title">Profile zilizopo</h2>
+            <input id="searchUsers" class="search-box" placeholder="Tafuta mtumiaji...">
+          </div>
+          <div id="usersTable"></div>
+          <div id="usersMessage"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section id="profilePage" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>⚙️ Wasifu wangu</h1>
+            <p>Angalia na uhariri jina la kuonyesha kwenye mfumo.</p>
+          </div>
+        </div>
+
+        <div class="profile-grid">
+          <div class="panel">
+            <div class="profile-hero">
+              <div id="profileAvatar" class="profile-avatar">IG</div>
+              <div>
+                <div id="profileNameHeading" class="profile-name">Mtumiaji</div>
+                <div id="profileEmailHeading" class="profile-email"></div>
+              </div>
+            </div>
+            <form id="profileForm">
+              <div class="field">
+                <label for="profileDisplayName">Jina la kuonyesha</label>
+                <input id="profileDisplayName" required>
+              </div>
+              <div class="field">
+                <label for="profileEmail">Barua pepe</label>
+                <input id="profileEmail" disabled>
+              </div>
+              <div class="field">
+                <label for="profileRole">Nafasi</label>
+                <input id="profileRole" disabled>
+              </div>
+              <button class="btn" type="submit">💾 Hifadhi jina</button>
+            </form>
+            <div id="profileMessage"></div>
+          </div>
+
+          <div class="panel">
+            <h2 class="form-section-title">Usalama wa akaunti</h2>
+            <p style="font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:14px">
+              Barua pepe na nenosiri vinasimamiwa na Firebase Authentication.
+            </p>
+            <button id="resetPassword" class="btn btn-light" type="button">
+              Tuma barua ya kubadilisha nenosiri
+            </button>
+            <div id="securityMessage"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>IGAMBA SHAMBA · Farm Management System · Toleo lililoboreshwa</footer>
+    </main>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<!-- PDF libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+"use strict";
+
+/* ========== FIREBASE CONFIG ========== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBws49coiRlHBb4LOqi1YbwoAhiKqSAodc",
+  authDomain: "igamba-shamba.firebaseapp.com",
+  projectId: "igamba-shamba",
+  storageBucket: "igamba-shamba.firebasestorage.app",
+  messagingSenderId: "820460339528",
+  appId: "1:820460339528:web:5898641cac1d31f9c5337d",
+  measurementId: "G-TP9RN3H6D2"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const ADMIN_ACCOUNTS = {
+  "tInkosHKmuYQkpo5Juy5DRTlg2l2": { displayName: "Esromu", role: "superadmin", status: "active" },
+  "MRVqhFpwKCeVnBmWSU929qnT6L83": { displayName: "Ibrahim", role: "superadmin", status: "active" }
+};
+
+const collections = ["crops", "chickens", "livestock", "inventory", "workers", "finances", "activities"];
+
+const records = {
+  crops: [], chickens: [], livestock: [], inventory: [], workers: [], finances: [], activities: []
+};
+
+const PAGE_TITLES = {
+  dashboard: "Dashboard",
+  crops: "Usimamizi wa mazao",
+  chickens: "Usimamizi wa kuku",
+  livestock: "Usimamizi wa mifugo",
+  inventory: "Mali ya Shamba",
+  workers: "Wafanyakazi",
+  finances: "Usimamizi wa fedha",
+  activities: "Shughuli za shamba",
+  reports: "Ripoti na upakuaji",
+  users: "Watumiaji",
+  profile: "Wasifu wangu"
+};
+
+let currentUser = null;
+let currentProfile = null;
+let listeners = [];
+let userProfiles = [];
+let activePage = "dashboard";
+let financeChart = null;
+
+const $ = id => document.getElementById(id);
+
+/* ========== HELPERS ========== */
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+function showToast(message, type = "success") {
+  const container = $("toastContainer");
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(100%)";
+    toast.style.transition = "all .3s";
+    setTimeout(() => toast.remove(), 300);
+  }, 3200);
+}
+
+function showMessage(id, message, type = "error") {
+  const el = $(id);
+  if (!el) return;
+  el.className = "message " + type;
+  el.textContent = message;
+}
+
+function clearMessage(id) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = "";
+  el.className = "";
+}
+
+function initials(name) {
+  return String(name || "IG").trim().split(/\s+/).slice(0, 2)
+    .map(p => p.charAt(0).toUpperCase()).join("") || "IG";
+}
+
+function today() {
+  const d = new Date();
+  const offset = d.getTimezoneOffset();
+  return new Date(d.getTime() - offset * 60000).toISOString().slice(0, 10);
+}
+
+function formatMoney(value) {
+  return "TZS " + new Intl.NumberFormat("en-TZ", { maximumFractionDigits: 2 }).format(Number(value || 0));
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+  return escapeHtml(value);
+}
+
+function isSuperAdmin() {
+  return !!currentUser && !!currentProfile &&
+    currentProfile.status === "active" && currentProfile.role === "superadmin";
+}
+
+function setDefaultDates() {
+  ["cropDate", "chickenDate", "livestockDate", "inventoryDate", "workerDate", "financeDate", "activityDate"]
+    .forEach(id => { if ($(id) && !$(id).value) $(id).value = today(); });
+}
+
+/* ========== THEME ========== */
+function initTheme() {
+  const saved = localStorage.getItem("igamba-theme") || "light";
+  document.documentElement.setAttribute("data-theme", saved);
+  $("themeToggle").textContent = saved === "dark" ? "☀️" : "🌙";
+}
+
+$("themeToggle").addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("igamba-theme", next);
+  $("themeToggle").textContent = next === "dark" ? "☀️" : "🌙";
+  if (financeChart) updateFinanceChart();
+});
+
+/* ========== SETTINGS (Language + Font) ========== */
+const translations = {
+  sw: {
+    dashboard: "Dashboard",
+    crops: "Usimamizi wa mazao",
+    chickens: "Usimamizi wa kuku",
+    livestock: "Usimamizi wa mifugo",
+    inventory: "Mali ya Shamba",
+    workers: "Wafanyakazi",
+    finances: "Usimamizi wa fedha",
+    activities: "Shughuli za shamba",
+    reports: "Ripoti na upakuaji",
+    users: "Watumiaji",
+    profile: "Wasifu wangu",
+    welcome: "Karibu kwenye Dashboard 👋",
+    welcomeSub: "Muhtasari wa taarifa zilizohifadhiwa za shamba lako.",
+    logout: "Toka",
+    settings: "Mipangilio"
+  },
+  en: {
+    dashboard: "Dashboard",
+    crops: "Crop Management",
+    chickens: "Chicken Management",
+    livestock: "Livestock Management",
+    inventory: "Farm Inventory",
+    workers: "Workers",
+    finances: "Finance Management",
+    activities: "Farm Activities",
+    reports: "Reports & Download",
+    users: "Users",
+    profile: "My Profile",
+    welcome: "Welcome to Dashboard 👋",
+    welcomeSub: "Overview of your farm records.",
+    logout: "Logout",
+    settings: "Settings"
+  }
+};
+
+function applyLanguage(lang) {
+  const t = translations[lang] || translations.sw;
+  localStorage.setItem("igamba-lang", lang);
+
+  Object.keys(t).forEach(key => {
+    if (PAGE_TITLES[key] !== undefined) PAGE_TITLES[key] = t[key];
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    const page = btn.dataset.page;
+    if (t[page]) {
+      const icon = btn.querySelector(".nav-icon");
+      const iconHtml = icon ? icon.outerHTML : "";
+      btn.innerHTML = iconHtml + " " + t[page];
+    }
+  });
+
+  if (PAGE_TITLES[activePage]) {
+    $("topTitle").textContent = PAGE_TITLES[activePage];
+  }
+
+  const dashH1 = document.querySelector("#dashboardPage .page-heading h1");
+  const dashP = document.querySelector("#dashboardPage .page-heading p");
+  if (dashH1) dashH1.textContent = t.welcome;
+  if (dashP) dashP.textContent = t.welcomeSub;
+}
+
+function applyFontSize(size) {
+  document.documentElement.classList.remove("font-small", "font-medium", "font-large");
+  document.documentElement.classList.add("font-" + size);
+  localStorage.setItem("igamba-font-size", size);
+}
+
+function applyFontFamily(family) {
+  document.documentElement.classList.remove("font-system", "font-serif", "font-mono", "font-rounded");
+  document.documentElement.classList.add("font-" + family);
+  localStorage.setItem("igamba-font-family", family);
+}
+
+function initSettings() {
+  const lang = localStorage.getItem("igamba-lang") || "sw";
+  const fontSize = localStorage.getItem("igamba-font-size") || "medium";
+  const fontFamily = localStorage.getItem("igamba-font-family") || "system";
+
+  $("langSelect").value = lang;
+  $("fontSizeSelect").value = fontSize;
+  $("fontFamilySelect").value = fontFamily;
+
+  applyLanguage(lang);
+  applyFontSize(fontSize);
+  applyFontFamily(fontFamily);
+}
+
+$("settingsBtn").addEventListener("click", () => {
+  $("settingsModal").classList.remove("hidden");
+});
+
+$("closeSettings").addEventListener("click", () => {
+  $("settingsModal").classList.add("hidden");
+});
+
+$("settingsModal").addEventListener("click", e => {
+  if (e.target === $("settingsModal")) {
+    $("settingsModal").classList.add("hidden");
+  }
+});
+
+$("langSelect").addEventListener("change", e => {
+  applyLanguage(e.target.value);
+  showToast(e.target.value === "en" ? "Language: English" : "Lugha: Kiswahili");
+});
+
+$("fontSizeSelect").addEventListener("change", e => {
+  applyFontSize(e.target.value);
+  showToast("Font size updated");
+});
+
+$("fontFamilySelect").addEventListener("change", e => {
+  applyFontFamily(e.target.value);
+  showToast("Font family updated");
+});
+
+/* ========== AUTH & NAV ========== */
+function stopListeners() {
+  listeners.forEach(unsub => { try { unsub(); } catch (e) {} });
+  listeners = [];
+}
+
+function showLogin() {
+  $("loginScreen").classList.remove("hidden");
+  $("app").classList.add("hidden");
+}
+
+function showApp() {
+  $("loginScreen").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  const name = currentProfile.displayName || currentUser.email || "Mtumiaji";
+  $("topUserName").textContent = name;
+  $("topUserRole").textContent = currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
+  $("topAvatar").textContent = initials(name);
+  $("todayDate").textContent = new Date().toLocaleDateString("sw-TZ", {
+    day: "numeric", month: "short", year: "numeric"
+  });
+  fillProfile();
+  showPage("dashboard");
+}
+
+function showPage(name) {
+  if (!PAGE_TITLES[name]) return;
+  activePage = name;
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const page = $(name + "Page");
+  if (page) page.classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.page === name);
+  });
+  $("topTitle").textContent = PAGE_TITLES[name];
+  $("sidebar").classList.remove("open");
+  $("sidebarOverlay").classList.remove("open");
+  if (name === "reports") renderReportPreview();
+  if (name === "users") loadUsers();
+  if (name === "dashboard") {
+    setTimeout(() => { updateFinanceChart(); }, 100);
+  }
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => showPage(btn.dataset.page));
+});
+
+document.querySelectorAll("[data-goto]").forEach(btn => {
+  btn.addEventListener("click", () => showPage(btn.dataset.goto));
+});
+
+$("mobileMenu").addEventListener("click", () => {
+  $("sidebar").classList.toggle("open");
+  $("sidebarOverlay").classList.toggle("open");
+});
+
+$("sidebarOverlay").addEventListener("click", () => {
+  $("sidebar").classList.remove("open");
+  $("sidebarOverlay").classList.remove("open");
+});
+
+/* ========== LOGIN ========== */
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  clearMessage("loginMessage");
+  const button = $("loginButton");
+  button.disabled = true;
+  button.innerHTML = '<span class="spinner"></span> Inaingia...';
+
+  try {
+    await auth.signInWithEmailAndPassword($("email").value.trim(), $("password").value);
+  } catch (error) {
+    let message = "Imeshindikana kuingia.";
+    if (["auth/invalid-credential", "auth/wrong-password", "auth/user-not-found"].includes(error.code)) {
+      message = "Barua pepe au nenosiri si sahihi.";
+    } else if (error.code === "auth/too-many-requests") {
+      message = "Majaribio yamezidi. Jaribu tena baadaye.";
+    } else if (error.code === "auth/network-request-failed") {
+      message = "Tatizo la intaneti.";
+    } else if (error.code === "auth/invalid-email") {
+      message = "Barua pepe si sahihi.";
+    }
+    showMessage("loginMessage", message);
+  } finally {
+    button.disabled = false;
+    button.textContent = "Ingia kwenye mfumo →";
+  }
+});
+
+/* ========== PROFILE LOAD ========== */
+async function loadProfile(user) {
+  if (ADMIN_ACCOUNTS[user.uid]) {
+    currentUser = user;
+    currentProfile = { ...ADMIN_ACCOUNTS[user.uid], uid: user.uid, email: user.email || "" };
+    showApp();
+    startListeners();
+    return;
+  }
+
+  const snap = await db.collection("users").doc(user.uid).get();
+  if (!snap.exists) throw new Error("PROFILE_NOT_FOUND");
+  const profile = snap.data();
+  if (profile.status !== "active") throw new Error("ACCOUNT_INACTIVE");
+
+  currentUser = user;
+  currentProfile = { ...profile, uid: user.uid, email: user.email || "" };
+  showApp();
+  startListeners();
+}
+
+auth.onAuthStateChanged(async user => {
+  stopListeners();
+  currentUser = null;
+  currentProfile = null;
+  if (!user) { showLogin(); return; }
+
+  try {
+    await loadProfile(user);
+  } catch (error) {
+    showLogin();
+    let message = "Imeshindikana kuthibitisha akaunti.";
+    if (error.message === "PROFILE_NOT_FOUND") message = "Profile ya akaunti hii haipo.";
+    else if (error.message === "ACCOUNT_INACTIVE") message = "Akaunti imesimamishwa.";
+    showMessage("loginMessage", message);
+    try { await auth.signOut(); } catch (_) {}
+  }
+});
+
+$("logoutButton").addEventListener("click", async () => {
+  stopListeners();
+  try { await auth.signOut(); } catch (e) { showToast("Imeshindikana kutoka", "error"); }
+});
+
+$("refreshButton").addEventListener("click", () => {
+  if (!currentUser) return;
+  startListeners();
+  showToast("Taarifa zimesasishwa", "info");
+});
+
+/* ========== FIRESTORE ========== */
+function startListeners() {
+  stopListeners();
+  if (!currentUser || !isSuperAdmin()) return;
+
+  collections.forEach(name => {
+    const unsub = db.collection(name).onSnapshot(snapshot => {
+      records[name] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderCollection(name);
+      renderDashboard();
+      renderFinanceCards();
+      renderRecentRecords();
+      renderUpcomingActivities();
+      if (activePage === "reports") renderReportPreview();
+      if (activePage === "dashboard") updateFinanceChart();
+    }, error => {
+      console.error(error);
+      showToast("Imeshindikana kusoma " + name, "error");
+    });
+    listeners.push(unsub);
+  });
+}
+
+/* ========== DASHBOARD ========== */
+function getFinancialTotals() {
+  let income = 0, expense = 0;
+  records.finances.forEach(r => {
+    const amount = Number(r.amount || 0);
+    if (r.type === "income") income += amount;
+    if (r.type === "expense") expense += amount;
+  });
+  return { income, expense, balance: income - expense };
+}
+
+function renderDashboard() {
+  $("cropCount").textContent = records.crops.length;
+  $("chickenCount").textContent = records.chickens.length;
+  $("workerCount").textContent = records.workers.length;
+  $("inventoryCount").textContent = records.inventory.length;
+
+  const totals = getFinancialTotals();
+  $("totalIncome").textContent = formatMoney(totals.income);
+  $("totalExpense").textContent = formatMoney(totals.expense);
+  $("balance").textContent = formatMoney(totals.balance);
+}
+
+function renderFinanceCards() {
+  const totals = getFinancialTotals();
+  $("financeIncomeCard").textContent = formatMoney(totals.income);
+  $("financeExpenseCard").textContent = formatMoney(totals.expense);
+  $("financeBalanceCard").textContent = formatMoney(totals.balance);
+  $("financeTransactionsCard").textContent = records.finances.length;
+}
+
+function updateFinanceChart() {
+  const canvas = $("financeChart");
+  if (!canvas) return;
+  const totals = getFinancialTotals();
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+  if (financeChart) financeChart.destroy();
+
+  financeChart = new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: ["Mapato", "Matumizi"],
+      datasets: [{
+        data: [totals.income || 0.01, totals.expense || 0.01],
+        backgroundColor: ["#269b5a", "#e35a5a"],
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { color: isDark ? "#c8d8ce" : "#4a5a50", font: { size: 12 } }
+        }
+      },
+      cutout: "62%"
+    }
+  });
+}
+
+function renderRecentRecords() {
+  const items = [];
+  collections.forEach(name => {
+    records[name].forEach(r => items.push({ collection: name, record: r, date: r.date || "" }));
+  });
+  items.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const latest = items.slice(0, 6);
+
+  if (!latest.length) {
+    $("recentRecords").innerHTML = '<div class="empty">Bado hakuna rekodi.</div>';
+    return;
+  }
+
+  const labels = {
+    crops: ["🌾", "Zao"], chickens: ["🐔", "Kuku"], livestock: ["🐐", "Mifugo"],
+    inventory: ["📦", "Mali"], workers: ["👷‍♂️", "Mfanyakazi"], finances: ["💰", "Fedha"], activities: ["📋", "Shughuli"]
+  };
+
+  $("recentRecords").innerHTML = latest.map(item => {
+    const [icon, label] = labels[item.collection];
+    const r = item.record;
+    const name = r.name || r.type || r.category || r.purpose || label;
+    return `
+      <div class="activity-item">
+        <div class="activity-symbol">${icon}</div>
+        <div style="flex:1;min-width:0">
+          <div class="activity-title">${escapeHtml(name)}</div>
+          <div class="activity-meta">${escapeHtml(label)} · ${formatDate(r.date)}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function renderUpcomingActivities() {
+  const pending = records.activities
+    .filter(a => a.status !== "Imekamilika")
+    .sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")))
+    .slice(0, 5);
+
+  if (!pending.length) {
+    $("upcomingActivities").innerHTML = '<div class="empty">Hakuna shughuli zinazosubiri.</div>';
+    return;
+  }
+
+  $("upcomingActivities").innerHTML = pending.map(a => `
+    <div class="activity-item">
+      <div class="activity-symbol">📋</div>
+      <div style="flex:1">
+        <div class="activity-title">${escapeHtml(a.name)}</div>
+        <div class="activity-meta">${formatDate(a.date)} · ${escapeHtml(a.status)} · ${escapeHtml(a.person || "—")}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ========== TABLES ========== */
+function deleteButton(collection, id) {
+  return `<button class="btn btn-danger btn-small" data-action="delete" data-collection="${escapeHtml(collection)}" data-id="${escapeHtml(id)}">Futa</button>`;
+}
+
+function editButton(collection, id) {
+  return `<button class="btn btn-light btn-small" data-action="edit" data-collection="${escapeHtml(collection)}" data-id="${escapeHtml(id)}">Hariri</button>`;
+}
+
+function tableHtml(headers, rows) {
+  if (!rows.length) return '<div class="empty">Hakuna rekodi zinazolingana.</div>';
+  return `<div class="table-wrap"><table>
+    <thead><tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.join("")}</tbody>
+  </table></div>`;
+}
+
+function searchRecords(collection) {
+  const inputId = "search" + collection.charAt(0).toUpperCase() + collection.slice(1);
+  const input = $(inputId);
+  const term = input ? input.value.trim().toLowerCase() : "";
+
+  let list = records[collection];
+
+  if (collection === "crops") {
+    const start = $("filterCropStart")?.value;
+    const end = $("filterCropEnd")?.value;
+    if (start) list = list.filter(r => !r.date || r.date >= start);
+    if (end) list = list.filter(r => !r.date || r.date <= end);
+  }
+
+  return list.filter(r => {
+    if (!term) return true;
+    return Object.values(r).some(v => String(v ?? "").toLowerCase().includes(term));
+  });
+}
+
+function renderCollection(collection) {
+  const list = searchRecords(collection);
+  let headers = [], rows = [];
+
+  if (collection === "crops") {
+    headers = ["Zao", "Eneo", "Kiasi", "Tarehe", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.area)}</td>
+      <td>${escapeHtml(r.quantity)}</td><td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  if (collection === "chickens") {
+    headers = ["Aina", "Idadi", "Mayai", "Tarehe", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td>${escapeHtml(r.type)}</td><td>${escapeHtml(r.count)}</td>
+      <td>${escapeHtml(r.eggs)}</td><td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  if (collection === "livestock") {
+    headers = ["Aina", "Idadi", "Kusudi", "Tarehe", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td>${escapeHtml(r.type)}</td><td>${escapeHtml(r.count)}</td>
+      <td>${escapeHtml(r.purpose)}</td><td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  if (collection === "inventory") {
+    headers = ["Jina", "Kundi", "Kiasi", "Kipimo", "Stoki min", "Tarehe", "Hali", "Hatua"];
+    rows = list.map(r => {
+      const qty = Number(r.quantity || 0);
+      const min = Number(r.minStock || 0);
+      const low = min > 0 && qty <= min;
+      return `<tr>
+        <td>${escapeHtml(r.name)}</td>
+        <td><span class="badge badge-purple">${escapeHtml(r.category)}</span></td>
+        <td>${escapeHtml(r.quantity)}</td>
+        <td>${escapeHtml(r.unit)}</td>
+        <td>${escapeHtml(r.minStock)}</td>
+        <td>${formatDate(r.date)}</td>
+        <td>${low ? '<span class="badge badge-red">Chini</span>' : '<span class="badge">OK</span>'}</td>
+        <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+      </tr>`;
+    });
+  }
+
+  if (collection === "workers") {
+    headers = ["Jina", "Simu", "Nafasi", "Mshahara", "Tarehe", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td>${escapeHtml(r.name)}</td>
+      <td>${escapeHtml(r.phone || "—")}</td>
+      <td><span class="badge badge-blue">${escapeHtml(r.role)}</span></td>
+      <td>${escapeHtml(formatMoney(r.salary))}</td>
+      <td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  if (collection === "finances") {
+    headers = ["Aina", "Kiasi", "Kundi", "Tarehe", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td><span class="badge ${r.type === "expense" ? "badge-red" : ""}">${r.type === "income" ? "Mapato" : "Matumizi"}</span></td>
+      <td>${escapeHtml(formatMoney(r.amount))}</td>
+      <td>${escapeHtml(r.category)}</td>
+      <td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  if (collection === "activities") {
+    headers = ["Shughuli", "Tarehe", "Aliyetekeleza", "Hali", "Maelezo", "Hatua"];
+    rows = list.map(r => `<tr>
+      <td>${escapeHtml(r.name)}</td><td>${formatDate(r.date)}</td>
+      <td>${escapeHtml(r.person)}</td>
+      <td><span class="badge ${r.status === "Imekamilika" ? "" : r.status === "Inaendelea" ? "badge-orange" : "badge-blue"}">${escapeHtml(r.status)}</span></td>
+      <td>${escapeHtml(r.notes)}</td>
+      <td><div class="table-actions">${editButton(collection, r.id)}${deleteButton(collection, r.id)}</div></td>
+    </tr>`);
+  }
+
+  const tableEl = $(collection + "Table");
+  if (tableEl) tableEl.innerHTML = tableHtml(headers, rows);
+}
+
+collections.forEach(collection => {
+  const inputId = "search" + collection.charAt(0).toUpperCase() + collection.slice(1);
+  if ($(inputId)) {
+    $(inputId).addEventListener("input", () => renderCollection(collection));
+  }
+});
+
+/* ========== FORMS ========== */
+const FORM_CONFIG = {
+  crops: {
+    form: "cropsForm", id: "cropEditId", title: "cropsFormTitle", cancel: "cancelCropEdit",
+    fields: { name: "cropName", area: "cropArea", quantity: "cropQuantity", date: "cropDate", notes: "cropNotes" },
+    defaultTitle: "Ongeza zao jipya"
+  },
+  chickens: {
+    form: "chickensForm", id: "chickenEditId", title: "chickensFormTitle", cancel: "cancelChickenEdit",
+    fields: { type: "chickenType", count: "chickenCountInput", eggs: "chickenEggs", date: "chickenDate", notes: "chickenNotes" },
+    defaultTitle: "Ongeza rekodi za kuku"
+  },
+  livestock: {
+    form: "livestockForm", id: "livestockEditId", title: "livestockFormTitle", cancel: "cancelLivestockEdit",
+    fields: { type: "livestockType", count: "livestockCountInput", purpose: "livestockPurpose", date: "livestockDate", notes: "livestockNotes" },
+    defaultTitle: "Ongeza mifugo"
+  },
+  inventory: {
+    form: "inventoryForm", id: "inventoryEditId", title: "inventoryFormTitle", cancel: "cancelInventoryEdit",
+    fields: { name: "inventoryName", category: "inventoryCategory", quantity: "inventoryQuantity", unit: "inventoryUnit", minStock: "inventoryMinStock", date: "inventoryDate", notes: "inventoryNotes" },
+    defaultTitle: "Ongeza mali mpya"
+  },
+  workers: {
+    form: "workersForm", id: "workerEditId", title: "workersFormTitle", cancel: "cancelWorkerEdit",
+    fields: { name: "workerName", phone: "workerPhone", role: "workerRole", salary: "workerSalary", date: "workerDate", notes: "workerNotes" },
+    defaultTitle: "Ongeza mfanyakazi mpya"
+  },
+  finances: {
+    form: "financesForm", id: "financeEditId", title: "financesFormTitle", cancel: "cancelFinanceEdit",
+    fields: { type: "financeType", amount: "financeAmount", category: "financeCategory", date: "financeDate", notes: "financeNotes" },
+    defaultTitle: "Ongeza muamala mpya"
+  },
+  activities: {
+    form: "activitiesForm", id: "activityEditId", title: "activitiesFormTitle", cancel: "cancelActivityEdit",
+    fields: { name: "activityName", date: "activityDate", person: "activityPerson", status: "activityStatus", notes: "activityNotes" },
+    defaultTitle: "Ongeza shughuli"
+  }
+};
+
+/* ========== FINANCE CATEGORIES ========== */
+const FINANCE_CATEGORIES = {
+  income: [
+    "Mauzo ya mazao",
+    "Mauzo ya kuku / mayai",
+    "Mauzo ya mifugo",
+    "Mauzo ya maziwa",
+    "Huduma za shamba",
+    "Msaada / ruzuku",
+    "Mkopo uliopokelewa",
+    "Nyingine (mapato)"
+  ],
+  expense: [
+    "Mbolea",
+    "Dawa / kemikali",
+    "Mbegu",
+    "Chakula cha mifugo",
+    "Mshahara wa wafanyakazi",
+    "Usafiri / mafuta",
+    "Matengenezo",
+    "Umeme / maji",
+    "Kodi / ada",
+    "Dawa za mifugo",
+    "Vifaa vya shamba",
+    "Nyingine (matumizi)"
+  ]
+};
+
+function updateFinanceCategories() {
+  const type = $("financeType")?.value || "income";
+  const select = $("financeCategory");
+  if (!select) return;
+  const current = select.value;
+  const options = FINANCE_CATEGORIES[type] || [];
+  select.innerHTML = '<option value="">-- Chagua kundi --</option>' +
+    options.map(c => `<option value="${c}">${c}</option>`).join("");
+  if (options.includes(current)) select.value = current;
+}
+
+function resetEdit(collection) {
+  const config = FORM_CONFIG[collection];
+  $(config.form).reset();$(config.id).value = "";
+  $(config.title).textContent = config.defaultTitle;
+  $(config.cancel).classList.add("hidden");
+  if (config.fields.date) $(config.fields.date).value = today();
+  if (collection === "chickens") $("chickenEggs").value = "0";
+  if (collection === "finances") {
+    $("financeType").value = "income";
+    updateFinanceCategories();
+  }
+  if (collection === "activities") $("activityStatus").value = "Inasubiri";
+  if (collection === "inventory") $("inventoryMinStock").value = "0";
+  if (collection === "workers") $("workerSalary").value = "";
+}
+
+async function saveRecord(collection, data, id) {
+  if (!currentUser || !isSuperAdmin()) {
+    showToast("Huna ruhusa ya kufanya kitendo hiki", "error");
+    return;
+  }
+  try {
+    if (id) {
+      await db.collection(collection).doc(id).update({
+        ...data,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedBy: currentUser.uid
+      });
+      showToast("Rekodi imehaririwa kikamilifu");
+    } else {
+      await db.collection(collection).add({
+        ...data,
+        createdBy: currentUser.uid,
+        createdByEmail: currentUser.email || "",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      showToast("Rekodi imehifadhiwa kikamilifu");
+    }
+    resetEdit(collection);
+  } catch (error) {
+    console.error(error);
+    showToast("Imeshindikana kuhifadhi: " + (error.code || error.message), "error");
+  }
+}
+
+Object.entries(FORM_CONFIG).forEach(([collection, config]) => {
+  $(config.form).addEventListener("submit", async e => {
+    e.preventDefault();
+    const data = {};
+    Object.entries(config.fields).forEach(([key, fid]) => {
+      const el = $(fid);
+      data[key] = el.type === "number" ? Number(el.value || 0) : el.value.trim();
+    });
+    if (collection === "finances" && data.amount <= 0) {
+      showToast("Kiasi lazima kiwe kikubwa kuliko sifuri", "error");
+      return;
+    }
+    await saveRecord(collection, data, $(config.id).value);
+  });
+  $(config.cancel).addEventListener("click", () => resetEdit(collection));
+});
+
+/* ========== TABLE ACTIONS ========== */
+document.addEventListener("click", async e => {
+  const button = e.target.closest("[data-action]");
+  if (!button) return;
+  const action = button.dataset.action;
+  const collection = button.dataset.collection;
+  const id = button.dataset.id;
+  if (!collections.includes(collection)) return;
+  if (!currentUser || !isSuperAdmin()) {
+    showToast("Huna ruhusa", "error");
+    return;
+  }
+
+  const record = records[collection].find(r => r.id === id);
+  if (!record) return;
+
+  if (action === "edit") {
+    const config = FORM_CONFIG[collection];
+
+    if (collection === "finances") {
+      $("financeType").value = record.type || "income";
+      updateFinanceCategories();
+    }
+
+    Object.entries(config.fields).forEach(([key, fid]) => {
+      $(fid).value = record[key] ?? "";
+    });
+
+    $(config.id).value = id;
+    $(config.title).textContent = "Hariri rekodi";
+    $(config.cancel).classList.remove("hidden");
+    showPage(collection);
+    $(config.form).scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  if (action === "delete") {
+    if (!confirm("Una uhakika unataka kufuta rekodi hii?")) return;
+    button.disabled = true;
+    try {
+      await db.collection(collection).doc(id).delete();
+      showToast("Rekodi imefutwa");
+    } catch (error) {
+      showToast("Imeshindikana kufuta", "error");
+    } finally {
+      button.disabled = false;
+    }
+  }
+});
+
+/* ========== REPORTS ========== */
+function reportCollections(type) {
+  if (type === "summary") return [];
+  if (type === "all") return collections;
+  return collections.includes(type) ? [type] : [];
+}
+
+function filterByDate(items) {
+  const start = $("reportStart").value;
+  const end = $("reportEnd").value;
+  return items.filter(item => {
+    const date = item.date || "";
+    if (start && (!date || date < start)) return false;
+    if (end && (!date || date > end)) return false;
+    return true;
+  });
+}
+
+function getReportRows(collection) {
+  const data = filterByDate(records[collection]);
+  const fields = {
+    crops: ["name", "area", "quantity", "date", "notes"],
+    chickens: ["type", "count", "eggs", "date", "notes"],
+    livestock: ["type", "count", "purpose", "date", "notes"],
+    inventory: ["name", "category", "quantity", "unit", "minStock", "date", "notes"],
+    workers: ["name", "phone", "role", "salary", "date", "notes"],
+    finances: ["type", "amount", "category", "date", "notes"],
+    activities: ["name", "date", "person", "status", "notes"]
+  }[collection];
+
+  return {
+    fields,
+    data: data.map(r => fields.map(f => {
+      if (f === "type" && collection === "finances") return r.type === "income" ? "Mapato" : "Matumizi";
+      if (f === "amount" && collection === "finances") return formatMoney(r.amount);
+      if (f === "salary" && collection === "workers") return formatMoney(r.salary);
+      return String(r[f] ?? "");
+    }))
+  };
+}
+
+function renderReportPreview() {
+  const type = $("reportType").value;
+  const selected = reportCollections(type);
+
+  if (type === "summary") {
+    const totals = getFinancialTotals();
+    $("reportPreview").innerHTML = `
+      <div class="money-row"><span>Rekodi za mazao</span><strong>${records.crops.length}</strong></div>
+      <div class="money-row"><span>Rekodi za kuku</span><strong>${records.chickens.length}</strong></div>
+      <div class="money-row"><span>Rekodi za mifugo</span><strong>${records.livestock.length}</strong></div>
+      <div class="money-row"><span>Mali ya shamba</span><strong>${records.inventory.length}</strong></div>
+      <div class="money-row"><span>Wafanyakazi</span><strong>${records.workers.length}</strong></div>
+      <div class="money-row"><span>Miamala ya fedha</span><strong>${records.finances.length}</strong></div>
+      <div class="money-row"><span>Mapato</span><strong>${escapeHtml(formatMoney(totals.income))}</strong></div>
+      <div class="money-row"><span>Matumizi</span><strong>${escapeHtml(formatMoney(totals.expense))}</strong></div>
+      <div class="money-row"><span>Salio</span><strong>${escapeHtml(formatMoney(totals.balance))}</strong></div>
+    `;
+    return;
+  }
+
+  const count = selected.reduce((s, n) => s + filterByDate(records[n]).length, 0);
+  $("reportPreview").innerHTML = `
+    <div class="money-row"><span>Makundi</span><strong>${selected.length}</strong></div>
+    <div class="money-row"><span>Jumla ya rekodi</span><strong>${count}</strong></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Rekodi: ${selected.map(escapeHtml).join(", ")}</p>
+  `;
+}
+
+$("reportType").addEventListener("change", renderReportPreview);
+$("reportStart").addEventListener("change", renderReportPreview);
+$("reportEnd").addEventListener("change", renderReportPreview);
+
+function addPdfTable(doc, title, headers, body) {
+  if (typeof doc.autoTable !== "function") throw new Error("PDF_TABLE_MISSING");
+  doc.setFontSize(13);
+  doc.text(title, 14, doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 43);
+  doc.autoTable({
+    head: [headers],
+    body: body.length ? body : [["Hakuna rekodi", "", "", "", ""]],
+    startY: doc.lastAutoTable ? doc.lastAutoTable.finalY + 20 : 49,
+    theme: "grid",
+    styles: { fontSize: 8, cellPadding: 3 },
+    headStyles: { fillColor: [23, 107, 69] },
+    margin: { left: 14, right: 14 }
+  });
+}
+
+$("downloadPdf").addEventListener("click", () => {
+  clearMessage("reportMessage");
+  try {
+    if (!window.jspdf?.jsPDF) throw new Error("PDF_LIBRARY_MISSING");
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "landscape" });
+    const type = $("reportType").value;
+    const farmName = $("reportFarmName").value.trim() || "IGAMBA SHAMBA";
+
+    doc.setFontSize(20);
+    doc.setTextColor(23, 107, 69);
+    doc.text(farmName, 14, 18);
+    doc.setFontSize(11);
+    doc.setTextColor(45, 60, 49);
+    doc.text("Ripoti ya usimamizi wa shamba", 14, 26);
+    doc.setFontSize(9);
+    doc.setTextColor(100, 110, 103);
+    doc.text("Tarehe: " + today() + " | Kipindi: " + ($("reportStart").value \vert{}\vert{} "Mwanzo") + " - " + ($("reportEnd").value || "Leo"), 14, 33);
+
+    if (type === "summary") {
+      const totals = getFinancialTotals();
+      addPdfTable(doc, "Muhtasari", ["Kipengele", "Jumla"], [
+        ["Mazao", String(records.crops.length)],
+        ["Kuku", String(records.chickens.length)],
+        ["Mifugo", String(records.livestock.length)],
+        ["Mali", String(records.inventory.length)],
+        ["Wafanyakazi", String(records.workers.length)],
+        ["Mapato", formatMoney(totals.income)],
+        ["Matumizi", formatMoney(totals.expense)],
+        ["Salio", formatMoney(totals.balance)]
+      ]);
+    } else {
+      const selected = reportCollections(type);
+      selected.forEach((col, i) => {
+        const report = getReportRows(col);
+        const map = { name: "Jina", area: "Eneo", quantity: "Kiasi", date: "Tarehe", notes: "Maelezo", type: "Aina", count: "Idadi", eggs: "Mayai", purpose: "Kusudi", amount: "Kiasi", category: "Kundi", person: "Mtu", status: "Hali", unit: "Kipimo", minStock: "Min", phone: "Simu", role: "Nafasi", salary: "Mshahara" };
+        const headers = report.fields.map(f => map[f] || f);
+        if (i > 0) doc.addPage();
+        addPdfTable(doc, "Ripoti: " + col.toUpperCase(), headers, report.data);
+      });
+    }
+
+    doc.save("IGAMBA_SHAMBA_" + type + "_" + today() + ".pdf");
+    showToast("PDF imeandaliwa");
+    showMessage("reportMessage", "Ripoti ya PDF imeandaliwa.", "success");
+  } catch (error) {
+    showToast("Imeshindikana kutengeneza PDF", "error");
+    showMessage("reportMessage", "Imeshindikana kutengeneza PDF.");
+  }
+});
+
+function csvEscape(v) {
+  let t = String(v ?? "");
+  if (/^[=+\-@\t\r]/.test(t)) t = "'" + t;
+  return '"' + t.replace(/"/g, '""') + '"';
+}
+
+function downloadCsvFile(filename, rows) {
+  const csv = "\uFEFF" + rows.map(r => r.map(csvEscape).join(",")).join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+$("downloadCsv").addEventListener("click", () => {
+  const type = $("reportType").value;
+  const selected = type === "summary" ? collections : reportCollections(type);
+  const rows = [["IGAMBA SHAMBA - RIPOTI", today()]];
+
+  selected.forEach(col => {
+    rows.push([]);
+    rows.push(["AINA", col.toUpperCase()]);
+    const report = getReportRows(col);
+    rows.push(report.fields);
+    report.data.forEach(r => rows.push(r));
+  });
+
+  if (type === "summary") {
+    const totals = getFinancialTotals();
+    rows.push([]);
+    rows.push(["MUHTASARI"]);
+    rows.push(["Mazao", records.crops.length]);
+    rows.push(["Kuku", records.chickens.length]);
+    rows.push(["Mifugo", records.livestock.length]);
+    rows.push(["Mali", records.inventory.length]);
+    rows.push(["Wafanyakazi", records.workers.length]);
+    rows.push(["Mapato", totals.income]);
+    rows.push(["Matumizi", totals.expense]);
+    rows.push(["Salio", totals.balance]);
+  }
+
+  downloadCsvFile("IGAMBA_SHAMBA_" + type + "_" + today() + ".csv", rows);
+  showToast("CSV limeandaliwa");
+  showMessage("reportMessage", "Faili la CSV limeandaliwa.", "success");
+});
+
+/* ========== USERS ========== */
+async function loadUsers() {
+  if (!currentUser || !isSuperAdmin()) return;
+  clearMessage("usersMessage");
+  try {
+    const snap = await db.collection("users").get();
+    userProfiles = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+    Object.entries(ADMIN_ACCOUNTS).forEach(([uid, admin]) => {
+      if (!userProfiles.some(p => p.uid === uid)) {
+        userProfiles.push({ uid, ...admin, email: uid === currentUser.uid ? currentUser.email : "", _profileMissing: true });
+      }
+    });
+    renderUsers();
+  } catch (error) {
+    showMessage("usersMessage", "Imeshindikana kusoma users.");
+  }
+}
+
+function renderUsers() {
+  const term = $("searchUsers").value.trim().toLowerCase();
+  const filtered = userProfiles.filter(u =>
+    [u.displayName, u.email, u.role, u.uid].some(v => String(v || "").toLowerCase().includes(term))
+  );
+  const rows = filtered.map(u => `<tr>
+    <td>${escapeHtml(u.displayName || "Bila jina")}</td>
+    <td>${escapeHtml(u.email || "—")}</td>
+    <td><span class="badge">${escapeHtml(u.role || "user")}</span></td>
+    <td>${u.status === "active" ? '<span class="badge">Active</span>' : '<span class="badge badge-red">Inactive</span>'}</td>
+    <td>${u._profileMissing ? '<span class="badge badge-orange">Haipo</span>' : '<span class="badge">Ipo</span>'}</td>
+  </tr>`);
+  $("usersTable").innerHTML = tableHtml(["Jina", "Barua pepe", "Nafasi", "Hali", "Profile"], rows);
+}
+
+$("searchUsers").addEventListener("input", renderUsers);
+$("refreshUsers").addEventListener("click", loadUsers);
+
+/* ========== ADD NEW USER ========== */
+$("addUserForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  clearMessage("addUserMessage");
+
+  if (!currentUser || !isSuperAdmin()) {
+    showMessage("addUserMessage", "Huna ruhusa ya kuongeza watumiaji.");
+    return;
+  }
+
+  const displayName = $("newUserName").value.trim();
+  const email = $("newUserEmail").value.trim();
+  const password = $("newUserPassword").value;
+  const role = $("newUserRole").value;
+
+  if (!displayName || !email || !password) {
+    showMessage("addUserMessage", "Jaza sehemu zote zinazohitajika.");
+    return;
+  }
+
+  if (password.length < 6) {
+    showMessage("addUserMessage", "Nenosiri liwe na herufi angalau 6.");
+    return;
+  }
+
+  const btn = $("addUserBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Inaunda...';
+
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    const newUid = cred.user.uid;
+
+    await db.collection("users").doc(newUid).set({
+      displayName,
+      email,
+      role,
+      status: "active",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: currentUser.uid
+    });
+
+    await auth.signOut();
+
+    showToast("Mtumiaji ameundwa. Ingia tena kama admin.");
+    showMessage("addUserMessage",
+      "Mtumiaji " + displayName + " ameundwa kikamilifu. Tafadhali ingia tena kwa akaunti yako ya admin.",
+      "success");
+
+    $("addUserForm").reset();
+
+  } catch (error) {
+    console.error(error);
+    let msg = "Imeshindikana kuunda mtumiaji.";
+    if (error.code === "auth/email-already-in-use") {
+      msg = "Barua pepe hii tayari inatumika.";
+    } else if (error.code === "auth/invalid-email") {
+      msg = "Barua pepe si sahihi.";
+    } else if (error.code === "auth/weak-password") {
+      msg = "Nenosiri ni dhaifu sana.";
+    }
+    showMessage("addUserMessage", msg);
+    showToast(msg, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "💾 Unda mtumiaji";
+  }
+});
+
+/* ========== PROFILE ========== */
+function fillProfile() {
+  if (!currentUser || !currentProfile) return;
+  const name = currentProfile.displayName || currentUser.email || "Mtumiaji";
+  const email = currentUser.email || "";
+  $("profileAvatar").textContent = initials(name);
+  $("profileNameHeading").textContent = name;
+  $("profileEmailHeading").textContent = email;
+  $("profileDisplayName").value = name;
+  $("profileEmail").value = email;
+  $("profileRole").value = currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
+  $("usersAvatar").textContent = initials(name);
+  $("usersName").textContent = name;
+  $("usersEmail").textContent = email;
+  $("usersRoleBadge").textContent = currentProfile.role === "superadmin" ? "Super Admin" : "Mtumiaji";
+}
+
+$("profileForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  clearMessage("profileMessage");
+  const displayName = $("profileDisplayName").value.trim();
+  if (!displayName) { showMessage("profileMessage", "Jina linahitajika."); return; }
+
+  try {
+    await db.collection("users").doc(currentUser.uid).set({
+      displayName,
+      role: currentProfile.role || "superadmin",
+      status: "active",
+      email: currentUser.email || "",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    currentProfile.displayName = displayName;
+    fillProfile();
+    $("topUserName").textContent = displayName;
+    $("topAvatar").textContent = initials(displayName);
+    showToast("Jina limehifadhiwa");
+    showMessage("profileMessage", "Jina limehifadhiwa.", "success");
+  } catch (error) {
+    showMessage("profileMessage", "Imeshindikana kuhifadhi wasifu.");
+  }
+});
+
+$("resetPassword").addEventListener("click", async () => {
+  clearMessage("securityMessage");
+  if (!currentUser?.email) { showMessage("securityMessage", "Barua pepe haipatikani."); return; }
+  try {
+    await auth.sendPasswordResetEmail(currentUser.email);
+    showToast("Barua imetumwa");
+    showMessage("securityMessage", "Barua ya kubadilisha nenosiri imetumwa kwa " + currentUser.email, "success");
+  } catch (error) {
+    showMessage("securityMessage", "Imeshindikana kutuma barua.");
+  }
+});
+
+/* ========== FINANCE TYPE CHANGE ========== */
+if ($("financeType")) {
+  $("financeType").addEventListener("change", updateFinanceCategories);
+  updateFinanceCategories();
+}
+
+/* ========== INIT ========== */
+initTheme();
+initSettings();
+setDefaultDates();
+updateFinanceCategories();
+renderDashboard();
+renderFinanceCards();
+renderRecentRecords();
+renderUpcomingActivities();
+renderReportPreview();
+showLogin();
+</script>
+
+</body>
+</html>
